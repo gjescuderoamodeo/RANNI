@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Ingrediente {
+  id                String              @id @default(uuid())
+  nombre            String              @unique
+  cantidad          Int                 @default(1)
+  Plato_Ingrediente Plato_Ingrediente[]
+}
+
+model Plato {
+  id                String              @id @default(uuid())
+  nombre            String              @unique
+  precio            Int                 @default(1)
+  disponible        Boolean             @default(true)
+  plato_pedido      Plato_Pedido[]
+  Plato_Ingrediente Plato_Ingrediente[]
+}
+
+model Plato_Ingrediente {
+  plato          Plato       @relation(fields: [plato_id], references: [id])
+  ingrediente    Ingrediente @relation(fields: [ingrediente_id], references: [id])
+  plato_id       String
+  ingrediente_id String
+  cantidad       Int
+
+  @@id([plato_id, ingrediente_id])
+}
+
+model Usuario {
+  id             String         @id @default(uuid())
+  nombre         String
+  contrasena     String
+  puesto_laboral Puesto_Laboral @default(Camarero)
+  pedido         Pedido[]
+}
+
+model Pedido {
+  id           String         @id @default(uuid())
+  usuario      Usuario        @relation(fields: [usuario_id], references: [id])
+  usuario_id   String
+  plato_pedido Plato_Pedido[]
+  factura      Factura[]
+  Mesa         Mesa           @relation(fields: [mesa_id], references: [id])
+  mesa_id      String
+  finalizado   Boolean
+}
+
+model Plato_Pedido {
+  plato     Plato  @relation(fields: [plato_id], references: [id])
+  pedido    Pedido @relation(fields: [pedido_id], references: [id])
+  plato_id  String
+  pedido_id String
+  cantidad  Int
+
+  @@id([plato_id, pedido_id])
+}
+
+model Mesa {
+  id     String   @id
+  Pedido Pedido[]
+}
+
+model Factura {
+  id        String   @id @default(uuid())
+  fecha     DateTime @default(now())
+  precio    Int
+  pedido    Pedido   @relation(fields: [pedido_id], references: [id])
+  pedido_id String
+}
+
+/////////
+enum Puesto_Laboral {
+  Cocinero
+  Camarero
+  Administrador
+}
