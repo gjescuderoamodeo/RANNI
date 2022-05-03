@@ -1,39 +1,9 @@
-<script>
-    import { goto } from "$app/navigation";
-    import { post } from "$lib/utils.js";
-
-    let name = "";
-    let password = "";
-    let errors = false;
-
-    async function submit(event) {
-        const request = await post(`auth/login`, { name, password });
-
-        console.log(request.message);
-
-        switch (request.status) {
-            case 301:
-                return goto("/loading");
-            case 302:
-                return goto("/almacen");
-            case 303:
-                return goto("/loading");
-            case 401:
-                errors = true;
-        }
-    }
-</script>
-
 <body class="bg-stone-200">
-    {#if errors}
-        <p>Contraseña o Usuario erroneos</p>
-    {/if}
-
     <!--Registro usuario-->
     <div
-        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-red-100 "
+        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-orange-200 "
     >
-        <form on:submit|preventDefault={submit}>
+        <form action="/api/addUsersJS" method="post">
             <div class="form-group mb-6">
                 <label
                     for="nombre"
@@ -59,8 +29,7 @@
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="name"
-                    bind:value={name}
-                    aria-describedby="emailHelp"
+                    name="name"
                     placeholder="Enter name"
                     required
                 />
@@ -69,14 +38,12 @@
                 <label
                     for="exampleInputPassword2"
                     class="form-label inline-block mb-2 text-gray-700"
-                    >Contraseña</label
+                    >Password</label
                 >
                 <!--input contraseña-->
                 <input
                     type="password"
-                    bind:value={password}
                     class="form-control block
-                    
           w-full
           px-3
           py-1.5
@@ -91,23 +58,47 @@
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="exampleInputPassword2"
+                    name="password"
                     placeholder="Password"
                     required
                 />
             </div>
-            <!--<div class="flex justify-between items-center mb-6">
-                <div class="form-group form-check">
-                    <input
-                        type="checkbox"
-                        class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                        id="exampleCheck2"
-                    />
-                                         <label
-                        class="form-check-label inline-block text-gray-800"
-                        for="exampleCheck2">Recordarme</label
-                    > 
+            <!--Input para la lista desplegable del tipo de trabajo a seleccionar-->
+
+            <div class="form-group mb-6">
+                <label
+                    for="puestolaboral"
+                    class="form-label inline-block mb-2 text-gray-700"
+                    >Puesto Laboral</label
+                >
+                <div class="flex justify-center">
+                    <div class="mb-3 xl:w-96">
+                        <select
+                            name="job"
+                            class="form-select appearance-none
+                        block
+                        w-full
+                        px-3
+                        py-1.5
+                        text-base
+                        font-normal
+                        text-gray-700
+                        bg-white bg-clip-padding bg-no-repeat
+                        border border-solid border-gray-300
+                        rounded
+                        transition
+                        ease-in-out
+                        m-0
+                        focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                            aria-label="Default select example"
+                        >
+                            <option selected>Camarero</option>
+                            <option>Cocinero</option>
+                            <option>Administrador</option>
+                        </select>
+                    </div>
                 </div>
-            </div>-->
+            </div>
             <button
                 type="submit"
                 class="
@@ -127,14 +118,8 @@
         active:bg-blue-800 active:shadow-lg
         transition
         duration-150
-        ease-in-out">ingresar</button
+        ease-in-out">add user</button
             >
         </form>
     </div>
 </body>
-
-<style>
-    :root {
-        @apply bg-stone-200;
-    }
-</style>
