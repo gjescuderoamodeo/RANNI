@@ -9,8 +9,6 @@
     async function submit(event) {
         const request = await post(`auth/login`, { name, password });
 
-        console.log(request.message);
-
         switch (request.status) {
             case 301:
                 return goto("/loading");

@@ -5,31 +5,50 @@ const { PrismaClient } = prismaImport;
 const prisma = new PrismaClient();
 
 export async function post({ request }) {
-    const body = await request.formData();
+    const json = await request.json();
 
-    let contrasenaEncriptada = await password.encrypt(body.get("password"));
+    let contrasenaEncriptada = await password.encrypt(json.password);
 
-    const result = await prisma.usuario.create({
-        data: {
-            nombre: body.get("name"),
-            puesto_laboral: body.get("job"),
-            contrasena: contrasenaEncriptada
+    try {
+
+        const result = await prisma.usuario.create({
+            data: {
+                nombre: json.name,
+                puesto_laboral: json.job,
+                contrasena: contrasenaEncriptada
+            }
+        })
+
+        let body;
+
+        if (!result) {
+            body = {
+                message: "Error creating user",
+                status: 500,
+            };
+            // return validation errors
+            return {
+                body,
+            };
+        } else {
+            body = {
+                message: "user created good",
+                status: 300,
+            };
+            return {
+                body,
+            };
         }
-    })
-
-    if (!result) {
-        // return validation errors
-        return {
+    } catch (errors) {
+        body = {
+            message: "user alredy in the database",
             status: 400,
-            body: "ERROR 400"
+        };
+        return {
+            body,
         };
     }
 
-    return {
-        status: 303,
-        headers: {
-            location: `/addUsers`
-        }
-    };
+
 
 }

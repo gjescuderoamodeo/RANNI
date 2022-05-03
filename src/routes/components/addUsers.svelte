@@ -1,9 +1,39 @@
-<body class="bg-stone-200">
+<script>
+    import { post } from "$lib/utils.js";
+
+    let name = "";
+    let password = "";
+    let job = "Camarero";
+
+    async function submit(event) {
+        if (job != "" && password != "" && job != "") {
+            const request = await post(`/api/addUsersJS`, {
+                name,
+                password,
+                job,
+            });
+            console.log(request.message);
+
+            switch (request.status) {
+                case 300:
+                    alert("Usuario creado exitosamente");
+                    name = "";
+                    password = "";
+                    break;
+                case 400:
+                    alert("El usuario ya está en la base de datos");
+                    break;
+            }
+        }
+    }
+</script>
+
+<body class="bg-white">
     <!--Registro usuario-->
     <div
-        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-orange-200 "
+        class="block p-6 rounded-lg shadow-lg bg-orange-200 max-w-sm mx-auto mt-32 bg-orange-200 "
     >
-        <form action="/api/addUsersJS" method="post">
+        <form on:submit|preventDefault={submit}>
             <div class="form-group mb-6">
                 <label
                     for="nombre"
@@ -11,6 +41,7 @@
                     >Nombre</label
                 >
                 <!--input nombre-->
+                <i class="fa fa-user fa-fw" />
                 <input
                     type="text"
                     class="form-control
@@ -29,7 +60,7 @@
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="name"
-                    name="name"
+                    bind:value={name}
                     placeholder="Enter name"
                     required
                 />
@@ -38,9 +69,10 @@
                 <label
                     for="exampleInputPassword2"
                     class="form-label inline-block mb-2 text-gray-700"
-                    >Password</label
+                    >Contraseña</label
                 >
                 <!--input contraseña-->
+                <i class="fa fa-key fa-fw" />
                 <input
                     type="password"
                     class="form-control block
@@ -58,7 +90,7 @@
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="exampleInputPassword2"
-                    name="password"
+                    bind:value={password}
                     placeholder="Password"
                     required
                 />
@@ -74,7 +106,7 @@
                 <div class="flex justify-center">
                     <div class="mb-3 xl:w-96">
                         <select
-                            name="job"
+                            bind:value={job}
                             class="form-select appearance-none
                         block
                         w-full
