@@ -14,8 +14,8 @@
                 return goto("/loading");
             case 302:
                 return goto("/almacen");
-            case 303:
-                return goto("/loading");
+            case 303: //admin
+                return goto("/almacen");
             case 401:
                 errors = true;
         }

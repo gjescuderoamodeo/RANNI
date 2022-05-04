@@ -1,7 +1,12 @@
 <script>
     import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
+    import { post } from "$lib/utils.js";
     //importaciones de otros módulos
     import CrudUsuarios from "./crudUsers.svelte";
+
+    onMount(VerifyUser);
+    let name = "";
 
     async function closeSession() {
         console.log("Sesión cerrada!");
@@ -14,6 +19,17 @@
     }
 
     //validar que el usuario es administrador
+    async function VerifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            console.log("Usuario no válido");
+            return goto("/");
+        } else {
+            name = request.name;
+        }
+    }
 </script>
 
 <html lang="esp">
@@ -53,7 +69,7 @@
                                 class="flex items-center focus:outline-none mr-3"
                             >
                                 <span class="hidden md:inline-block"
-                                    >Hi, User
+                                    >{name}
                                 </span>
                             </button>
                             <div
