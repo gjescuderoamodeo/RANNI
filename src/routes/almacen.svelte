@@ -4,13 +4,18 @@
     import { post } from "$lib/utils.js";
     //importaciones de otros módulos
     import CrudUsuarios from "./crudUsers.svelte";
+    import CrudFood from "./crudFood.svelte";
 
     onMount(async () => {
         await verifyUser();
         setInterval(numeroUsuarios, 5000);
     });
-    let name = "";
-    let numberUsers = 0;
+
+    //variables
+    let name = ""; //nombre de usuario
+    let numberUsers = 0; //número de usuarios
+    //variables que nos permiten cambiar de pestaña de Administración
+    let adminControl = 1;
 
     async function closeSession() {
         console.log("Sesión cerrada!");
@@ -20,6 +25,18 @@
         });
 
         goto("/");
+    }
+
+    function showUser() {
+        adminControl = 1;
+    }
+
+    function showBill() {
+        adminControl = 3;
+    }
+
+    function showFood() {
+        adminControl = 2;
     }
 
     //validar que el usuario es administrador
@@ -36,6 +53,7 @@
         }
     }
 
+    //función que saca el número de usuarios
     async function numeroUsuarios() {
         let numero = await fetch("/api/numberOfUsers").then((r) => r.json());
         numberUsers = numero;
@@ -108,7 +126,7 @@
                     <ul
                         class="list-reset lg:flex flex-1 items-center px-4 md:px-0"
                     >
-                        <li class="mr-6 my-2 md:my-0">
+                        <li class="mr-6 my-2 md:my-0" on:click={showUser}>
                             <p
                                 class="block py-1 md:py-3 pl-1 align-middle text-pink-600 no-underline hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-600"
                             >
@@ -119,22 +137,25 @@
                                 >
                             </p>
                         </li>
-                        <li class="mr-6 my-2 md:my-0">
+                        <li class="mr-6 my-2 md:my-0" on:click={showFood}>
                             <p
-                                class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-pink-500"
+                                class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-yellow-500"
                             >
-                                <i class="fas fa-utensils fa-fw mr-3" /><span
-                                    class="pb-1 md:pb-0 text-sm"
+                                <i
+                                    class="fas fa-utensils fa-fw mr-3 text-yellow-500"
+                                /><span class="pb-1 md:pb-0 text-sm"
                                     >Administrar platos y ingredientes</span
                                 >
                             </p>
                         </li>
-                        <li class="mr-6 my-2 md:my-0">
+                        <li class="mr-6 my-2 md:my-0" on:click={showBill}>
                             <p
                                 class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500"
                             >
-                                <i class="fa fa-file fa-fw mr-3" /><span
-                                    class="pb-1 md:pb-0 text-sm">Facturas</span
+                                <i
+                                    class="fa fa-file fa-fw mr-3 text-purple-500"
+                                /><span class="pb-1 md:pb-0 text-sm"
+                                    >Facturas</span
                                 >
                             </p>
                         </li>
@@ -238,7 +259,13 @@
                 <!--Divider-->
                 <hr class="border-b-2 border-gray-400 my-8 mx-4" />
                 <!--MÓDULO DE LOS USUARIOS-->
-                <CrudUsuarios />
+                {#if adminControl == 1}
+                    <CrudUsuarios />
+                {/if}
+                <!--MÓDULO DE LOS PLATOS E INGREDIENTES-->
+                {#if adminControl == 2}
+                    <CrudFood />
+                {/if}
                 <!--/ Console Content-->
             </div>
         </div>
