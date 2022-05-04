@@ -31,7 +31,7 @@
 <body class="bg-white">
     <!--Registro usuario-->
     <div
-        class="block p-6 rounded-lg shadow-lg bg-orange-200 max-w-sm mx-auto mt-32 bg-orange-200 "
+        class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
     >
         <form on:submit|preventDefault={submit}>
             <div class="form-group mb-6">

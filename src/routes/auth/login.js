@@ -45,7 +45,7 @@ export async function post({ request }) {
         } else if (operationStatus) {
 
             //const json = result;
-            const token = jwt.sign({ username: result.nombre, job: result.puesto_laboral }, "shhhhhhh");
+            const token = jwt.sign({ username: result.nombre, job: result.puesto_laboral, id: result.id }, "shhhhhhh");
 
             let body = {
                 message: "Successfully logged in.",
