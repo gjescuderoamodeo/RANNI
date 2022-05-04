@@ -146,7 +146,7 @@
         rounded
         shadow-md
         hover:bg-green-700 hover:shadow-lg
-        focus:bg-lime-500 focus:shadow-lg focus:outline-none focus:ring-0
+        focus:bg-blue-600 focus:shadow-lg focus:outline-none focus:ring-0
         active:bg-green-800 active:shadow-lg
         transition
         duration-150

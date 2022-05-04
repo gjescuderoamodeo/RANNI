@@ -5,8 +5,12 @@
     //importaciones de otros módulos
     import CrudUsuarios from "./crudUsers.svelte";
 
-    onMount(VerifyUser);
+    onMount(async () => {
+        await verifyUser();
+        setInterval(numeroUsuarios, 5000);
+    });
     let name = "";
+    let numberUsers = 0;
 
     async function closeSession() {
         console.log("Sesión cerrada!");
@@ -19,7 +23,7 @@
     }
 
     //validar que el usuario es administrador
-    async function VerifyUser() {
+    async function verifyUser() {
         const request = await fetch("/auth/verifyUserAdmin").then((r) =>
             r.json()
         );
@@ -28,7 +32,13 @@
             return goto("/");
         } else {
             name = request.name;
+            numeroUsuarios();
         }
+    }
+
+    async function numeroUsuarios() {
+        let numero = await fetch("/api/numberOfUsers").then((r) => r.json());
+        numberUsers = numero;
     }
 </script>
 
@@ -186,7 +196,8 @@
                                         Usuarios totales
                                     </h5>
                                     <h3 class="font-bold text-3xl">
-                                        249 <span class="text-pink-500"
+                                        {numberUsers}
+                                        <span class="text-pink-500"
                                             ><i
                                                 class="fas fa-exchange-alt"
                                             /></span
