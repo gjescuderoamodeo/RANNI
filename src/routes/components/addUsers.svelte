@@ -145,12 +145,12 @@
         uppercase
         rounded
         shadow-md
-        hover:bg-blue-700 hover:shadow-lg
-        focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-        active:bg-blue-800 active:shadow-lg
+        hover:bg-green-700 hover:shadow-lg
+        focus:bg-lime-500 focus:shadow-lg focus:outline-none focus:ring-0
+        active:bg-green-800 active:shadow-lg
         transition
         duration-150
-        ease-in-out">add user</button
+        ease-in-out">Añadir usuario</button
             >
         </form>
     </div>

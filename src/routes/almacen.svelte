@@ -1,6 +1,19 @@
 <script>
+    import { goto } from "$app/navigation";
     //importaciones de otros módulos
     import CrudUsuarios from "./crudUsers.svelte";
+
+    async function closeSession() {
+        console.log("Sesión cerrada!");
+
+        await fetch("/auth/closeSession", {
+            method: "post",
+        });
+
+        goto("/");
+    }
+
+    //validar que el usuario es administrador
 </script>
 
 <html lang="esp">
@@ -50,10 +63,10 @@
                                 <ul class="list-reset">
                                     <li>
                                         <p
-                                            href="#"
+                                            on:click={closeSession}
                                             class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline"
                                         >
-                                            Logout
+                                            Cerrar Sesion
                                         </p>
                                     </li>
                                 </ul>
