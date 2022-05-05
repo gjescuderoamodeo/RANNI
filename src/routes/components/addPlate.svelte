@@ -2,28 +2,28 @@
     import { post } from "$lib/utils.js";
 
     let name = "";
-    let quantity = 1;
+    let prize = 1;
 
     async function submit(event) {
-        if (name != "" && quantity >= 1) {
-            const request = await post(`/api/addIngredientsJS`, {
+        if (name != "" && prize >= 1) {
+            const request = await post(`/api/addPlateJS`, {
                 name,
-                quantity,
+                prize,
             });
             console.log(request.message);
 
             switch (request.status) {
                 case 200:
-                    alert("Ingrediente creado exitosamente");
+                    alert("Plato creado exitosamente");
                     name = "";
-                    quantity = 1;
+                    prize = 1;
                     break;
                 case 400:
-                    alert("El Ingrediente ya está en la base de datos");
+                    alert("El Plato ya está en la base de datos");
                     break;
             }
         } else {
-            alert("introduzca un ingrediente válido");
+            alert("introduzca un Plato válido");
         }
     }
 </script>
@@ -41,7 +41,6 @@
                     >Nombre</label
                 >
                 <!--input nombre-->
-                <i class="fa fa-fish fa-fw" />
                 <input
                     type="text"
                     class="form-control
@@ -67,11 +66,12 @@
             </div>
             <div class="form-group mb-6">
                 <label
-                    for="cantidad"
+                    for="exampleInputPassword2"
                     class="form-label inline-block mb-2 text-gray-700"
-                    >cantidad</label
+                    >Precio</label
                 >
-                <!--input numero ingredientes-->
+                <!--input contraseña-->
+                <i class="fa fa-euro-sign fa-fw" />
                 <input
                     type="number"
                     class="form-control block
@@ -89,11 +89,14 @@
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="exampleInputPassword2"
-                    bind:value={quantity}
-                    placeholder="Cantidad"
+                    bind:value={prize}
+                    placeholder="Precio"
                     required
                 />
             </div>
+
+            <div class="flex justify-center" />
+
             <button
                 type="submit"
                 class="
@@ -113,7 +116,7 @@
         active:bg-green-800 active:shadow-lg
         transition
         duration-150
-        ease-in-out">Añadir Ingrediente</button
+        ease-in-out">Añadir Plato</button
             >
         </form>
     </div>
