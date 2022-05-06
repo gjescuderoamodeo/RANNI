@@ -27,9 +27,12 @@ export async function get({ request }) {
     } catch (error) {
         console.log(error);
 
+        body = {
+            status: 403,
+        };
+
         return {
-            body: null,
-            status: 403
+            body,
         };
     }
 

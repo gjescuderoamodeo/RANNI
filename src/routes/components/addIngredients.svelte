@@ -1,8 +1,14 @@
 <script>
     import { post } from "$lib/utils.js";
+    import { onMount } from "svelte";
 
     let name = "";
     let quantity = 1;
+    let verificar = false;
+
+    onMount(async () => {
+        await verifyUser();
+    });
 
     async function submit(event) {
         verifyUser();
@@ -32,29 +38,33 @@
         const request = await fetch("/auth/verifyUserAdmin").then((r) =>
             r.json()
         );
+        console.log(request.status);
         if (request.status !== 200) {
             return goto("/");
+        } else {
+            verificar = true;
         }
     }
 </script>
 
-<body class="bg-white">
-    <!--Registro usuario-->
-    <div
-        class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
-    >
-        <form on:submit|preventDefault={submit}>
-            <div class="form-group mb-6">
-                <label
-                    for="nombre"
-                    class="form-label inline-block mb-2 text-gray-700"
-                    >Nombre</label
-                >
-                <!--input nombre-->
-                <i class="fa fa-fish fa-fw" />
-                <input
-                    type="text"
-                    class="form-control
+{#if verificar}
+    <body class="bg-white">
+        <!--Registro usuario-->
+        <div
+            class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
+        >
+            <form on:submit|preventDefault={submit}>
+                <div class="form-group mb-6">
+                    <label
+                        for="nombre"
+                        class="form-label inline-block mb-2 text-gray-700"
+                        >Nombre</label
+                    >
+                    <!--input nombre-->
+                    <i class="fa fa-fish fa-fw" />
+                    <input
+                        type="text"
+                        class="form-control
           block
           w-full
           px-3
@@ -69,22 +79,22 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="name"
-                    bind:value={name}
-                    placeholder="Introduzca un nombre"
-                    required
-                />
-            </div>
-            <div class="form-group mb-6">
-                <label
-                    for="cantidad"
-                    class="form-label inline-block mb-2 text-gray-700"
-                    >cantidad</label
-                >
-                <!--input numero ingredientes-->
-                <input
-                    type="number"
-                    class="form-control block
+                        id="name"
+                        bind:value={name}
+                        placeholder="Introduzca un nombre"
+                        required
+                    />
+                </div>
+                <div class="form-group mb-6">
+                    <label
+                        for="cantidad"
+                        class="form-label inline-block mb-2 text-gray-700"
+                        >cantidad</label
+                    >
+                    <!--input numero ingredientes-->
+                    <input
+                        type="number"
+                        class="form-control block
           w-full
           px-3
           py-1.5
@@ -98,15 +108,15 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="exampleInputPassword2"
-                    bind:value={quantity}
-                    placeholder="Cantidad"
-                    required
-                />
-            </div>
-            <button
-                type="submit"
-                class="
+                        id="exampleInputPassword2"
+                        bind:value={quantity}
+                        placeholder="Cantidad"
+                        required
+                    />
+                </div>
+                <button
+                    type="submit"
+                    class="
         w-full
         px-6
         py-2.5
@@ -124,7 +134,8 @@
         transition
         duration-150
         ease-in-out">Añadir Ingrediente</button
-            >
-        </form>
-    </div>
-</body>
+                >
+            </form>
+        </div>
+    </body>
+{/if}

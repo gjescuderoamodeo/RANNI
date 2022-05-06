@@ -1,11 +1,15 @@
 <script>
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
+
     let platos = [];
     let platosCopia = [];
     let ingredientesPlato = [];
     let ingredientes = [];
+    let verificar = false;
 
     onMount(async () => {
+        await verifyUser();
         await reload();
         setInterval(reload, 6000);
     });
@@ -25,6 +29,8 @@
         );
         if (request.status !== 200) {
             return goto("/");
+        } else {
+            verificar = true;
         }
     }
 
@@ -70,34 +76,35 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body>
-    <div>
-        <!--Listado ingredientes-->
+{#if verificar}
+    <body>
+        <div>
+            <!--Listado ingredientes-->
 
-        <!-- component -->
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link
-            rel="stylesheet"
-            href="https://cdn.tailgrids.com/tailgrids-fallback.css"
-        />
-        <script
-            defer
-            src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+            <!-- component -->
+            <script src="https://cdn.tailwindcss.com"></script>
+            <link
+                rel="stylesheet"
+                href="https://cdn.tailgrids.com/tailgrids-fallback.css"
+            />
+            <script
+                defer
+                src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-        <!-- ====== Table Section Start -->
-        <section class="bg-white py-20 lg:py-[120px]">
-            <h1 class="text-center font-bold text-3xl py-4 border-b mb-10">
-                Listado platos
-            </h1>
-            <div class="container">
-                <div class="flex flex-wrap -mx-4">
-                    <div class="w-full px-4">
-                        <div class="max-w-full overflow-x-auto">
-                            <table class="table-auto w-full">
-                                <thead>
-                                    <tr class="bg-sky-200 text-center">
-                                        <th
-                                            class="
+            <!-- ====== Table Section Start -->
+            <section class="bg-white py-20 lg:py-[120px]">
+                <h1 class="text-center font-bold text-3xl py-4 border-b mb-10">
+                    Listado platos
+                </h1>
+                <div class="container">
+                    <div class="flex flex-wrap -mx-4">
+                        <div class="w-full px-4">
+                            <div class="max-w-full overflow-x-auto">
+                                <table class="table-auto w-full">
+                                    <thead>
+                                        <tr class="bg-sky-200 text-center">
+                                            <th
+                                                class="
                            w-1/6
                            min-w-[160px]
                            text-lg
@@ -109,62 +116,62 @@
                            lg:px-4
                            border-l border-transparent
                            "
-                                        >
-                                            Nombre plato
-                                        </th>
-                                        <th
-                                            class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                                        >
-                                            Precio plato
-                                        </th>
-
-                                        <th
-                                            class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                                        >
-                                            Ingredientes
-                                        </th>
-                                        <th
-                                            class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                                        >
-                                            Acción
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {#each platos as plato}
-                                        <tr>
-                                            <td
+                                            >
+                                                Nombre plato
+                                            </th>
+                                            <th
                                                 class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                                            >
+                                                Precio plato
+                                            </th>
+
+                                            <th
+                                                class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                                            >
+                                                Ingredientes
+                                            </th>
+                                            <th
+                                                class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                                            >
+                                                Acción
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {#each platos as plato}
+                                            <tr>
+                                                <td
+                                                    class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -173,11 +180,11 @@
                            bg-[#F3F6FF]
                            border-b border-l border-[#E8E8E8]
                            "
-                                            >
-                                                {plato.nombre}
-                                            </td>
-                                            <td
-                                                class="
+                                                >
+                                                    {plato.nombre}
+                                                </td>
+                                                <td
+                                                    class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -186,12 +193,12 @@
                            bg-white
                            border-b border-[#E8E8E8]
                            "
-                                            >
-                                                {plato.precio}€
-                                            </td>
+                                                >
+                                                    {plato.precio}€
+                                                </td>
 
-                                            <td
-                                                class="
+                                                <td
+                                                    class="
                        text-center text-dark
                        font-medium
                        text-base
@@ -200,24 +207,24 @@
                        bg-white
                        border-b border-[#E8E8E8]
                        "
-                                            >
-                                                {#each ingredientes as ingrediente}
-                                                    {#each ingredientesPlato as ingredientePlato}
-                                                        {#if ingredientePlato.ingrediente_id == ingrediente.id && ingredientePlato.plato_id == plato.id}
-                                                            <ul
-                                                                class="list-disc"
-                                                            >
-                                                                <li>
-                                                                    {ingrediente.nombre}
-                                                                    x{ingredientePlato.cantidad}
-                                                                </li>
-                                                            </ul>
-                                                        {/if}
+                                                >
+                                                    {#each ingredientes as ingrediente}
+                                                        {#each ingredientesPlato as ingredientePlato}
+                                                            {#if ingredientePlato.ingrediente_id == ingrediente.id && ingredientePlato.plato_id == plato.id}
+                                                                <ul
+                                                                    class="list-disc"
+                                                                >
+                                                                    <li>
+                                                                        {ingrediente.nombre}
+                                                                        x{ingredientePlato.cantidad}
+                                                                    </li>
+                                                                </ul>
+                                                            {/if}
+                                                        {/each}
                                                     {/each}
-                                                {/each}
-                                            </td>
-                                            <td
-                                                class="
+                                                </td>
+                                                <td
+                                                    class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -226,27 +233,28 @@
                            bg-white
                            border-b border-[#E8E8E8]
                            "
-                                            >
-                                                <p
-                                                    class="text-black-400 hover:text-red-800 ml-2"
-                                                    on:click={() =>
-                                                        del(plato.id)}
                                                 >
-                                                    Eliminar
-                                                    <i
-                                                        class="fa fa-trash fa-fw mr-3"
-                                                    />
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    {/each}
-                                </tbody>
-                            </table>
+                                                    <p
+                                                        class="text-black-400 hover:text-red-800 ml-2"
+                                                        on:click={() =>
+                                                            del(plato.id)}
+                                                    >
+                                                        Eliminar
+                                                        <i
+                                                            class="fa fa-trash fa-fw mr-3"
+                                                        />
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        {/each}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <!-- ====== Table Section End -->
-    </div>
-</body>
+            </section>
+            <!-- ====== Table Section End -->
+        </div>
+    </body>
+{/if}

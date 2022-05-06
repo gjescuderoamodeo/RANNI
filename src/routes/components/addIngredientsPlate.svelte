@@ -1,7 +1,9 @@
 <script>
     import { post } from "$lib/utils.js";
+    import { goto } from "$app/navigation";
     import { onMount } from "svelte";
 
+    let verificar = false;
     let name = "";
     let name2 = "";
     let selected;
@@ -13,6 +15,7 @@
     let platos = [];
 
     onMount(async () => {
+        await verifyUser();
         await reload();
     });
 
@@ -30,6 +33,8 @@
         );
         if (request.status !== 200) {
             return goto("/");
+        } else {
+            verificar = true;
         }
     }
 
@@ -59,21 +64,22 @@
     }
 </script>
 
-<body class="bg-white">
-    <!--Registro usuario-->
-    <div
-        class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
-    >
-        <form on:submit|preventDefault={submit}>
-            <label
-                for="exampleInputPassword2"
-                class="form-label inline-block mb-2 text-gray-700"
-                >Nombre ingrediente</label
-            >
-            <div class="flex justify-center">
-                <div class="mb-3 xl:w-96">
-                    <select
-                        class="form-select appearance-none
+{#if verificar}
+    <body class="bg-white">
+        <!--Registro usuario-->
+        <div
+            class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
+        >
+            <form on:submit|preventDefault={submit}>
+                <label
+                    for="exampleInputPassword2"
+                    class="form-label inline-block mb-2 text-gray-700"
+                    >Nombre ingrediente</label
+                >
+                <div class="flex justify-center">
+                    <div class="mb-3 xl:w-96">
+                        <select
+                            class="form-select appearance-none
                     block
                     w-full
                     px-3
@@ -88,27 +94,27 @@
                     ease-in-out
                     m-0
                     focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        aria-label="Default select example"
-                        bind:value={selected}
-                        on:change={() => (name = "")}
-                        required
-                    >
-                        {#each platos as plato}
-                            <option>{plato.nombre}</option>
-                        {/each}
-                    </select>
+                            aria-label="Default select example"
+                            bind:value={selected}
+                            on:change={() => (name = "")}
+                            required
+                        >
+                            {#each platos as plato}
+                                <option>{plato.nombre}</option>
+                            {/each}
+                        </select>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group mb-6">
-                <label
-                    for="exampleInputPassword2"
-                    class="form-label inline-block mb-2 text-gray-700"
-                    >Cantidad</label
-                >
-                <!--input cantidad-->
-                <input
-                    type="number"
-                    class="form-control block
+                <div class="form-group mb-6">
+                    <label
+                        for="exampleInputPassword2"
+                        class="form-label inline-block mb-2 text-gray-700"
+                        >Cantidad</label
+                    >
+                    <!--input cantidad-->
+                    <input
+                        type="number"
+                        class="form-control block
           w-full
           px-3
           py-1.5
@@ -122,23 +128,23 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="exampleInputPassword2"
-                    bind:value={quantity}
-                    placeholder="Precio"
-                    required
-                />
-            </div>
+                        id="exampleInputPassword2"
+                        bind:value={quantity}
+                        placeholder="Precio"
+                        required
+                    />
+                </div>
 
-            <div class="form-group mb-6">
-                <label
-                    for="exampleInputPassword2"
-                    class="form-label inline-block mb-2 text-gray-700"
-                    >Ingrediente</label
-                >
-                <div class="flex justify-center">
-                    <div class="mb-3 xl:w-96">
-                        <select
-                            class="form-select appearance-none
+                <div class="form-group mb-6">
+                    <label
+                        for="exampleInputPassword2"
+                        class="form-label inline-block mb-2 text-gray-700"
+                        >Ingrediente</label
+                    >
+                    <div class="flex justify-center">
+                        <div class="mb-3 xl:w-96">
+                            <select
+                                class="form-select appearance-none
                         block
                         w-full
                         px-3
@@ -153,24 +159,24 @@
                         ease-in-out
                         m-0
                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                            aria-label="Default select example"
-                            bind:value={selected2}
-                            on:change={() => (name2 = "")}
-                            required
-                        >
-                            {#each ingredientes as ingrediente}
-                                <option>{ingrediente.nombre}</option>
-                            {/each}
-                        </select>
+                                aria-label="Default select example"
+                                bind:value={selected2}
+                                on:change={() => (name2 = "")}
+                                required
+                            >
+                                {#each ingredientes as ingrediente}
+                                    <option>{ingrediente.nombre}</option>
+                                {/each}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="flex justify-center" />
+                <div class="flex justify-center" />
 
-            <button
-                type="submit"
-                class="
+                <button
+                    type="submit"
+                    class="
         w-full
         px-6
         py-2.5
@@ -188,7 +194,8 @@
         transition
         duration-150
         ease-in-out">Añadir Ingrediente al Plato</button
-            >
-        </form>
-    </div>
-</body>
+                >
+            </form>
+        </div>
+    </body>
+{/if}

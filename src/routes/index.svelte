@@ -12,7 +12,7 @@
         switch (request.status) {
             case 301:
                 return goto("/loading");
-            case 302:
+            case 302: //camarero
                 return goto("/almacen");
             case 303: //admin
                 return goto("/almacen");
@@ -27,15 +27,21 @@
         <p>Contraseña o Usuario erroneos</p>
     {/if}
 
+    <img
+        src="/RanniLogo.png"
+        class="max-w-full h-auto mx-auto mt-10"
+        alt="Logo Ranni"
+    />
+
     <!--Registro usuario-->
     <div
-        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-sky-200 "
+        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-sky-200 mb-20 mt-1"
     >
         <form on:submit|preventDefault={submit}>
-            <div class="form-group mb-6">
+            <div class="form-group mb-6 ">
                 <label
                     for="nombre"
-                    class="form-label inline-block mb-2 text-gray-700"
+                    class="form-label inline-block mb-2 text-gray-700 font-bold text-lg"
                     >Nombre</label
                 >
                 <!--input nombre-->
@@ -66,7 +72,7 @@
             <div class="form-group mb-6">
                 <label
                     for="exampleInputPassword2"
-                    class="form-label inline-block mb-2 text-gray-700"
+                    class="form-label inline-block mb-2 text-gray-700 font-bold text-lg"
                     >Contraseña</label
                 >
                 <!--input contraseña-->
@@ -125,7 +131,7 @@
         active:bg-blue-800 active:shadow-lg
         transition
         duration-150
-        ease-in-out">ingresar</button
+        ease-in-out font-semibold">ingresar</button
             >
         </form>
     </div>
