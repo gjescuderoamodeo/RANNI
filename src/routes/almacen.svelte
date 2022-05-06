@@ -9,11 +9,13 @@
     onMount(async () => {
         await verifyUser();
         setInterval(numeroUsuarios, 5000);
+        setInterval(numeroPlatos, 5000);
     });
 
     //variables
     let name = ""; //nombre de usuario
     let numberUsers = 0; //número de usuarios
+    let numberPlates = 0; //número de platos
     //variables que nos permiten cambiar de pestaña de Administración
     let adminControl = 1;
 
@@ -58,6 +60,11 @@
         let numero = await fetch("/api/numberOfUsers").then((r) => r.json());
         numberUsers = numero;
     }
+
+    async function numeroPlatos() {
+        let numero = await fetch("/api/numberOfPlates").then((r) => r.json());
+        numberPlates = numero;
+    }
 </script>
 
 <html lang="esp">
@@ -96,8 +103,13 @@
                                 id="userButton"
                                 class="flex items-center focus:outline-none mr-3"
                             >
-                                <span class="hidden md:inline-block"
-                                    >{name}
+                                <span
+                                    class="hidden md:inline-block text-xl font-semibold text-inherit"
+                                    >Usuario: <button
+                                        class="text-xl bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                                    >
+                                        {name}
+                                    </button>
                                 </span>
                             </button>
                             <div
@@ -106,12 +118,20 @@
                             >
                                 <ul class="list-reset">
                                     <li>
-                                        <p
+                                        <button
                                             on:click={closeSession}
-                                            class="px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline"
+                                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
                                         >
-                                            Cerrar Sesion
-                                        </p>
+                                            <svg
+                                                class="fill-current w-4 h-4 mr-2"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                ><path
+                                                    d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z"
+                                                /></svg
+                                            >
+                                            <span>Cerrar Sesion</span>
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
@@ -247,7 +267,7 @@
                                         Platos totales
                                     </h5>
                                     <h3 class="font-bold text-3xl">
-                                        12 platos
+                                        {numberPlates} platos
                                     </h3>
                                 </div>
                             </div>

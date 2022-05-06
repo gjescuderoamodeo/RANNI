@@ -29,7 +29,7 @@
 
     <!--Registro usuario-->
     <div
-        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-red-100 "
+        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-sky-200 "
     >
         <form on:submit|preventDefault={submit}>
             <div class="form-group mb-6">
