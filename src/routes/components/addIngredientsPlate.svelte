@@ -24,7 +24,17 @@
         platos = await request2.json();
     }
 
+    async function verifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            return goto("/");
+        }
+    }
+
     async function submit(event) {
+        verifyUser();
         if (selected != "" && selected2 != "" && quantity >= 1) {
             const request = await post(`/api/addIngredientsPlateJS`, {
                 selected,

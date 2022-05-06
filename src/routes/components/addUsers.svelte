@@ -6,6 +6,7 @@
     let job = "Camarero";
 
     async function submit(event) {
+        verifyUser();
         if (job != "" && password != "" && job != "") {
             const request = await post(`/api/addUsersJS`, {
                 name,
@@ -24,6 +25,15 @@
                     alert("El usuario ya está en la base de datos");
                     break;
             }
+        }
+    }
+
+    async function verifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            return goto("/");
         }
     }
 </script>

@@ -5,6 +5,7 @@
     let quantity = 1;
 
     async function submit(event) {
+        verifyUser();
         if (name != "" && quantity >= 1) {
             const request = await post(`/api/addIngredientsJS`, {
                 name,
@@ -24,6 +25,15 @@
             }
         } else {
             alert("introduzca un ingrediente válido");
+        }
+    }
+
+    async function verifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            return goto("/");
         }
     }
 </script>

@@ -2,6 +2,8 @@
     import { onMount } from "svelte";
     let platos = [];
     let platosCopia = [];
+    let ingredientesPlato = [];
+    let ingredientes = [];
 
     onMount(async () => {
         await reload();
@@ -9,8 +11,21 @@
     });
     async function reload() {
         const request = await fetch(`/api/platos`);
+        const request2 = await fetch(`/api/ingredientes`);
+        const request3 = await fetch(`/api/ingredientesPlato`);
         platos = await request.json();
+        ingredientes = await request2.json();
+        ingredientesPlato = await request3.json();
         platosCopia = JSON.parse(JSON.stringify(platos));
+    }
+
+    async function verifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            return goto("/");
+        }
     }
 
     async function update(usuario) {
@@ -21,6 +36,7 @@
     }
 
     async function del(id) {
+        verifyUser();
         const request = await fetch("/api/platos", {
             body: JSON.stringify({ id }),
             method: "delete",
@@ -172,6 +188,33 @@
                            "
                                             >
                                                 {plato.precio}€
+                                            </td>
+
+                                            <td
+                                                class="
+                       text-center text-dark
+                       font-medium
+                       text-base
+                       py-5
+                       px-2
+                       bg-white
+                       border-b border-[#E8E8E8]
+                       "
+                                            >
+                                                {#each ingredientes as ingrediente}
+                                                    {#each ingredientesPlato as ingredientePlato}
+                                                        {#if ingredientePlato.ingrediente_id == ingrediente.id && ingredientePlato.plato_id == plato.id}
+                                                            <ul
+                                                                class="list-disc"
+                                                            >
+                                                                <li>
+                                                                    {ingrediente.nombre}
+                                                                    x{ingredientePlato.cantidad}
+                                                                </li>
+                                                            </ul>
+                                                        {/if}
+                                                    {/each}
+                                                {/each}
                                             </td>
                                             <td
                                                 class="

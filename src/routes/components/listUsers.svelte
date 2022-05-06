@@ -13,6 +13,15 @@
         usuariosCopia = JSON.parse(JSON.stringify(usuarios));
     }
 
+    async function verifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            return goto("/");
+        }
+    }
+
     async function update(usuario) {
         await fetch(`/frutas`, {
             body: JSON.stringify({ ...fruta }),
@@ -21,6 +30,7 @@
     }
 
     async function del(id) {
+        verifyUser();
         const request = await fetch("/api/usuarios", {
             body: JSON.stringify({ id }),
             method: "delete",

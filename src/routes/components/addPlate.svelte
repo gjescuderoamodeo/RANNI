@@ -4,7 +4,17 @@
     let name = "";
     let prize = 1;
 
+    async function verifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            return goto("/");
+        }
+    }
+
     async function submit(event) {
+        verifyUser();
         if (name != "" && prize >= 1) {
             const request = await post(`/api/addPlateJS`, {
                 name,

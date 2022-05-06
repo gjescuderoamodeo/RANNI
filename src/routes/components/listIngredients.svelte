@@ -20,7 +20,17 @@
         }).then(reload);
     }
 
+    async function verifyUser() {
+        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
+            r.json()
+        );
+        if (request.status !== 200) {
+            return goto("/");
+        }
+    }
+
     async function del(id) {
+        verifyUser();
         const request = await fetch("/api/ingredientes", {
             body: JSON.stringify({ id }),
             method: "delete",
