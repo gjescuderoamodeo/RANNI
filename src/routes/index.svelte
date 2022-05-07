@@ -13,7 +13,7 @@
             case 301:
                 return goto("/loading");
             case 302: //camarero
-                return goto("/almacen");
+                return goto("/camarero");
             case 303: //admin
                 return goto("/almacen");
             case 401:
@@ -22,7 +22,7 @@
     }
 </script>
 
-<body class="bg-stone-200">
+<body class="bg-stone-100">
     {#if errors}
         <p>Contraseña o Usuario erroneos</p>
     {/if}
@@ -139,6 +139,6 @@
 
 <style>
     :root {
-        @apply bg-stone-200;
+        @apply bg-stone-100;
     }
 </style>

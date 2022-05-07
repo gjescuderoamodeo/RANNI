@@ -52,6 +52,7 @@
         } else {
             name = request.name;
             numeroUsuarios();
+            numeroPlatos();
         }
     }
 
