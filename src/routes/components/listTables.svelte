@@ -1,18 +1,29 @@
 <script>
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
+    import { post } from "$lib/utils.js";
 
     let mesas = [];
+    let pedidoDeLaMesa;
+    let mesaid = null;
     let verificar = false;
-    let i = 0;
+
+    //listado con los platos
+    let platos = [];
+
+    //variables que guardan los datos de los platos a añadir al pedido
+    let name2 = "";
+    let cantidad;
+    let selected2;
 
     onMount(async () => {
         await verifyUser();
         await reload();
-        setInterval(reload, 6000);
     });
 
     async function reload() {
+        const request2 = await fetch(`/api/platos`);
+        platos = await request2.json();
         const request = await fetch(`/api/mesas`);
         mesas = await request.json();
     }
@@ -28,8 +39,79 @@
         }
     }
 
-    async function update2(mesa) {
-        i += 1;
+    //función añadir platos al pedido
+    async function añadirPlatoAPedido(event) {
+        verifyUser();
+        if (selected2 != "" && cantidad >= 1) {
+            let id_pedido = pedidoDeLaMesa.id;
+            let plato = selected2;
+
+            const request = await post(`/api/addPlateTableJS`, {
+                plato,
+                cantidad,
+                id_pedido,
+            });
+            //console.log(request.message);
+
+            switch (request.status) {
+                case 200:
+                    alert("Plato añadido exitosamente");
+                    selected2 = "";
+                    cantidad = 1;
+                    break;
+                case 400:
+                    alert("El Plato ya está añadido a ese pedido");
+                    break;
+            }
+        } else {
+            alert("introduzca un Plato válido");
+        }
+    }
+
+    //función para añadir un pedido a la mesa
+    //esta función coje el id de la mesa y el id del usuario. Posteriormente se crea en la bd
+    async function añadirPedido() {
+        verifyUser();
+        const request = await post(`/api/addOrderJS`, {
+            mesaid,
+        });
+        switch (request.status) {
+            case 200:
+                alert("Pedido creado exitosamente");
+                break;
+            case 400:
+                alert("El Pedido ya está en la base de datos");
+                break;
+            case 401:
+                alert(
+                    "NO PUEDES CREAR UN PEDIDO EN UNA MESA CON UN PEDIDO SIN FINALIZAR"
+                );
+                break;
+        }
+    }
+
+    //función que saca el pedido relacionado a una mesa
+    async function mesaPedido(id) {
+        verifyUser();
+        mesaid = id;
+        pedidoDeLaMesa = null;
+        const request = await post(`/api/listPedidosJS`, {
+            mesaid,
+        });
+
+        //console.log(request);
+
+        switch (request.status) {
+            case 200:
+                pedidoDeLaMesa = request.pedido;
+                break;
+        }
+    }
+
+    function quitarid() {
+        mesaid = null;
+        //pedidoDeLaMesa = null;
+        //console.log(pedidoDeLaMesa);
     }
 
     async function update(mesa) {
@@ -64,31 +146,46 @@
 
 <body>
     {#if verificar}
-        <div>
-            <!--Listado mesas-->
+        <div
+            class="flex flex-row flex-wrap flex-grow mt-2"
+            on:dblclick={quitarid}
+        >
+            <div class="w-full md:w-1/2 p-3">
+                <!--Graph Card-->
+                <div class="bg-white border rounded shadow">
+                    <div class="border-b p-3">
+                        <h5 class="font-bold uppercase text-gray-600">Mesas</h5>
+                    </div>
+                    <div class="pb-40 ">
+                        <div>
+                            <!--Listado mesas-->
 
-            <!-- component -->
-            <script src="https://cdn.tailwindcss.com"></script>
-            <link
-                rel="stylesheet"
-                href="https://cdn.tailgrids.com/tailgrids-fallback.css"
-            />
-            <script
-                defer
-                src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+                            <!-- component -->
+                            <script src="https://cdn.tailwindcss.com"></script>
+                            <link
+                                rel="stylesheet"
+                                href="https://cdn.tailgrids.com/tailgrids-fallback.css"
+                            />
+                            <script
+                                defer
+                                src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
-            <!-- ====== Table Section Start -->
-            <section class="bg-white py-20 lg:py-[120px]">
-                <div class="container">
-                    <div class="flex flex-wrap -mx-4">
-                        <div class="w-full px-4">
-                            <div class="max-w-full overflow-x-auto">
-                                <table class="table-auto w-full">
-                                    <tbody>
-                                        <!--  {#each mesas as mesa}
-                                            <tr>
-                                                <td
-                                                    class="
+                            <!-- ====== Table Section Start -->
+                            <section class="bg-white py-20 lg:py-[120px]">
+                                <div class="container">
+                                    <div class="flex flex-wrap -mx-4">
+                                        <div class="w-full px-4">
+                                            <div
+                                                class="max-w-full overflow-x-auto"
+                                            >
+                                                <table
+                                                    class="table-auto w-full"
+                                                >
+                                                    <tbody>
+                                                        {#each mesas as mesa}
+                                                            <tr>
+                                                                <td
+                                                                    class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -97,77 +194,182 @@
                            bg-stone-50
                            border-b border-l border-[#E8E8E8]
                            "
-                                                >
-                                                    {mesa.id}
-                                                    <p />
-                                                    <span
-                                                        class="text-green-500"
-                                                    >
-                                                        <i
-                                                            class="fas fa-table "
-                                                        />
-                                                    </span></td
-                                                >
-                                                {#if par % 2 == 0}
-                                                    <td
-                                                        class="
-                       text-center text-dark
-                       font-medium
-                       text-base
-                       py-5
-                       px-2
-                       bg-stone-50
-                       border-b border-l border-[#E8E8E8]
-                       "
-                                                    >
-                                                        {mesa.id}
-                                                        <p />
-                                                        <span
-                                                            class="text-green-500"
-                                                        >
-                                                            <i
-                                                                class="fas fa-table "
-                                                            />
-                                                        </span></td
-                                                    >
-                                                {:else}
-                                                    {(par += 1)}
-                                                {/if}
-                                            </tr>
-                                        {/each} -->
-                                        {#each mesas as mesa}
-                                            <tr>
-                                                <td
-                                                    class="
-                           text-center text-dark
-                           font-medium
-                           text-base
-                           py-5
-                           px-2
-                           bg-stone-50
-                           border-b border-l border-[#E8E8E8]
-                           "
-                                                >
-                                                    {mesa.id}
-                                                    <p />
-                                                    <span
-                                                        class="text-green-500"
-                                                    >
-                                                        <i
-                                                            class="fas fa-table "
-                                                        />
-                                                    </span></td
-                                                >
-                                            </tr>
-                                        {/each}
-                                    </tbody>
-                                </table>
-                            </div>
+                                                                >
+                                                                    {mesa.id}
+                                                                    <p />
+                                                                    <span
+                                                                        class="text-green-500"
+                                                                        on:click={mesaPedido(
+                                                                            mesa.id
+                                                                        )}
+                                                                    >
+                                                                        <i
+                                                                            class="fas fa-table "
+                                                                        />
+                                                                    </span></td
+                                                                >
+                                                            </tr>
+                                                        {/each}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- ====== Table Section End -->
                         </div>
                     </div>
                 </div>
-            </section>
-            <!-- ====== Table Section End -->
+                <!--/Graph Card-->
+            </div>
+            {#if mesaid != null}
+                <div class="w-full md:w-1/2 p-3">
+                    <!--Graph Card-->
+                    <div class="bg-white border rounded shadow">
+                        <div class=" border-b p-3">
+                            <h5 class="font-bold  uppercase text-gray-600">
+                                Pedido de la mesa {mesaid}
+                            </h5>
+                        </div>
+
+                        <div class="pb-40 bg-white ">
+                            {#if pedidoDeLaMesa == null}
+                                <p class="font-bold text-center  uppercase">
+                                    No hay pedidos asociados a esta mesa
+                                </p>
+                                <div class="flex space-x-2 justify-center">
+                                    <button
+                                        class="mt-10
+        px-6
+        py-2.5
+        bg-blue-600
+        text-white
+        font-medium
+        text-xs
+        leading-tight
+        uppercase
+        rounded
+        shadow-md
+        hover:bg-green-700 hover:shadow-lg
+        focus:bg-blue-600 focus:shadow-lg focus:outline-none focus:ring-0
+        active:bg-green-800 active:shadow-lg
+        transition
+        duration-150
+        ease-in-out"
+                                        on:click={añadirPedido}
+                                        >Añadir pedido</button
+                                    >
+                                </div>
+                            {:else}
+                                <!--Menú para añadir platos al pedido-->
+                                <div
+                                    class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
+                                >
+                                    <form
+                                        on:submit|preventDefault={añadirPlatoAPedido}
+                                    >
+                                        <div class="form-group mb-6">
+                                            <label
+                                                for="exampleInputPassword2"
+                                                class="form-label inline-block mb-2 text-gray-700"
+                                                >Cantidad</label
+                                            >
+                                            <!--input cantidad-->
+                                            <input
+                                                type="number"
+                                                class="form-control block
+                              w-full
+                              px-3
+                              py-1.5
+                              text-base
+                              font-normal
+                              text-gray-700
+                              bg-white bg-clip-padding
+                              border border-solid border-gray-300
+                              rounded
+                              transition
+                              ease-in-out
+                              m-0
+                              focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                                id="exampleInputPassword2"
+                                                bind:value={cantidad}
+                                                placeholder="Cantidad"
+                                                required
+                                            />
+                                        </div>
+
+                                        <div class="form-group mb-6">
+                                            <label
+                                                for="exampleInputPassword2"
+                                                class="form-label inline-block mb-2 text-gray-700"
+                                                >Plato</label
+                                            >
+                                            <div class="flex justify-center">
+                                                <div class="mb-3 xl:w-96">
+                                                    <select
+                                                        class="form-select appearance-none
+                                            block
+                                            w-full
+                                            px-3
+                                            py-1.5
+                                            text-base
+                                            font-normal
+                                            text-gray-700
+                                            bg-white bg-clip-padding bg-no-repeat
+                                            border border-solid border-gray-300
+                                            rounded
+                                            transition
+                                            ease-in-out
+                                            m-0
+                                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                                        aria-label="Default select example"
+                                                        bind:value={selected2}
+                                                        on:change={() =>
+                                                            (name2 = "")}
+                                                        required
+                                                    >
+                                                        {#each platos as Plato}
+                                                            <option
+                                                                >{Plato.nombre}</option
+                                                            >
+                                                        {/each}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex justify-center" />
+
+                                        <button
+                                            type="submit"
+                                            class="
+                            w-full
+                            px-6
+                            py-2.5
+                            bg-blue-600
+                            text-white
+                            font-medium
+                            text-xs
+                            leading-tight
+                            uppercase
+                            rounded
+                            shadow-md
+                            hover:bg-green-700 hover:shadow-lg
+                            focus:bg-blue-600 focus:shadow-lg focus:outline-none focus:ring-0
+                            active:bg-green-800 active:shadow-lg
+                            transition
+                            duration-150
+                            ease-in-out">Añadir Plato al Pedido</button
+                                        >
+                                    </form>
+                                </div>
+                            {/if}
+                        </div>
+                    </div>
+                    <!--/Graph Card-->
+                </div>
+            {/if}
         </div>
     {/if}
 </body>
