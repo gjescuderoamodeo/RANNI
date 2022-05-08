@@ -52,6 +52,7 @@ model Pedido {
   factura      Factura[]
   Mesa         Mesa           @relation(fields: [mesa_id], references: [id])
   mesa_id      String
+  estado       EstadoPedido   @default(En_Proceso)
   finalizado   Boolean
 }
 
@@ -83,4 +84,11 @@ enum Puesto_Laboral {
   Cocinero
   Camarero
   Administrador
+}
+
+enum EstadoPedido {
+  En_Proceso
+  Confirmado
+  Acabado
+  Rechazado
 }
