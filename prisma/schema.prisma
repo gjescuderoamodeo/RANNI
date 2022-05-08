@@ -52,16 +52,16 @@ model Pedido {
   factura      Factura[]
   Mesa         Mesa           @relation(fields: [mesa_id], references: [id])
   mesa_id      String
-  estado       EstadoPedido   @default(En_Proceso)
   finalizado   Boolean
 }
 
 model Plato_Pedido {
-  plato     Plato  @relation(fields: [plato_id], references: [id])
-  pedido    Pedido @relation(fields: [pedido_id], references: [id])
+  plato     Plato        @relation(fields: [plato_id], references: [id])
+  pedido    Pedido       @relation(fields: [pedido_id], references: [id])
   plato_id  String
   pedido_id String
   cantidad  Int
+  estado    EstadoPedido @default(En_Proceso)
 
   @@id([plato_id, pedido_id])
 }
