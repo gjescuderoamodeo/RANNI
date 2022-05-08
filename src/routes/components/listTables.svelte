@@ -17,6 +17,9 @@
     let cantidad;
     let selected2;
 
+    //variable del total del pedido
+    let totalPagar = 0;
+
     onMount(async () => {
         await verifyUser();
         await reload();
@@ -40,6 +43,29 @@
         }
     }
 
+    //función para recargar los platos del pedido
+    async function recargarListaPlatos() {
+        totalPagar = 0;
+        if (pedidoDeLaMesa != null) {
+            const request2 = await post(`/api/listPlatosPedidosJS`, {
+                pedidoDeLaMesa,
+            });
+
+            switch (request2.status) {
+                case 200:
+                    arrayDiccionarioPlatoPedido = request2.array;
+                    break;
+            }
+
+            //saco el total a pagar. loop del array y sumo uno a uno la cantidad
+            for (let i = 0; i < arrayDiccionarioPlatoPedido.length; i++) {
+                totalPagar +=
+                    arrayDiccionarioPlatoPedido[i].precio *
+                    arrayDiccionarioPlatoPedido[i].cantida;
+            }
+        }
+    }
+
     //función añadir platos al pedido
     async function añadirPlatoAPedido(event) {
         verifyUser();
@@ -59,6 +85,7 @@
                     alert("Plato añadido exitosamente");
                     selected2 = "";
                     cantidad = 1;
+                    recargarListaPlatos();
                     break;
                 case 400:
                     alert("El Plato ya está añadido a ese pedido");
@@ -79,6 +106,7 @@
         switch (request.status) {
             case 200:
                 alert("Pedido creado exitosamente");
+                mesaPedido(mesaid);
                 break;
             case 400:
                 alert("El Pedido ya está en la base de datos");
@@ -110,15 +138,7 @@
 
         //saco tbm los platos del pedido
         if (pedidoDeLaMesa != null) {
-            const request2 = await post(`/api/listPlatosPedidosJS`, {
-                pedidoDeLaMesa,
-            });
-
-            switch (request2.status) {
-                case 200:
-                    arrayDiccionarioPlatoPedido = request2.array;
-                    break;
-            }
+            recargarListaPlatos();
         }
 
         //console.log(request);
@@ -136,6 +156,10 @@
             body: JSON.stringify({ ...fruta }),
             method: "put",
         }).then(reload);
+    }
+
+    async function eliminarPlatoPedido() {
+        //on:click={eliminarPlatoPedido}>
     }
 
     const buscarmesa = (id) => mesasCopia.find((mesa) => mesa.id == id);
@@ -347,9 +371,18 @@
                                                         required
                                                     >
                                                         {#each platos as Plato}
-                                                            <option
-                                                                >{Plato.nombre}</option
-                                                            >
+                                                            {#if Plato.disponible}
+                                                                <option
+                                                                    >{Plato.nombre}-{Plato.precio}€</option
+                                                                >
+                                                            {:else}
+                                                                <option
+                                                                    disabled
+                                                                    class="text-red-700"
+                                                                    >{Plato.nombre}-{Plato.precio}€-No
+                                                                    disponible</option
+                                                                >
+                                                            {/if}
                                                         {/each}
                                                     </select>
                                                 </div>
@@ -391,7 +424,7 @@
                                     </h5>
 
                                     <!--tabla con los platos-->
-                                    <div class="max-w-full overflow-x-auto">
+                                    <div class="w-full overflow-x-auto">
                                         <table class="table-auto w-full">
                                             <thead>
                                                 <tr
@@ -404,9 +437,9 @@
                            text-lg
                            font-semibold
                            text-black
-                           py-4
+                           py-2
                            lg:py-7
-                           px-3
+                           px-1
                            lg:px-4
                            border-l border-transparent
                            "
@@ -420,9 +453,9 @@
                            text-lg
                            font-semibold
                            text-black
-                           py-4
+                           py-2
                            lg:py-7
-                           px-3
+                           px-1
                            lg:px-4
                            "
                                                     >
@@ -435,9 +468,9 @@
                            text-lg
                            font-semibold
                            text-black
-                           py-4
+                           py-2
                            lg:py-7
-                           px-3
+                           px-1
                            lg:px-4
                            "
                                                     >
@@ -450,9 +483,24 @@
                            text-lg
                            font-semibold
                            text-black
-                           py-4
+                           py-2
                            lg:py-7
-                           px-3
+                           px-1
+                           lg:px-4
+                           "
+                                                    >
+                                                        Confirmado cocinero
+                                                    </th>
+                                                    <th
+                                                        class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-2
+                           lg:py-7
+                           px-1
                            lg:px-4
                            "
                                                     >
@@ -468,8 +516,8 @@
                            text-center text-dark
                            font-medium
                            text-base
-                           py-5
-                           px-2
+                           py-2
+                           px-1
                            bg-[#F3F6FF]
                            border-b border-l border-[#E8E8E8]
                            "
@@ -481,8 +529,8 @@
                            text-center text-dark
                            font-medium
                            text-base
-                           py-5
-                           px-2
+                           py-2
+                           px-1
                            bg-white
                            border-b border-[#E8E8E8]
                            "
@@ -494,8 +542,8 @@
                            text-center text-dark
                            font-medium
                            text-base
-                           py-5
-                           px-2
+                           py-2
+                           px-1
                            bg-white
                            border-b border-[#E8E8E8]
                            "
@@ -507,8 +555,21 @@
                            text-center text-dark
                            font-medium
                            text-base
-                           py-5
-                           px-2
+                           py-2
+                           px-1
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                                                        >
+                                                            {plato.precio}€
+                                                        </td>
+                                                        <td
+                                                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-2
+                           px-1
                            bg-white
                            border-b border-[#E8E8E8]
                            "
@@ -527,6 +588,12 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <h5
+                                        class="font-bold uppercase text-gray-600 text-right mt-6 mr-2"
+                                    >
+                                        Total a pagar: {totalPagar}€
+                                    </h5>
                                 {/if}
                             {/if}
                         </div>

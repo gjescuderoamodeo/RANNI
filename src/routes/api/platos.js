@@ -21,7 +21,7 @@ export async function get() {
     };
 }
 
-//eliminar usuarios
+//eliminar platos
 export async function del({ request }) {
     let body = await request.json();
 

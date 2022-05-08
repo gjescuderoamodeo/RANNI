@@ -10,8 +10,8 @@
         const request = await post(`auth/login`, { name, password });
 
         switch (request.status) {
-            case 301:
-                return goto("/loading");
+            case 301: //cocinero
+                return goto("/cocina");
             case 302: //camarero
                 return goto("/camarero");
             case 303: //admin
