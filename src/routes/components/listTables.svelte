@@ -10,6 +10,7 @@
 
     //listado con los platos
     let platos = [];
+    let arrayDiccionarioPlatoPedido = [];
 
     //variables que guardan los datos de los platos a añadir al pedido
     let name2 = "";
@@ -95,21 +96,37 @@
         verifyUser();
         mesaid = id;
         pedidoDeLaMesa = null;
+        arrayDiccionarioPlatoPedido = [];
+
         const request = await post(`/api/listPedidosJS`, {
             mesaid,
         });
-
-        //console.log(request);
 
         switch (request.status) {
             case 200:
                 pedidoDeLaMesa = request.pedido;
                 break;
         }
+
+        //saco tbm los platos del pedido
+        if (pedidoDeLaMesa != null) {
+            const request2 = await post(`/api/listPlatosPedidosJS`, {
+                pedidoDeLaMesa,
+            });
+
+            switch (request2.status) {
+                case 200:
+                    arrayDiccionarioPlatoPedido = request2.array;
+                    break;
+            }
+        }
+
+        //console.log(request);
     }
 
     function quitarid() {
         mesaid = null;
+        arrayDiccionarioPlatoPedido = [];
         //pedidoDeLaMesa = null;
         //console.log(pedidoDeLaMesa);
     }
@@ -364,6 +381,153 @@
                                         >
                                     </form>
                                 </div>
+
+                                {#if arrayDiccionarioPlatoPedido.length !== 0}
+                                    <!--PLATOS ASOCIADOS A ESE PEDIDO-->
+                                    <h5
+                                        class="font-bold uppercase text-gray-600 text-center mt-6"
+                                    >
+                                        Platos del pedido
+                                    </h5>
+
+                                    <!--tabla con los platos-->
+                                    <div class="max-w-full overflow-x-auto">
+                                        <table class="table-auto w-full">
+                                            <thead>
+                                                <tr
+                                                    class="bg-sky-200 text-center"
+                                                >
+                                                    <th
+                                                        class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           border-l border-transparent
+                           "
+                                                    >
+                                                        Nombre
+                                                    </th>
+                                                    <th
+                                                        class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                                                    >
+                                                        Cantidad
+                                                    </th>
+                                                    <th
+                                                        class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                                                    >
+                                                        Precio
+                                                    </th>
+                                                    <th
+                                                        class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                                                    >
+                                                        Acción
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {#each arrayDiccionarioPlatoPedido as plato}
+                                                    <tr>
+                                                        <td
+                                                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-[#F3F6FF]
+                           border-b border-l border-[#E8E8E8]
+                           "
+                                                        >
+                                                            {plato.nombre}
+                                                        </td>
+                                                        <td
+                                                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                                                        >
+                                                            X{plato.cantida}
+                                                        </td>
+                                                        <td
+                                                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                                                        >
+                                                            {plato.precio}€
+                                                        </td>
+                                                        <td
+                                                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                                                        >
+                                                            <p
+                                                                class="text-black-400 hover:text-red-800 ml-2"
+                                                            >
+                                                                Eliminar
+                                                                <i
+                                                                    class="fa fa-trash fa-fw mr-3"
+                                                                />
+                                                            </p>
+                                                        </td>
+                                                    </tr>
+                                                {/each}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                {/if}
                             {/if}
                         </div>
                     </div>

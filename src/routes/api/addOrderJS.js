@@ -27,7 +27,7 @@ export async function post({ request }) {
         })
 
         //osea, si hay un pedido a esa mesa no finalizado, te dice que nanai
-        if (result2) {
+        if (result2 == []) {
             body = {
                 message: "pedido no finalizado en esa mesa",
                 status: 401,
