@@ -38,7 +38,7 @@ model Plato_Ingrediente {
 
 model Usuario {
   id             String         @id @default(uuid())
-  nombre         String
+  nombre         String         @unique
   contrasena     String
   puesto_laboral Puesto_Laboral @default(Camarero)
   pedido         Pedido[]
@@ -56,11 +56,12 @@ model Pedido {
 }
 
 model Plato_Pedido {
-  plato     Plato  @relation(fields: [plato_id], references: [id])
-  pedido    Pedido @relation(fields: [pedido_id], references: [id])
+  plato     Plato        @relation(fields: [plato_id], references: [id])
+  pedido    Pedido       @relation(fields: [pedido_id], references: [id])
   plato_id  String
   pedido_id String
   cantidad  Int
+  estado    EstadoPedido @default(En_Proceso)
 
   @@id([plato_id, pedido_id])
 }
@@ -83,4 +84,11 @@ enum Puesto_Laboral {
   Cocinero
   Camarero
   Administrador
+}
+
+enum EstadoPedido {
+  En_Proceso
+  Confirmado
+  Acabado
+  Rechazado
 }
