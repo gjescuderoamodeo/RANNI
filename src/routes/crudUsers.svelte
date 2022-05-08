@@ -33,3 +33,16 @@
         <!--/Graph Card-->
     </div>
 </div>
+
+<sl-dialog label="Dialog" class="dialog-overview">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    <sl-button
+        on:click={() => document.querySelector(".dialog-overview").hide()}
+        slot="footer"
+        variant="primary">Close</sl-button
+    >
+</sl-dialog>
+
+<sl-button on:click={() => document.querySelector(".dialog-overview").show()}
+    >Open Dialog</sl-button
+>

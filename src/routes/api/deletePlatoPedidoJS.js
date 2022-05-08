@@ -8,30 +8,17 @@ export async function post({ request }) {
 
     try {
 
-        const plato = await prisma.plato.findFirst({
+        const result = await prisma.plato_Pedido.deleteMany({
             where: {
-                id: json.plato
+                plato_id: json.id
             }
         })
-
-        let result = false;
-
-        if (plato.disponible) {
-            result = await prisma.plato_Pedido.create({
-                data: {
-                    plato_id: plato.id,
-                    cantidad: json.cantidad,
-                    pedido_id: json.id_pedido
-                }
-            })
-        }
-
 
         let body;
 
         if (!result) {
             body = {
-                message: "Error adding plate to pedido",
+                message: "Error deleting pedido",
                 status: 500,
             };
             // return validation errors
@@ -40,7 +27,7 @@ export async function post({ request }) {
             };
         } else {
             body = {
-                message: "plate added good",
+                message: "pedido deleted",
                 status: 200,
             };
             return {
@@ -48,9 +35,8 @@ export async function post({ request }) {
             };
         }
     } catch (errors) {
-        //console.log(errors);
+        console.log(errors);
         body = {
-            message: "plate alredy in the pedido",
             status: 400,
         };
         return {

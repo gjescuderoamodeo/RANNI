@@ -158,8 +158,17 @@
         }).then(reload);
     }
 
-    async function eliminarPlatoPedido() {
-        //on:click={eliminarPlatoPedido}>
+    async function eliminarPlatoPedido(id) {
+        verifyUser();
+        let request = await post(`/api/deletePlatoPedidoJS`, {
+            id,
+        });
+        switch (request.status) {
+            case 200:
+                console.log("pedido eliminado");
+                recargarListaPlatos();
+                break;
+        }
     }
 
     const buscarmesa = (id) => mesasCopia.find((mesa) => mesa.id == id);
@@ -174,11 +183,6 @@
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
         crossorigin="anonymous"
     />
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"
-    />
-    <!--Replace with your tailwind.css once created-->
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
         integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ="
@@ -202,7 +206,6 @@
                             <!--Listado mesas-->
 
                             <!-- component -->
-                            <script src="https://cdn.tailwindcss.com"></script>
                             <link
                                 rel="stylesheet"
                                 href="https://cdn.tailgrids.com/tailgrids-fallback.css"
@@ -373,6 +376,7 @@
                                                         {#each platos as Plato}
                                                             {#if Plato.disponible}
                                                                 <option
+                                                                    value={Plato.id}
                                                                     >{Plato.nombre}-{Plato.precio}€</option
                                                                 >
                                                             {:else}
@@ -432,8 +436,7 @@
                                                 >
                                                     <th
                                                         class="
-                           w-1/6
-                           min-w-[160px]
+                           w-10
                            text-lg
                            font-semibold
                            text-black
@@ -448,8 +451,7 @@
                                                     </th>
                                                     <th
                                                         class="
-                           w-1/6
-                           min-w-[160px]
+                           w-1
                            text-lg
                            font-semibold
                            text-black
@@ -463,8 +465,7 @@
                                                     </th>
                                                     <th
                                                         class="
-                           w-1/6
-                           min-w-[160px]
+                           w-1
                            text-lg
                            font-semibold
                            text-black
@@ -478,8 +479,7 @@
                                                     </th>
                                                     <th
                                                         class="
-                           w-1/6
-                           min-w-[160px]
+                           w-1
                            text-lg
                            font-semibold
                            text-black
@@ -489,12 +489,11 @@
                            lg:px-4
                            "
                                                     >
-                                                        Confirmado cocinero
+                                                        Confirmado
                                                     </th>
                                                     <th
                                                         class="
                            w-1/6
-                           min-w-[160px]
                            text-lg
                            font-semibold
                            text-black
@@ -561,7 +560,7 @@
                            border-b border-[#E8E8E8]
                            "
                                                         >
-                                                            {plato.precio}€
+                                                            {plato.estado}
                                                         </td>
                                                         <td
                                                             class="
@@ -576,6 +575,9 @@
                                                         >
                                                             <p
                                                                 class="text-black-400 hover:text-red-800 ml-2"
+                                                                on:click={eliminarPlatoPedido(
+                                                                    plato.id
+                                                                )}
                                                             >
                                                                 Eliminar
                                                                 <i

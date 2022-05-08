@@ -50,8 +50,8 @@
                     class="form-control
           block
           w-full
-          px-3
-          py-1.5
+          px-4
+          py-2
           text-base
           font-normal
           text-gray-700
@@ -64,7 +64,6 @@
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="name"
                     bind:value={name}
-                    aria-describedby="emailHelp"
                     placeholder="Enter name"
                     required
                 />

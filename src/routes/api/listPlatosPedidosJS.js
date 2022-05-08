@@ -30,12 +30,15 @@ export async function post({ request }) {
             });
 
             let cantidad = resultPlatoPedido[i].cantidad;
+            let status = resultPlatoPedido[i].estado;
 
             //lo meto todo en un diccionario
             let diccionario = {
+                id: platoDelPedido.id,
                 nombre: platoDelPedido.nombre,
                 precio: platoDelPedido.precio,
                 cantida: cantidad,
+                estado: status,
             };
 
             arrayDiccionarioPlatoPedido.push(diccionario);
