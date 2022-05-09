@@ -68,6 +68,34 @@ export async function post({ request }) {
         console.log(errors);
     }
 
+}
 
+export async function get() {
+    try {
+
+        const result = await prisma.plato_Pedido.findMany();
+
+        let body;
+
+        if (!result) {
+            body = {
+                status: 400,
+            };
+            // return validation errors
+            return {
+                body,
+            };
+        } else {
+            body = {
+                platoPedido: result,
+                status: 200,
+            };
+            return {
+                body,
+            };
+        }
+    } catch (errors) {
+        console.log(errors);
+    }
 
 }
