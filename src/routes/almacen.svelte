@@ -278,7 +278,7 @@
                 </div>
 
                 <!--Divider-->
-                <hr class="border-b-2 border-gray-400 my-8 mx-4" />
+                <hr class="border-b-2 border-gray-200 my-8 mx-4" />
                 <!--MÓDULO DE LOS USUARIOS-->
                 {#if adminControl == 1}
                     <CrudUsuarios />

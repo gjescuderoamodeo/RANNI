@@ -7,6 +7,7 @@
     let errors = false;
 
     async function submit(event) {
+        closeSession();
         const request = await post(`auth/login`, { name, password });
 
         switch (request.status) {
@@ -19,6 +20,17 @@
             case 401:
                 errors = true;
         }
+    }
+
+    //cierro la sesión por si hay otro jwt
+    async function closeSession() {
+        console.log("Sesión cerrada!");
+
+        await fetch("/auth/closeSession", {
+            method: "post",
+        });
+
+        goto("/");
     }
 </script>
 
@@ -50,8 +62,8 @@
                     class="form-control
           block
           w-full
-          px-3
-          py-1.5
+          px-4
+          py-2
           text-base
           font-normal
           text-gray-700
@@ -64,7 +76,6 @@
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                     id="name"
                     bind:value={name}
-                    aria-describedby="emailHelp"
                     placeholder="Enter name"
                     required
                 />
@@ -99,19 +110,6 @@
                     required
                 />
             </div>
-            <!--<div class="flex justify-between items-center mb-6">
-                <div class="form-group form-check">
-                    <input
-                        type="checkbox"
-                        class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                        id="exampleCheck2"
-                    />
-                                         <label
-                        class="form-check-label inline-block text-gray-800"
-                        for="exampleCheck2">Recordarme</label
-                    > 
-                </div>
-            </div>-->
             <button
                 type="submit"
                 class="

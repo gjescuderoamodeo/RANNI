@@ -46,15 +46,6 @@
             integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
             crossorigin="anonymous"
         />
-        <link
-            rel="stylesheet"
-            href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"
-        />
-        <!--Replace with your tailwind.css once created-->
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"
-            integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ="
-            crossorigin="anonymous"></script>
     </head>
 
     <body class="bg-gray-100 font-sans leading-normal tracking-normal">
@@ -122,9 +113,6 @@
         <!--/ Console Content-->
 
         <script>
-            /*Toggle dropdown list*/
-            /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
-
             var userMenuDiv = document.getElementById("userMenu");
             var userMenu = document.getElementById("userButton");
 

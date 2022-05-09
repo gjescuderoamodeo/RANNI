@@ -11,6 +11,7 @@
     "studio": "prisma studio"
   },
   "devDependencies": {
+    "@shoelace-style/shoelace": "^2.0.0-beta.73",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
     "autoprefixer": "^10.4.4",

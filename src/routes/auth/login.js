@@ -55,7 +55,7 @@ export async function post({ request }) {
                 case "Cocinero":
                     body = {
                         message: "Successfully logged in.",
-                        status: 302,
+                        status: 301,
                     };
                     return {
                         headers: {
