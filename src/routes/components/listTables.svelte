@@ -230,11 +230,12 @@
                                                             <tr>
                                                                 <td
                                                                     class="
-                           text-center text-dark
+                           text-center text-dark font-dark
+                           antialiased
                            font-medium
                            text-base
-                           py-5
-                           px-2
+                           py-3
+                           px-1
                            bg-stone-50
                            border-b border-l border-[#E8E8E8]
                            "
@@ -247,9 +248,15 @@
                                                                             mesa.id
                                                                         )}
                                                                     >
-                                                                        <i
-                                                                            class="fas fa-table "
-                                                                        />
+                                                                        <div
+                                                                            class="flex flex-wrap justify-center"
+                                                                        >
+                                                                            <img
+                                                                                src="/mesa.png"
+                                                                                class="w-32 h-32 mt-1"
+                                                                                alt="Mesa"
+                                                                            />
+                                                                        </div>
                                                                     </span></td
                                                                 >
                                                             </tr>
