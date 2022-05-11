@@ -1,5 +1,4 @@
 import prismaImport from '@prisma/client'
-//import {}
 
 const { PrismaClient } = prismaImport;
 
@@ -20,7 +19,7 @@ export async function get() {
     };
 }
 
-//eliminar usuarios
+//eliminar ingrediente
 export async function del({ request }) {
     let body = await request.json();
 
@@ -40,3 +39,47 @@ export async function del({ request }) {
     };
 }
 
+//actualizar ingrediente
+export async function put({ request }) {
+
+    let body = await request.json();
+
+    try{
+        //compruebo que existe el ingrediente
+        const getIngredientPut = await prisma.ingrediente.findFirst({
+            where: {
+                nombre: body.name
+            }
+        })
+
+        if(getIngredientPut){
+            const putIngredient = await prisma.ingrediente.update({
+                data: {
+                    nombre: body.newName,
+                    cantidad: body.cantidad,
+                },
+                where: {
+                    nombre: body.name,
+                },
+            });
+            if(putIngredient){
+                return {
+                    status: 200
+                }
+            }
+        }else{
+            return {
+                status: 400
+            }
+        }
+
+
+        
+    }catch(error){
+        return {
+            status: 400
+        }
+    }
+    
+    
+}

@@ -69,7 +69,6 @@ async function getToken({ request }) {
 }
 
 //actualizar usuario
-//actualizar frutas
 export async function put({ request }) {
 
     let body = await request.json();

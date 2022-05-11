@@ -41,3 +41,47 @@ export async function del({ request }) {
     };
 }
 
+//actualizar platos
+export async function put({ request }) {
+
+    let body = await request.json();
+
+    try{
+        //compruebo que existe el plato
+        const getPlatePut = await prisma.plato.findFirst({
+            where: {
+                nombre: body.name
+            }
+        })
+
+        if(getPlatePut){
+            const putPlate = await prisma.plato.update({
+                data: {
+                    nombre: body.newName,
+                    precio: body.precio,
+                    disponible: body.disponible,
+                },
+                where: {
+                    nombre: body.name,
+                },
+            });
+            if(putPlate){
+                return {
+                    status: 200
+                }
+            }
+        }else{
+            return {
+                status: 400
+            }
+        }
+        
+    }catch(error){
+        return {
+            status: 400
+        }
+    }
+    
+    
+}
+
