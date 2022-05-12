@@ -55,6 +55,7 @@ export async function put({ request }) {
         })
 
         if(getPlatePut){
+            if(body.newName!=""){
             const putPlate = await prisma.plato.update({
                 data: {
                     nombre: body.newName,
@@ -69,7 +70,23 @@ export async function put({ request }) {
                 return {
                     status: 200
                 }
+            }}else{
+                const putIngredient = await prisma.plato.update({
+                    data: {
+                        precio: body.precio,
+                        disponible: body.disponible,
+                    },
+                    where: {
+                        nombre: body.name,
+                    },
+                });
+                if(putIngredient){
+                    return {
+                        status: 200
+                    }
+                }
             }
+            
         }else{
             return {
                 status: 400

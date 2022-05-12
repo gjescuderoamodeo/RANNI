@@ -104,6 +104,10 @@
             for="exampleInputPassword2"
             class="form-label inline-block mb-2 text-gray-700"
             >Nuevo nombre plato</label
+          ><label
+            for="NoCambiarNombre"
+            class="form-label inline-block mb-1 text-xs text-gray-400"
+            >Dejar en blanco si no se quiere cambiar el nombre</label
           >
           <!--input nuevo plato-->
           <input
