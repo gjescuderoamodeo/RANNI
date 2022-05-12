@@ -93,9 +93,14 @@
         </div>
         <div class="form-group mb-6">
           <label
-            for="exampleInputPassword2"
+            for="nuevoNombre"
             class="form-label inline-block mb-2 text-gray-700"
             >Nuevo nombre ingrediente</label
+          >
+          <label
+            for="NoCambiarNombre"
+            class="form-label inline-block mb-1 text-xs text-gray-400"
+            >Dejar en blanco si no se quiere cambiar el nombre</label
           >
           <!--input nuevo ingrediente-->
           <input

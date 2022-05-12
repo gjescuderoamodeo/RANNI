@@ -53,6 +53,8 @@ export async function put({ request }) {
         })
 
         if(getIngredientPut){
+            
+            if(body.newName!=""){
             const putIngredient = await prisma.ingrediente.update({
                 data: {
                     nombre: body.newName,
@@ -65,6 +67,23 @@ export async function put({ request }) {
             if(putIngredient){
                 return {
                     status: 200
+                }
+            }
+            }
+            //si el nombre nuevo no es nada, es "", quiere decir que solo se quiere cambiar la cantidad
+            else{
+                const putIngredient = await prisma.ingrediente.update({
+                    data: {
+                        cantidad: body.cantidad,
+                    },
+                    where: {
+                        nombre: body.name,
+                    },
+                });
+                if(putIngredient){
+                    return {
+                        status: 200
+                    }
                 }
             }
         }else{
