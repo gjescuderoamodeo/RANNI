@@ -34,9 +34,9 @@
 
   async function update(plato) {
     if (disponibilidad == "Disponible") {
-      disponibilidad = true;
+      disponibilidad = 1;
     } else {
-      disponibilidad = false;
+      disponibilidad = 0;
     }
 
     let put = await fetch(`/api/platos`, {

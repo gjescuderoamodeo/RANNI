@@ -60,7 +60,7 @@ export async function put({ request }) {
                 data: {
                     nombre: body.newName,
                     precio: body.precio,
-                    disponible: body.disponible,
+                    disponible: body.disponibilidad,
                 },
                 where: {
                     nombre: body.name,
@@ -74,7 +74,7 @@ export async function put({ request }) {
                 const putIngredient = await prisma.plato.update({
                     data: {
                         precio: body.precio,
-                        disponible: body.disponible,
+                        disponible: body.disponibilidad,
                     },
                     where: {
                         nombre: body.name,
