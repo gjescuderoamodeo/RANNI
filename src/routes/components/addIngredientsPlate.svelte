@@ -17,12 +17,18 @@
   onMount(async () => {
     await verifyUser();
     await reload();
+    setInterval(reloadPlatos, 9000);
   });
 
   async function reload() {
     const request = await fetch(`/api/ingredientes`);
     ingredientes = await request.json();
     //
+    const request2 = await fetch(`/api/platos`);
+    platos = await request2.json();
+  }
+
+  async function reloadPlatos() {
     const request2 = await fetch(`/api/platos`);
     platos = await request2.json();
   }
@@ -71,8 +77,7 @@
       <form on:submit|preventDefault={submit}>
         <label
           for="exampleInputPassword2"
-          class="form-label inline-block mb-2 text-gray-700"
-          >Nombre ingrediente</label
+          class="form-label inline-block mb-2 text-gray-700">Nombre Plato</label
         >
         <div class="flex justify-center">
           <div class="mb-3 xl:w-96">
@@ -106,7 +111,8 @@
         <div class="form-group mb-6">
           <label
             for="exampleInputPassword2"
-            class="form-label inline-block mb-2 text-gray-700">Cantidad</label
+            class="form-label inline-block mb-2 text-gray-700"
+            >Cantidad ingrediente</label
           >
           <!--input cantidad-->
           <input

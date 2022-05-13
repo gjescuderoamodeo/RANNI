@@ -85,7 +85,7 @@
 {#if verificar}
   <body>
     <div>
-      <!--Listado ingredientes-->
+      <!--Listado platos-->
 
       <!-- component -->
       <script src="https://cdn.tailwindcss.com"></script>
@@ -106,11 +106,12 @@
           <div class="flex flex-wrap -mx-4">
             <div class="w-full px-4">
               <div class="max-w-full overflow-x-auto">
-                <table class="table-auto w-full">
-                  <thead>
-                    <tr class="bg-sky-200 text-center">
-                      <th
-                        class="
+                {#if platos.length > 0}
+                  <table class="table-auto w-full">
+                    <thead>
+                      <tr class="bg-sky-200 text-center">
+                        <th
+                          class="
                            w-1/6
                            min-w-[160px]
                            text-lg
@@ -122,76 +123,76 @@
                            lg:px-4
                            border-l border-transparent
                            "
-                      >
-                        Nombre plato
-                      </th>
-                      <th
-                        class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                      >
-                        Precio plato
-                      </th>
-                      <th
-                        class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                      >
-                        Ingredientes
-                      </th>
-                      <th
-                        class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                      >
-                        Disponibilidad
-                      </th>
-                      <th
-                        class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                      >
-                        Acción
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {#each platos as plato}
-                      <tr>
-                        <td
+                        >
+                          Nombre plato
+                        </th>
+                        <th
                           class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                        >
+                          Precio plato
+                        </th>
+                        <th
+                          class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                        >
+                          Ingredientes
+                        </th>
+                        <th
+                          class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                        >
+                          Disponibilidad
+                        </th>
+                        <th
+                          class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                        >
+                          Acción
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {#each platos as plato}
+                        <tr>
+                          <td
+                            class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -200,11 +201,11 @@
                            bg-[#F3F6FF]
                            border-b border-l border-[#E8E8E8]
                            "
-                        >
-                          {plato.nombre}
-                        </td>
-                        <td
-                          class="
+                          >
+                            {plato.nombre}
+                          </td>
+                          <td
+                            class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -213,12 +214,12 @@
                            bg-white
                            border-b border-[#E8E8E8]
                            "
-                        >
-                          {plato.precio}€
-                        </td>
+                          >
+                            {plato.precio}€
+                          </td>
 
-                        <td
-                          class="
+                          <td
+                            class="
                        text-center text-dark
                        font-medium
                        text-base
@@ -227,68 +228,73 @@
                        bg-white
                        border-b border-[#E8E8E8]
                        "
-                        >
-                          {#each ingredientes as ingrediente}
-                            {#each ingredientesPlato as ingredientePlato}
-                              {#if ingredientePlato.ingrediente_id == ingrediente.id && ingredientePlato.plato_id == plato.id}
-                                <ul class="list-disc">
-                                  <li>
-                                    {ingrediente.nombre}
-                                    x{ingredientePlato.cantidad}
-                                    <i
-                                      class="fa fa-trash fa-fw hover:text-red-800"
-                                      on:click={() =>
-                                        delIngredientPlate(
-                                          ingrediente.id,
-                                          plato.id
-                                        )}
-                                    />
-                                  </li>
-                                </ul>
-                              {/if}
-                            {/each}
-                          {/each}
-                        </td>
-                        <td
-                          class="
-                           text-center text-dark
-                           font-medium
-                           text-base
-                           py-5
-                           px-2
-                           bg-white
-                           border-b border-[#E8E8E8]
-                           "
-                        >
-                          {#if plato.disponible}
-                            Disponible
-                          {:else}
-                            No Disponible
-                          {/if}
-                        </td>
-                        <td
-                          class="
-                           text-center text-dark
-                           font-medium
-                           text-base
-                           py-5
-                           px-2
-                           bg-white
-                           border-b border-[#E8E8E8]
-                           "
-                        >
-                          <p
-                            class="text-black-400 hover:text-red-800 ml-2"
-                            on:click={() => del(plato.id)}
                           >
-                            Eliminar
-                            <i class="fa fa-trash fa-fw mr-3" />
-                          </p>
-                        </td>
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
+                            {#each ingredientes as ingrediente}
+                              {#each ingredientesPlato as ingredientePlato}
+                                {#if ingredientePlato.ingrediente_id == ingrediente.id && ingredientePlato.plato_id == plato.id}
+                                  <ul class="list-disc">
+                                    <li>
+                                      {ingrediente.nombre}
+                                      x{ingredientePlato.cantidad}
+                                      <i
+                                        class="fa fa-trash fa-fw hover:text-red-800"
+                                        on:click={() =>
+                                          delIngredientPlate(
+                                            ingrediente.id,
+                                            plato.id
+                                          )}
+                                      />
+                                    </li>
+                                  </ul>
+                                {/if}
+                              {/each}
+                            {/each}
+                          </td>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                          >
+                            {#if plato.disponible}
+                              Disponible
+                            {:else}
+                              No Disponible
+                            {/if}
+                          </td>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                          >
+                            <p
+                              class="text-black-400 hover:text-red-800 ml-2"
+                              on:click={() => del(plato.id)}
+                            >
+                              Eliminar
+                              <i class="fa fa-trash fa-fw mr-3" />
+                            </p>
+                          </td>
+                        </tr>
+                      {/each}
+                    </tbody>
+                  </table>
+                {:else}
+                  <h1 class="text-center font-bold text-red-500 text-xl py-1 ">
+                    No hay platos actualmente
+                  </h1>
+                {/if}
               </div>
             </div>
           </div>

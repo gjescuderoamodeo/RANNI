@@ -20,7 +20,7 @@
         password,
         job,
       });
-      console.log(request.message);
+      //console.log(request.message);
 
       switch (request.status) {
         case 300:

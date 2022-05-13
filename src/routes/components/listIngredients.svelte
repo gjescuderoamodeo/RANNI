@@ -18,13 +18,6 @@
     ingredientesCopia = JSON.parse(JSON.stringify(ingredientes));
   }
 
-  async function update(usuario) {
-    await fetch(`/frutas`, {
-      body: JSON.stringify({ ...fruta }),
-      method: "put",
-    }).then(reload);
-  }
-
   async function verifyUser() {
     const request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
     if (request.status !== 200) {
@@ -94,11 +87,12 @@
           <div class="flex flex-wrap -mx-4">
             <div class="w-full px-4">
               <div class="max-w-full overflow-x-auto">
-                <table class="table-auto w-full">
-                  <thead>
-                    <tr class="bg-sky-200 text-center">
-                      <th
-                        class="
+                {#if ingredientes.length > 0}
+                  <table class="table-auto w-full">
+                    <thead>
+                      <tr class="bg-sky-200 text-center">
+                        <th
+                          class="
                            w-1/6
                            min-w-[160px]
                            text-lg
@@ -110,46 +104,46 @@
                            lg:px-4
                            border-l border-transparent
                            "
-                      >
-                        Nombre
-                      </th>
-                      <th
-                        class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                      >
-                        Cantidad
-                      </th>
-                      <th
-                        class="
-                           w-1/6
-                           min-w-[160px]
-                           text-lg
-                           font-semibold
-                           text-black
-                           py-4
-                           lg:py-7
-                           px-3
-                           lg:px-4
-                           "
-                      >
-                        Acción
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {#each ingredientes as ingrediente}
-                      <tr>
-                        <td
+                        >
+                          Nombre
+                        </th>
+                        <th
                           class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                        >
+                          Cantidad
+                        </th>
+                        <th
+                          class="
+                           w-1/6
+                           min-w-[160px]
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-4
+                           lg:py-7
+                           px-3
+                           lg:px-4
+                           "
+                        >
+                          Acción
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {#each ingredientes as ingrediente}
+                        <tr>
+                          <td
+                            class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -158,45 +152,50 @@
                            bg-[#F3F6FF]
                            border-b border-l border-[#E8E8E8]
                            "
-                        >
-                          {ingrediente.nombre}
-                        </td>
-                        <td
-                          class="
-                           text-center text-dark
-                           font-medium
-                           text-base
-                           py-5
-                           px-2
-                           bg-white
-                           border-b border-[#E8E8E8]
-                           "
-                        >
-                          {ingrediente.cantidad}
-                        </td>
-                        <td
-                          class="
-                           text-center text-dark
-                           font-medium
-                           text-base
-                           py-5
-                           px-2
-                           bg-white
-                           border-b border-[#E8E8E8]
-                           "
-                        >
-                          <p
-                            class="text-black-400 hover:text-red-800 ml-2"
-                            on:click={() => del(ingrediente.id)}
                           >
-                            Eliminar
-                            <i class="fa fa-trash fa-fw mr-3" />
-                          </p>
-                        </td>
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
+                            {ingrediente.nombre}
+                          </td>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                          >
+                            {ingrediente.cantidad}
+                          </td>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-5
+                           px-2
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                          >
+                            <p
+                              class="text-black-400 hover:text-red-800 ml-2"
+                              on:click={() => del(ingrediente.id)}
+                            >
+                              Eliminar
+                              <i class="fa fa-trash fa-fw mr-3" />
+                            </p>
+                          </td>
+                        </tr>
+                      {/each}
+                    </tbody>
+                  </table>
+                {:else}
+                  <h1 class="text-center font-bold text-red-500 text-xl py-1 ">
+                    No hay ingredientes actualmente
+                  </h1>
+                {/if}
               </div>
             </div>
           </div>
