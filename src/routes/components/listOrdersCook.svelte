@@ -67,6 +67,19 @@
         let request = await fetch("/api/platos").then((r) => r.json());
         platos = request;
     }
+
+    //función para cambiar el estado del pedido
+    async function cambiarEstado(id_plato) {
+        let put = await fetch(`/api/changeStatusPlatoPedido`, {
+            body: JSON.stringify({ id_plato }),
+            method: "put",
+        });
+        if (put.status == 200) {
+            recargarListaPlatos();
+        } else {
+            alert("error al modificar el estado del plato en el pedido");
+        }
+    }
 </script>
 
 {#if verificar}
@@ -175,6 +188,9 @@
            bg-white
            border-b border-[#E8E8E8]
            "
+                                                    on:dblclick={cambiarEstado(
+                                                        plato.id
+                                                    )}
                                                 >
                                                     {platopedido.estado}
                                                 </td>

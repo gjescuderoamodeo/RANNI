@@ -1,5 +1,4 @@
-import prismaImport from '@prisma/client'
-//import {}
+import prismaImport from '@prisma/client';
 
 const { PrismaClient } = prismaImport;
 
@@ -46,7 +45,7 @@ export async function put({ request }) {
 
     let body = await request.json();
 
-    try{
+    try {
         //compruebo que existe el plato
         const getPlatePut = await prisma.plato.findFirst({
             where: {
@@ -54,23 +53,25 @@ export async function put({ request }) {
             }
         })
 
-        if(getPlatePut){
-            if(body.newName!=""){
-            const putPlate = await prisma.plato.update({
-                data: {
-                    nombre: body.newName,
-                    precio: body.precio,
-                    disponible: body.disponibilidad,
-                },
-                where: {
-                    nombre: body.name,
-                },
-            });
-            if(putPlate){
-                return {
-                    status: 200
+        if (getPlatePut) {
+            if (body.newName != "") {
+                const putPlate = await prisma.plato.update({
+                    data: {
+                        nombre: body.newName,
+                        precio: body.precio,
+                        disponible: body.disponibilidad,
+                    },
+                    where: {
+                        nombre: body.name,
+                    },
+                });
+
+                if (putPlate) {
+                    return {
+                        status: 200
+                    }
                 }
-            }}else{
+            } else {
                 const putIngredient = await prisma.plato.update({
                     data: {
                         precio: body.precio,
@@ -80,25 +81,26 @@ export async function put({ request }) {
                         nombre: body.name,
                     },
                 });
-                if(putIngredient){
+                if (putIngredient) {
                     return {
                         status: 200
                     }
                 }
             }
-            
-        }else{
+
+        } else {
             return {
                 status: 400
             }
         }
-        
-    }catch(error){
+
+    } catch (error) {
+        console.log(error);
         return {
             status: 400
         }
     }
-    
-    
+
+
 }
 
