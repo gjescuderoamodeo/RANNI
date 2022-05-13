@@ -73,7 +73,7 @@
     <!--Aqui aparecerán distintas cartas. En cada carta aparecerá Pedido mesa-listado platos y cantidad-opción a cambiar estado del PlatoPedido -->
     <!--Aqui debe ir un bucle en función del .length del array de pedidos-->
     {#each pedidos as pedido}
-        <div class="w-full md:w-1/3 p-3">
+        <div class="w-full md:w-1/3 p-3 ">
             <!--Graph Card-->
             <div class="bg-white border rounded shadow">
                 <div class=" border-b p-3">
@@ -81,14 +81,14 @@
                         Pedido mesa: {pedido.mesa_id}
                     </h5>
                 </div>
-                <div class="pb-40 bg-white-200 pt-1">
+                <div class="pb-40 bg-white-200 pt-1 overflow-x-auto h-min">
                     <table class="table-auto w-full">
                         <thead>
                             <tr class="bg-sky-200 text-center">
                                 <th
                                     class="
-           w-1/3
-           min-w-[160px]
+           
+           
            text-lg
            font-semibold
            text-black
@@ -103,8 +103,7 @@
                                 </th>
                                 <th
                                     class="
-           w-1/3
-           min-w-[160px]
+          
            text-lg
            font-semibold
            text-black
@@ -119,9 +118,7 @@
                                 <!--Esto será un select con varios option para cambiar el estado del pedido-->
                                 <th
                                     class="
-           w-1/3
-           min-w-[160px]
-           text-lg
+                      text-lg
            font-semibold
            text-black
            py-2

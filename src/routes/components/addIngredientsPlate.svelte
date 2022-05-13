@@ -31,6 +31,8 @@
   async function reloadPlatos() {
     const request2 = await fetch(`/api/platos`);
     platos = await request2.json();
+    const request = await fetch(`/api/ingredientes`);
+    ingredientes = await request.json();
   }
 
   async function verifyUser() {
