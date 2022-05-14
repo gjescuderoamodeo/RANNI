@@ -14,10 +14,54 @@ export async function get() {
         }
     })
 
+    enoughIngredientsForThatPlate();
+
     return {
         body: platos,
         status: 200,
     };
+}
+
+//comprobar que la cantidad de ingredientes es > 0
+async function enoughIngredientsForThatPlate() {
+    //primero sacar los platos
+    let platos = await prisma.plato.findMany();
+
+    try{
+        for(let i = 0; i < platos.length; i++){
+            //por cada plato compruebo sus ingredientes
+
+            //lista con el registro de ingredientes de cada plato
+            let platoIngrediente = await prisma.plato_Ingrediente.findMany({
+                where: {
+                    plato_id: platos[i].id
+                }
+            });             
+
+            for(let i = 0; i < platoIngrediente.length; i++){
+                //una vez sacado la lista saco su relación con ingredientes
+                let ingredientePlato = await prisma.ingrediente.findFirst({
+                    where: {
+                        id: platoIngrediente[i].ingrediente_id
+                    }
+                });
+
+                if(platoIngrediente[i].cantidad>ingredientePlato.cantidad){
+                    let cambiarEstado = await prisma.plato.update({
+                        data:{
+                            disponible: false
+                        },
+                        where: {
+                            id: platos[i].id
+                        }
+                    });
+                }
+            }
+
+        }
+    }catch(error){
+        console.log(error);
+    }
 }
 
 //eliminar platos
@@ -100,7 +144,6 @@ export async function put({ request }) {
             status: 400
         }
     }
-
 
 }
 

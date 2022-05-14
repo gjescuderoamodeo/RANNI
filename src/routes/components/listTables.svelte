@@ -29,6 +29,7 @@
   async function reload() {
     const request2 = await fetch(`/api/platos`);
     platos = await request2.json();
+    selected2 = platos[0].nombre;
     const request = await fetch(`/api/mesas`);
     mesas = await request.json();
   }
@@ -90,6 +91,9 @@
           break;
         case 400:
           alert("El Plato ya está añadido a ese pedido");
+          break;
+        case 403:
+          alert("No hay ingredientes suficientes para añadir ese plato");
           break;
       }
     } else {
