@@ -55,6 +55,15 @@ async function enoughIngredientsForThatPlate() {
                             id: platos[i].id
                         }
                     });
+                }else{
+                    let cambiarEstado = await prisma.plato.update({
+                        data:{
+                            disponible: true
+                        },
+                        where: {
+                            id: platos[i].id
+                        }
+                    });
                 }
             }
 
