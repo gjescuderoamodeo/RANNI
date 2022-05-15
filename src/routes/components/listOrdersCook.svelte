@@ -74,6 +74,20 @@
       alert("error al modificar el estado del plato en el pedido");
     }
   }
+
+  //función para cambiar el estado del plato del pedido y ponerlo a finalizado
+  async function finalizarPlato(id_plato, id_pedido) {
+    let put = await fetch(`/api/changeStatusPlatoPedido`, {
+      body: JSON.stringify({ id_plato, id_pedido }),
+      method: "post",
+    });
+    if (put.status == 200) {
+      recargarListaPlatoPedidos();
+      recargarListaPlatos();
+    } else {
+      alert("error al modificar el estado del plato en el pedido");
+    }
+  }
 </script>
 
 {#if verificar}
@@ -145,9 +159,10 @@
                   <!--saco los platos de dicho pedido-->
                   {#each platos as plato}
                     {#if plato.id === platopedido.plato_id}
-                      <tr>
-                        <td
-                          class="
+                      {#if platopedido.estado != "Acabado"}
+                        <tr>
+                          <td
+                            class="
            text-center text-dark
            font-medium
            text-base
@@ -156,11 +171,11 @@
            bg-[#F3F6FF]
            border-b border-l border-[#E8E8E8]
            "
-                        >
-                          {plato.nombre}
-                        </td>
-                        <td
-                          class="
+                          >
+                            {plato.nombre}
+                          </td>
+                          <td
+                            class="
            text-center text-dark
            font-medium
            text-base
@@ -169,11 +184,11 @@
            bg-white
            border-b border-[#E8E8E8]
            "
-                        >
-                          {platopedido.cantidad}
-                        </td>
-                        <td
-                          class="
+                          >
+                            {platopedido.cantidad}
+                          </td>
+                          <td
+                            class="
            text-center text-dark
            font-medium
            text-base
@@ -182,19 +197,25 @@
            bg-white
            border-b border-[#E8E8E8]
            "
-                        >
-                          {#if platopedido.estado != "Confirmado"}
-                            <button
-                              class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
-                              on:click={cambiarEstado(plato.id, pedido.id)}
-                            >
-                              {platopedido.estado}
-                            </button>
-                          {:else}
-                            {platopedido.estado}
-                          {/if}
-                        </td>
-                      </tr>
+                          >
+                            {#if platopedido.estado != "Confirmado"}
+                              <button
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                                on:click={cambiarEstado(plato.id, pedido.id)}
+                              >
+                                {platopedido.estado}
+                              </button>
+                            {:else}
+                              <button
+                                class="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-1 px-2 rounded"
+                                on:click={finalizarPlato(plato.id, pedido.id)}
+                              >
+                                Finalizar Plato
+                              </button>
+                            {/if}
+                          </td>
+                        </tr>
+                      {/if}
                     {/if}
                   {/each}
                 {/if}

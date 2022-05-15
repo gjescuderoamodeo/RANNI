@@ -548,6 +548,35 @@
                             >
                               {plato.precio}€
                             </td>
+                            {#if plato.estado != "Acabado"}
+                              <td
+                                class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-2
+                           px-1
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                              >
+                                {plato.estado}
+                              </td>
+                            {:else}
+                              <td
+                                class="
+                           text-center text-red-500
+                           font-medium
+                           text-base
+                           py-2
+                           px-1
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                              >
+                                {plato.estado}
+                              </td>
+                            {/if}
                             <td
                               class="
                            text-center text-dark
@@ -559,20 +588,7 @@
                            border-b border-[#E8E8E8]
                            "
                             >
-                              {plato.estado}
-                            </td>
-                            <td
-                              class="
-                           text-center text-dark
-                           font-medium
-                           text-base
-                           py-2
-                           px-1
-                           bg-white
-                           border-b border-[#E8E8E8]
-                           "
-                            >
-                              {#if plato.estado != "Confirmado"}
+                              {#if plato.estado == "En_Proceso"}
                                 <p
                                   class="text-black-400 hover:text-red-800 ml-2"
                                   on:click={eliminarPlatoPedido(plato.id)}
