@@ -29,7 +29,15 @@ async function enoughIngredientsForThatPlate() {
     let platos = await prisma.plato.findMany();
 
     try{
+        //array id Platos de platoIngrediente
+        let platoIngredienteId = []
+        //aray solo id platos
+        let PlatoId =[]
+
         for(let i = 0; i < platos.length; i++){
+            //meto los datos de los id en la lista
+            PlatoId.push(platos[i].id);
+
             //por cada plato compruebo sus ingredientes
 
             //lista con el registro de ingredientes de cada plato
@@ -37,17 +45,23 @@ async function enoughIngredientsForThatPlate() {
                 where: {
                     plato_id: platos[i].id
                 }
-            });             
+            });           
 
-            for(let i = 0; i < platoIngrediente.length; i++){
+            for(let y = 0; y < platoIngrediente.length; y++){
                 //una vez sacado la lista saco su relación con ingredientes
                 let ingredientePlato = await prisma.ingrediente.findFirst({
                     where: {
-                        id: platoIngrediente[i].ingrediente_id
+                        id: platoIngrediente[y].ingrediente_id
                     }
-                });                
+                });
 
-                if(platoIngrediente[i].cantidad>ingredientePlato.cantidad){
+                //meto los datos de los id en la lista
+                if(!platoIngredienteId.includes(platoIngrediente[y].plato_id)){
+                    platoIngredienteId.push(platoIngrediente[y].plato_id);
+                }                
+                //               
+                if(platoIngrediente[y].cantidad>ingredientePlato.cantidad){
+                    console.log(platos[i].id)
                     let cambiarEstado = await prisma.plato.update({
                         data:{
                             disponible: false
@@ -57,7 +71,7 @@ async function enoughIngredientsForThatPlate() {
                         }
                     });
                     
-                } if(platoIngrediente[i].cantidadz<=ingredientePlato.cantidad){
+                } if(platoIngrediente[y].cantidad<=ingredientePlato.cantidad){
                     let cambiarEstado2 = await prisma.plato.update({
                         data:{
                             disponible: true
@@ -66,11 +80,27 @@ async function enoughIngredientsForThatPlate() {
                             id: platos[i].id
                         }
                     });
-                    console.log(cambiarEstado2);
+                    
                 }
             }
-
         }
+
+        //si no esta el id del plato en la lista de la tabla plato_ingrediente
+        //quiere decir que no tiene ingredientes, por lo que no está disponible
+        for(let y = 0; y < PlatoId.length; y++){            
+            if(!platoIngredienteId.includes(PlatoId[y])){
+                let cambiarEstado = await prisma.plato.update({
+                    data:{
+                        disponible: false
+                    },
+                    where: {
+                        id: PlatoId[y]
+                    }
+                });
+            }
+        }
+
+
     }catch(error){
         console.log(error);
     }
