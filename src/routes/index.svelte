@@ -86,7 +86,7 @@
       </div>
       <div class="form-group mb-6">
         <label
-          for="exampleInputPassword2"
+          for="Password"
           class="form-label inline-block mb-2 text-gray-700 font-bold text-lg"
           >Contraseña</label
         >
@@ -109,7 +109,6 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          id="exampleInputPassword2"
           placeholder="Password"
           required
         />

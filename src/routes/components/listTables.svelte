@@ -181,6 +181,28 @@
     }
   }
 
+  async function FinalizarPedido() {
+    verifyUser();
+    let request3 = await post(`/api/FinishOrderJS`, {
+      mesaid,
+      totalPagar,
+    });
+
+    switch (request3.status) {
+      case 200:
+        alert("Pedido finalizado exitosamente");
+        quitarid();
+        recargarListaPlatos();
+        break;
+      case 400:
+        alert("Pedido NO finalizado exitosamente");
+        break;
+      case 401:
+        alert("Pedido con platos sin terminar");
+        break;
+    }
+  }
+
   const buscarmesa = (id) => mesasCopia.find((mesa) => mesa.id == id);
 </script>
 
@@ -319,7 +341,7 @@
                     <div class="form-group mb-6">
                       <label
                         for="exampleInputPassword2"
-                        class="form-label inline-block mb-2 text-gray-700"
+                        class="form-label inline-block mb-2 text-gray-700 text-lg"
                         >Cantidad</label
                       >
                       <!--input cantidad-->
@@ -349,7 +371,7 @@
                     <div class="form-group mb-6">
                       <label
                         for="exampleInputPassword2"
-                        class="form-label inline-block mb-2 text-gray-700"
+                        class="form-label inline-block mb-2 text-gray-700 text-lg"
                         >Plato</label
                       >
                       <div class="flex justify-center">
@@ -609,6 +631,31 @@
                   >
                     Total a pagar: {totalPagar}€
                   </h5>
+
+                  <button
+                    class="
+                            w-full
+                            mt-24
+                            px-6
+                            py-2.5
+                            bg-blue-600
+                            text-white
+                            font-medium
+                            text-sm
+                            leading-tight
+                            uppercase
+                            rounded
+                            shadow-md
+                            hover:bg-green-700 hover:shadow-lg
+                            focus:bg-blue-600 focus:shadow-lg focus:outline-none focus:ring-0
+                            active:bg-green-800 active:shadow-lg
+                            transition
+                            duration-150
+                            ease-in-out"
+                    on:click={FinalizarPedido}
+                  >
+                    Finalizar Pedido
+                  </button>
                 {/if}
               {/if}
             </div>
