@@ -149,7 +149,7 @@
                                                       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="exampleInputPassword2"
             placeholder="cantidad"
-            min="1"
+            min="0"
             bind:value={cantidad}
             required
           />

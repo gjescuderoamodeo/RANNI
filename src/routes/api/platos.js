@@ -5,6 +5,9 @@ const { PrismaClient } = prismaImport;
 const prisma = new PrismaClient();
 
 export async function get() {
+
+    enoughIngredientsForThatPlate();
+
     let platos = await prisma.plato.findMany({
         select: {
             id: true,
@@ -13,9 +16,7 @@ export async function get() {
             disponible: true
         }
     })
-
-    enoughIngredientsForThatPlate();
-
+    
     return {
         body: platos,
         status: 200,
@@ -44,7 +45,7 @@ async function enoughIngredientsForThatPlate() {
                     where: {
                         id: platoIngrediente[i].ingrediente_id
                     }
-                });
+                });                
 
                 if(platoIngrediente[i].cantidad>ingredientePlato.cantidad){
                     let cambiarEstado = await prisma.plato.update({
@@ -55,8 +56,9 @@ async function enoughIngredientsForThatPlate() {
                             id: platos[i].id
                         }
                     });
-                }else{
-                    let cambiarEstado = await prisma.plato.update({
+                    
+                } if(platoIngrediente[i].cantidadz<=ingredientePlato.cantidad){
+                    let cambiarEstado2 = await prisma.plato.update({
                         data:{
                             disponible: true
                         },
@@ -64,6 +66,7 @@ async function enoughIngredientsForThatPlate() {
                             id: platos[i].id
                         }
                     });
+                    console.log(cambiarEstado2);
                 }
             }
 

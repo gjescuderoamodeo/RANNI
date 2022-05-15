@@ -66,7 +66,7 @@
 {#if verificar}
   <body>
     <div>
-      <!--Listado usuarios-->
+      <!--Listado ingredientes-->
 
       <!-- component -->
       <script src="https://cdn.tailwindcss.com"></script>
