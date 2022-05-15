@@ -1,65 +1,69 @@
 <script>
-    import { goto } from "$app/navigation";
-    import { post } from "$lib/utils.js";
+  import { goto } from "$app/navigation";
+  import { post } from "$lib/utils.js";
 
-    let name = "";
-    let password = "";
-    let errors = false;
+  let name = "";
+  let password = "";
+  let errors = false;
 
-    async function submit(event) {
-        closeSession();
-        const request = await post(`auth/login`, { name, password });
+  async function submit(event) {
+    closeSession();
+    const request = await post(`auth/login`, { name, password });
 
-        switch (request.status) {
-            case 301: //cocinero
-                return goto("/cocina");
-            case 302: //camarero
-                return goto("/camarero");
-            case 303: //admin
-                return goto("/almacen");
-            case 401:
-                errors = true;
-        }
+    switch (request.status) {
+      case 301: //cocinero
+        return goto("/cocina");
+      case 302: //camarero
+        return goto("/camarero");
+      case 303: //admin
+        return goto("/almacen");
+      case 401:
+        errors = true;
     }
+  }
 
-    //cierro la sesión por si hay otro jwt
-    async function closeSession() {
-        console.log("Sesión cerrada!");
+  //cierro la sesión por si hay otro jwt
+  async function closeSession() {
+    console.log("Sesión cerrada!");
 
-        await fetch("/auth/closeSession", {
-            method: "post",
-        });
+    await fetch("/auth/closeSession", {
+      method: "post",
+    });
 
-        goto("/");
-    }
+    goto("/");
+  }
 </script>
 
+<head>
+  <title>Ranni</title>
+</head>
+
 <body class="bg-stone-100">
-    {#if errors}
-        <p>Contraseña o Usuario erroneos</p>
-    {/if}
+  {#if errors}
+    <p>Contraseña o Usuario erroneos</p>
+  {/if}
 
-    <img
-        src="/RanniLogo.png"
-        class="max-w-full h-auto mx-auto mt-10"
-        alt="Logo Ranni"
-    />
+  <img
+    src="/RanniLogo.png"
+    class="max-w-full h-auto mx-auto mt-10"
+    alt="Logo Ranni"
+  />
 
-    <!--Registro usuario-->
-    <div
-        class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-sky-200 mb-20 mt-1"
-    >
-        <form on:submit|preventDefault={submit}>
-            <div class="form-group mb-6 ">
-                <label
-                    for="nombre"
-                    class="form-label inline-block mb-2 text-gray-700 font-bold text-lg"
-                    >Nombre</label
-                >
-                <!--input nombre-->
-                <input
-                    type="text"
-                    class="form-control
+  <!--Registro usuario-->
+  <div
+    class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-sky-200 mb-20 mt-1"
+  >
+    <form on:submit|preventDefault={submit}>
+      <div class="form-group mb-6 ">
+        <label
+          for="nombre"
+          class="form-label inline-block mb-2 text-gray-700 font-bold text-lg"
+          >Nombre</label
+        >
+        <!--input nombre-->
+        <input
+          type="text"
+          class="form-control
           block
           w-full
           px-4
@@ -74,23 +78,23 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="name"
-                    bind:value={name}
-                    placeholder="Enter name"
-                    required
-                />
-            </div>
-            <div class="form-group mb-6">
-                <label
-                    for="exampleInputPassword2"
-                    class="form-label inline-block mb-2 text-gray-700 font-bold text-lg"
-                    >Contraseña</label
-                >
-                <!--input contraseña-->
-                <input
-                    type="password"
-                    bind:value={password}
-                    class="form-control block
+          id="name"
+          bind:value={name}
+          placeholder="Enter name"
+          required
+        />
+      </div>
+      <div class="form-group mb-6">
+        <label
+          for="exampleInputPassword2"
+          class="form-label inline-block mb-2 text-gray-700 font-bold text-lg"
+          >Contraseña</label
+        >
+        <!--input contraseña-->
+        <input
+          type="password"
+          bind:value={password}
+          class="form-control block
                     
           w-full
           px-3
@@ -105,14 +109,14 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    id="exampleInputPassword2"
-                    placeholder="Password"
-                    required
-                />
-            </div>
-            <button
-                type="submit"
-                class="
+          id="exampleInputPassword2"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <button
+        type="submit"
+        class="
         w-full
         px-6
         py-2.5
@@ -130,13 +134,13 @@
         transition
         duration-150
         ease-in-out font-semibold">ingresar</button
-            >
-        </form>
-    </div>
+      >
+    </form>
+  </div>
 </body>
 
 <style>
-    :root {
-        @apply bg-stone-100;
-    }
+  :root {
+    @apply bg-stone-100;
+  }
 </style>

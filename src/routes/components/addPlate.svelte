@@ -1,69 +1,65 @@
 <script>
-    import { post } from "$lib/utils.js";
-    import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
+  import { post } from "$lib/utils.js";
+  import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
 
-    let verificar = false;
-    let name = "";
-    let prize = 1;
+  let verificar = false;
+  let name = "";
+  let prize = 1;
 
-    onMount(async () => {
-        await verifyUser();
-    });
+  onMount(async () => {
+    await verifyUser();
+  });
 
-    async function verifyUser() {
-        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
-            r.json()
-        );
-        if (request.status !== 200) {
-            return goto("/");
-        } else {
-            verificar = true;
-        }
+  async function verifyUser() {
+    const request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
+    if (request.status !== 200) {
+      return goto("/");
+    } else {
+      verificar = true;
     }
+  }
 
-    async function submit(event) {
-        verifyUser();
-        if (name != "" && prize >= 1) {
-            const request = await post(`/api/addPlateJS`, {
-                name,
-                prize,
-            });
-            console.log(request.message);
+  async function submit(event) {
+    verifyUser();
+    if (name != "" && prize >= 1) {
+      const request = await post(`/api/addPlateJS`, {
+        name,
+        prize,
+      });
+      console.log(request.message);
 
-            switch (request.status) {
-                case 200:
-                    alert("Plato creado exitosamente");
-                    name = "";
-                    prize = 1;
-                    break;
-                case 400:
-                    alert("El Plato ya está en la base de datos");
-                    break;
-            }
-        } else {
-            alert("introduzca un Plato válido");
-        }
+      switch (request.status) {
+        case 200:
+          alert("Plato creado exitosamente");
+          name = "";
+          prize = 1;
+          break;
+        case 400:
+          alert("El Plato ya está en la base de datos");
+          break;
+      }
+    } else {
+      alert("introduzca un Plato válido");
     }
+  }
 </script>
 
 {#if verificar}
-    <body class="bg-white">
-        <!--Registro usuario-->
-        <div
-            class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
-        >
-            <form on:submit|preventDefault={submit}>
-                <div class="form-group mb-6">
-                    <label
-                        for="nombre"
-                        class="form-label inline-block mb-2 text-gray-700"
-                        >Nombre</label
-                    >
-                    <!--input nombre-->
-                    <input
-                        type="text"
-                        class="form-control
+  <body class="bg-white">
+    <!--Registro usuario-->
+    <div
+      class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
+    >
+      <form on:submit|preventDefault={submit}>
+        <div class="form-group mb-6">
+          <label for="nombre" class="form-label inline-block mb-2 text-gray-700"
+            >Nombre</label
+          >
+          <!--input nombre-->
+          <input
+            type="text"
+            class="form-control
           block
           w-full
           px-3
@@ -78,23 +74,22 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        id="name"
-                        bind:value={name}
-                        placeholder="Introduzca un nombre"
-                        required
-                    />
-                </div>
-                <div class="form-group mb-6">
-                    <label
-                        for="exampleInputPassword2"
-                        class="form-label inline-block mb-2 text-gray-700"
-                        >Precio</label
-                    >
-                    <!--input contraseña-->
-                    <i class="fa fa-euro-sign fa-fw" />
-                    <input
-                        type="number"
-                        class="form-control block
+            id="name"
+            bind:value={name}
+            placeholder="Introduzca un nombre"
+            required
+          />
+        </div>
+        <div class="form-group mb-6">
+          <label
+            for="exampleInputPassword2"
+            class="form-label inline-block mb-2 text-gray-700">Precio</label
+          >
+          <!--input precio-->
+          <i class="fa fa-euro-sign fa-fw" />
+          <input
+            type="number"
+            class="form-control block
           w-full
           px-3
           py-1.5
@@ -108,18 +103,19 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        id="exampleInputPassword2"
-                        bind:value={prize}
-                        placeholder="Precio"
-                        required
-                    />
-                </div>
+            id="exampleInputPassword2"
+            bind:value={prize}
+            placeholder="Precio"
+            min="1"
+            required
+          />
+        </div>
 
-                <div class="flex justify-center" />
+        <div class="flex justify-center" />
 
-                <button
-                    type="submit"
-                    class="
+        <button
+          type="submit"
+          class="
         w-full
         px-6
         py-2.5
@@ -137,8 +133,8 @@
         transition
         duration-150
         ease-in-out">Añadir Plato</button
-                >
-            </form>
-        </div>
-    </body>
+        >
+      </form>
+    </div>
+  </body>
 {/if}

@@ -1,70 +1,66 @@
 <script>
-    import { post } from "$lib/utils.js";
-    import { goto } from "$app/navigation";
-    import { onMount } from "svelte";
+  import { post } from "$lib/utils.js";
+  import { goto } from "$app/navigation";
+  import { onMount } from "svelte";
 
-    let verificar = false;
-    let name = "";
-    let password = "";
-    let job = "Camarero";
+  let verificar = false;
+  let name = "";
+  let password = "";
+  let job = "Camarero";
 
-    onMount(async () => {
-        await verifyUser();
-    });
+  onMount(async () => {
+    await verifyUser();
+  });
 
-    async function submit(event) {
-        verifyUser();
-        if (job != "" && password != "" && job != "") {
-            const request = await post(`/api/addUsersJS`, {
-                name,
-                password,
-                job,
-            });
-            console.log(request.message);
+  async function submit(event) {
+    verifyUser();
+    if (job != "" && password != "" && job != "") {
+      const request = await post(`/api/addUsersJS`, {
+        name,
+        password,
+        job,
+      });
+      //console.log(request.message);
 
-            switch (request.status) {
-                case 300:
-                    alert("Usuario creado exitosamente");
-                    name = "";
-                    password = "";
-                    break;
-                case 400:
-                    alert("El usuario ya está en la base de datos");
-                    break;
-            }
-        }
+      switch (request.status) {
+        case 300:
+          alert("Usuario creado exitosamente");
+          name = "";
+          password = "";
+          break;
+        case 400:
+          alert("El usuario ya está en la base de datos");
+          break;
+      }
     }
+  }
 
-    async function verifyUser() {
-        const request = await fetch("/auth/verifyUserAdmin").then((r) =>
-            r.json()
-        );
-        if (request.status !== 200) {
-            return goto("/");
-        } else {
-            verificar = true;
-        }
+  async function verifyUser() {
+    const request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
+    if (request.status !== 200) {
+      return goto("/");
+    } else {
+      verificar = true;
     }
+  }
 </script>
 
 {#if verificar}
-    <body class="bg-white">
-        <!--Registro usuario-->
-        <div
-            class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
-        >
-            <form on:submit|preventDefault={submit}>
-                <div class="form-group mb-6">
-                    <label
-                        for="nombre"
-                        class="form-label inline-block mb-2 text-gray-700"
-                        >Nombre</label
-                    >
-                    <!--input nombre-->
-                    <i class="fa fa-user fa-fw" />
-                    <input
-                        type="text"
-                        class="form-control
+  <body class="bg-white">
+    <!--Registro usuario-->
+    <div
+      class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mt-32 "
+    >
+      <form on:submit|preventDefault={submit}>
+        <div class="form-group mb-6">
+          <label for="nombre" class="form-label inline-block mb-2 text-gray-700"
+            >Nombre</label
+          >
+          <!--input nombre-->
+          <i class="fa fa-user fa-fw" />
+          <input
+            type="text"
+            class="form-control
           block
           w-full
           px-3
@@ -79,23 +75,22 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        id="name"
-                        bind:value={name}
-                        placeholder="Enter name"
-                        required
-                    />
-                </div>
-                <div class="form-group mb-6">
-                    <label
-                        for="exampleInputPassword2"
-                        class="form-label inline-block mb-2 text-gray-700"
-                        >Contraseña</label
-                    >
-                    <!--input contraseña-->
-                    <i class="fa fa-key fa-fw" />
-                    <input
-                        type="password"
-                        class="form-control block
+            id="name"
+            bind:value={name}
+            placeholder="Enter name"
+            required
+          />
+        </div>
+        <div class="form-group mb-6">
+          <label
+            for="exampleInputPassword2"
+            class="form-label inline-block mb-2 text-gray-700">Contraseña</label
+          >
+          <!--input contraseña-->
+          <i class="fa fa-key fa-fw" />
+          <input
+            type="password"
+            class="form-control block
           w-full
           px-3
           py-1.5
@@ -109,25 +104,25 @@
           ease-in-out
           m-0
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        id="exampleInputPassword2"
-                        bind:value={password}
-                        placeholder="Password"
-                        required
-                    />
-                </div>
-                <!--Input para la lista desplegable del tipo de trabajo a seleccionar-->
+            id="exampleInputPassword2"
+            bind:value={password}
+            placeholder="Password"
+            required
+          />
+        </div>
+        <!--Input para la lista desplegable del tipo de trabajo a seleccionar-->
 
-                <div class="form-group mb-6">
-                    <label
-                        for="puestolaboral"
-                        class="form-label inline-block mb-2 text-gray-700"
-                        >Puesto Laboral</label
-                    >
-                    <div class="flex justify-center">
-                        <div class="mb-3 xl:w-96">
-                            <select
-                                bind:value={job}
-                                class="form-select appearance-none
+        <div class="form-group mb-6">
+          <label
+            for="puestolaboral"
+            class="form-label inline-block mb-2 text-gray-700"
+            >Puesto Laboral</label
+          >
+          <div class="flex justify-center">
+            <div class="mb-3 xl:w-96">
+              <select
+                bind:value={job}
+                class="form-select appearance-none
                         block
                         w-full
                         px-3
@@ -142,18 +137,18 @@
                         ease-in-out
                         m-0
                         focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                aria-label="Default select example"
-                            >
-                                <option selected>Camarero</option>
-                                <option>Cocinero</option>
-                                <option>Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <button
-                    type="submit"
-                    class="
+                aria-label="Default select example"
+              >
+                <option selected>Camarero</option>
+                <option>Cocinero</option>
+                <option>Administrador</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button
+          type="submit"
+          class="
         w-full
         px-6
         py-2.5
@@ -171,8 +166,8 @@
         transition
         duration-150
         ease-in-out">Añadir usuario</button
-                >
-            </form>
-        </div>
-    </body>
+        >
+      </form>
+    </div>
+  </body>
 {/if}

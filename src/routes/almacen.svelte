@@ -95,11 +95,15 @@
                 class="w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0"
             >
                 <div class="w-1/2 pl-2 md:pl-0">
-                    <p class="text-2xl fas fa-moon text-Blue-600 pr-3">Ranni</p>
+                    <p
+                        class="text-2xl fas fa-moon text-Blue-100 pr-3 sm:text-Red-200"
+                    >
+                        Ranni
+                    </p>
                 </div>
                 <div class="w-1/2 pr-0">
-                    <div class="flex relative inline-block float-right">
-                        <div class="relative text-sm">
+                    <div class="flex relative inline-block float-right ">
+                        <div class="relative text-sm ">
                             <button
                                 id="userButton"
                                 class="flex items-center focus:outline-none mr-3"
@@ -107,7 +111,7 @@
                                 <span
                                     class="hidden md:inline-block text-xl font-semibold text-inherit"
                                     >Usuario: <button
-                                        class="text-xl bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+                                        class="text-xl bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded "
                                     >
                                         {name}
                                     </button>
@@ -115,13 +119,13 @@
                             </button>
                             <div
                                 id="userMenu"
-                                class="bg-white rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible"
+                                class="bg-white rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto mx-auto z-30 invisible sm:min-w-full"
                             >
                                 <ul class="list-reset">
                                     <li>
                                         <button
                                             on:click={closeSession}
-                                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center"
+                                            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center "
                                         >
                                             <svg
                                                 class="fill-current w-4 h-4 mr-2"

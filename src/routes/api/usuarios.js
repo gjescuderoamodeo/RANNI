@@ -1,6 +1,6 @@
 import prismaImport from '@prisma/client'
 import jwt from "jsonwebtoken";
-//import {}
+import password from "$lib/password";
 
 const { PrismaClient } = prismaImport;
 
@@ -66,5 +66,55 @@ async function getToken({ request }) {
     let tok = jwt.verify(token, "shhhhhhh")
     return tok;
 
+}
+
+//actualizar usuario
+export async function put({ request }) {
+
+    let body = await request.json();
+
+    try{
+        //compruebo que existe el usuario
+        const getUserPut = await prisma.usuario.findFirst({
+            where: {
+                nombre: body.name
+            }
+        })
+
+        //encripto la contraseña
+        let contrasenaEncriptada = await password.encrypt(body.password);
+
+
+        if(getUserPut){
+            const putUser = await prisma.usuario.update({
+                data: {
+                    nombre: body.newName,
+                    contrasena: contrasenaEncriptada,
+                    puesto_laboral: body.job,
+                },
+                where: {
+                    nombre: body.name,
+                },
+            });
+            if(putUser){
+                return {
+                    status: 200
+                }
+            }
+        }else{
+            return {
+                status: 400
+            }
+        }
+
+
+        
+    }catch(error){
+        return {
+            status: 400
+        }
+    }
+    
+    
 }
 
