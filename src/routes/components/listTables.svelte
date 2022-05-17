@@ -56,6 +56,7 @@
       switch (request2.status) {
         case 200:
           arrayDiccionarioPlatoPedido = request2.array;
+          comprobarPlatosAcabados();
           break;
       }
 
@@ -156,13 +157,6 @@
     //console.log(pedidoDeLaMesa);
   }
 
-  async function update(mesa) {
-    await fetch(`/frutas`, {
-      body: JSON.stringify({ ...fruta }),
-      method: "put",
-    }).then(reload);
-  }
-
   async function eliminarPlatoPedido(id) {
     verifyUser();
     let request = await post(`/api/deletePlatoPedidoJS`, {
@@ -223,18 +217,16 @@
     verifyUser();
     let request = await post(`/api/verifyPlatesEndedJS`, {
       mesaid,
-      arrayDiccionarioPlatoPedido,
     });
 
     switch (request.status) {
       case 200:
-        alert("Pedido finalizado exitosamente");
+        //alert("Pedido ok");
+        todoClear = false;
         break;
-      case 400:
-        alert("Pedido NO finalizado exitosamente");
-        break;
-      case 401:
-        alert("Pedido con platos sin terminar");
+      case 403:
+        //alert("Pedido NO finalizado");
+        todoClear = true;
         break;
     }
   }
@@ -685,8 +677,9 @@
                     Total a pagar: {totalPagar}€
                   </h5>
 
-                  <button
-                    class="
+                  {#if !todoClear}
+                    <button
+                      class="
                     float-right
                             mt-4
                             mb-2
@@ -706,13 +699,13 @@
                             transition
                             duration-150
                             ease-in-out"
-                    on:click={exportar}
-                  >
-                    Descargar factura
-                  </button>
+                      on:click={exportar}
+                    >
+                      Descargar factura
+                    </button>
 
-                  <button
-                    class="
+                    <button
+                      class="
                             w-full
                             mt-24
                             px-6
@@ -731,10 +724,11 @@
                             transition
                             duration-150
                             ease-in-out"
-                    on:click={FinalizarPedido}
-                  >
-                    Finalizar Pedido
-                  </button>
+                      on:click={FinalizarPedido}
+                    >
+                      Finalizar Pedido
+                    </button>
+                  {/if}
                 {/if}
               {/if}
             </div>
