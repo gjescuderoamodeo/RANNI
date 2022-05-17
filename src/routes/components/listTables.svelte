@@ -7,6 +7,7 @@
   let pedidoDeLaMesa;
   let mesaid = null;
   let verificar = false;
+  let todoClear = true;
 
   //listado con los platos
   let platos = [];
@@ -193,6 +194,41 @@
         alert("Pedido finalizado exitosamente");
         quitarid();
         recargarListaPlatos();
+        break;
+      case 400:
+        alert("Pedido NO finalizado exitosamente");
+        break;
+      case 401:
+        alert("Pedido con platos sin terminar");
+        break;
+    }
+  }
+
+  //función para exportar una tabla a Excel
+  function exportExcel(type, fn, dl) {
+    var elt = document.getElementById("exportable_table");
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "Sheet JS" });
+    return dl
+      ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
+      : XLSX.writeFile(wb, fn || "Factura." + (type || "xlsx"));
+  }
+
+  function exportar() {
+    exportExcel("xlsx");
+  }
+
+  //función que comprueba que todos los platos del pedido está terminados
+  //en caso de estar todos acabados, permite emitir la factura
+  async function comprobarPlatosAcabados() {
+    verifyUser();
+    let request = await post(`/api/verifyPlatesEndedJS`, {
+      mesaid,
+      arrayDiccionarioPlatoPedido,
+    });
+
+    switch (request.status) {
+      case 200:
+        alert("Pedido finalizado exitosamente");
         break;
       case 400:
         alert("Pedido NO finalizado exitosamente");
@@ -452,7 +488,7 @@
 
                   <!--tabla con los platos-->
                   <div class="w-full overflow-x-auto">
-                    <table class="table-auto w-full">
+                    <table class="table-auto w-full" id="exportable_table">
                       <thead>
                         <tr class="bg-sky-200 text-center">
                           <th
@@ -498,8 +534,10 @@
                           >
                             Precio
                           </th>
-                          <th
-                            class="
+                          <!--Confirmación de que todas los platos estan acabados -->
+                          {#if todoClear}
+                            <th
+                              class="
                            w-1
                            text-lg
                            font-semibold
@@ -509,11 +547,11 @@
                            px-1
                            lg:px-4
                            "
-                          >
-                            Confirmado
-                          </th>
-                          <th
-                            class="
+                            >
+                              Confirmado
+                            </th>
+                            <th
+                              class="
                            w-1/6
                            text-lg
                            font-semibold
@@ -523,9 +561,10 @@
                            px-1
                            lg:px-4
                            "
-                          >
-                            Acción
-                          </th>
+                            >
+                              Acción
+                            </th>
+                          {/if}
                         </tr>
                       </thead>
                       <tbody>
@@ -570,9 +609,10 @@
                             >
                               {plato.precio}€
                             </td>
-                            {#if plato.estado != "Acabado"}
-                              <td
-                                class="
+                            {#if todoClear}
+                              {#if plato.estado != "Acabado"}
+                                <td
+                                  class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -581,12 +621,12 @@
                            bg-white
                            border-b border-[#E8E8E8]
                            "
-                              >
-                                {plato.estado}
-                              </td>
-                            {:else}
-                              <td
-                                class="
+                                >
+                                  {plato.estado}
+                                </td>
+                              {:else}
+                                <td
+                                  class="
                            text-center text-red-500
                            font-medium
                            text-base
@@ -595,12 +635,12 @@
                            bg-white
                            border-b border-[#E8E8E8]
                            "
-                              >
-                                {plato.estado}
-                              </td>
-                            {/if}
-                            <td
-                              class="
+                                >
+                                  {plato.estado}
+                                </td>
+                              {/if}
+                              <td
+                                class="
                            text-center text-dark
                            font-medium
                            text-base
@@ -609,20 +649,33 @@
                            bg-white
                            border-b border-[#E8E8E8]
                            "
-                            >
-                              {#if plato.estado == "En_Proceso"}
-                                <p
-                                  class="text-black-400 hover:text-red-800 ml-2"
-                                  on:click={eliminarPlatoPedido(plato.id)}
-                                >
-                                  Eliminar
-                                  <i class="fa fa-trash fa-fw mr-3" />
-                                </p>
-                              {/if}
-                            </td>
+                              >
+                                {#if plato.estado == "En_Proceso"}
+                                  <p
+                                    class="text-black-400 hover:text-red-800 ml-2"
+                                    on:click={eliminarPlatoPedido(plato.id)}
+                                  >
+                                    Eliminar
+                                    <i class="fa fa-trash fa-fw mr-3" />
+                                  </p>
+                                {/if}
+                              </td>
+                            {/if}
                           </tr>
                         {/each}
                       </tbody>
+                      <tfoot class="hidden">
+                        <tr>
+                          <td />
+                          <td />
+                          <td />
+                        </tr>
+                        <tr>
+                          <td />
+                          <td />
+                          <td>Total {totalPagar}€</td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
 
@@ -631,6 +684,32 @@
                   >
                     Total a pagar: {totalPagar}€
                   </h5>
+
+                  <button
+                    class="
+                    float-right
+                            mt-4
+                            mb-2
+                            px-4
+                            py-2.5
+                            bg-blue-800
+                            text-white
+                            font-medium
+                            text-sm
+                            leading-tight
+                            uppercase
+                            rounded
+                            shadow-md
+                            hover:bg-orange-700 hover:shadow-lg
+                            focus:bg-blue-900 focus:shadow-lg focus:outline-none focus:ring-0
+                            active:bg-orange-800 active:shadow-lg
+                            transition
+                            duration-150
+                            ease-in-out"
+                    on:click={exportar}
+                  >
+                    Descargar factura
+                  </button>
 
                   <button
                     class="

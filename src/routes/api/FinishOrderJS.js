@@ -1,5 +1,4 @@
 import prismaImport from '@prisma/client';
-import jwt from "jsonwebtoken";
 const { PrismaClient } = prismaImport;
 
 const prisma = new PrismaClient();
