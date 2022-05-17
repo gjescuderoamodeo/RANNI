@@ -6,7 +6,13 @@ const prisma = new PrismaClient();
 export async function get() {
     try {
 
-        const result = await prisma.pedido.findMany();
+        const result = await prisma.pedido.findMany(
+            {
+                where:{
+                    finalizado:false
+                }
+            }
+        );
 
         let body;
 
