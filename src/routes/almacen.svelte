@@ -1,10 +1,10 @@
 <script>
   import { goto } from "$app/navigation";
   import { onMount } from "svelte";
-  import { post } from "$lib/utils.js";
   //importaciones de otros módulos
   import CrudUsuarios from "./crudUsers.svelte";
   import CrudFood from "./crudFood.svelte";
+  import CrudBills from "./crudBills.svelte";
 
   onMount(async () => {
     await verifyUser();
@@ -276,6 +276,10 @@
         <!--MÓDULO DE LOS PLATOS E INGREDIENTES-->
         {#if adminControl == 2}
           <CrudFood />
+        {/if}
+        <!--MÓDULO DE LAS FACTURAS-->
+        {#if adminControl == 3}
+          <CrudBills />
         {/if}
         <!--/ Console Content-->
       </div>
