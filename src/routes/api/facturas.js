@@ -8,6 +8,7 @@ export async function get() {
 
     let facturas = await prisma.factura.findMany({
         select: {
+            pedido_id: true,
             fecha: true,
             precio: true,
         },
@@ -17,16 +18,6 @@ export async function get() {
     })
     
     
-
-    //variable para modificar la fecha de la factura y que se vea mejor
-    let facturasMejorado = facturas
-
-    //console.log(facturas)
-
-    for (let i = 0; i < facturas.length; i++) { 
-        
-        //console.log(facturas[i].fecha.toUTCString())
-    }
     
     return {
         body: facturas,

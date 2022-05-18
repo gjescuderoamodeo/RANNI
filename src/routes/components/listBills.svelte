@@ -5,6 +5,7 @@
 
   let facturas = [];
   let facturaid = null;
+  let pedidoDeLaFactura;
 
   let verificar = false;
 
@@ -21,6 +22,7 @@
     const request = await fetch(`/api/facturas`);
     facturas = await request.json();
 
+    //para poner las fechas mejor
     for (let i = 0; i < facturas.length; i++) {
       facturas[i].fecha = facturas[i].fecha.slice(0, 10);
     }
@@ -35,7 +37,46 @@
     }
   }
 
-  function quitarid() {}
+  //función para sacar el pedido de la factura asociado
+  async function PedidoFactura(pedido_id) {
+    verifyUser();
+    facturaid = pedido_id;
+    pedidoDeLaFactura = null;
+
+    const request = await post(`/api/pedidosFacturaJS`, {
+      pedido_id,
+    });
+
+    switch (request.status) {
+      case 200:
+        pedidoDeLaFactura = request.pedido;
+        break;
+    }
+
+    //saco tbm los platos del pedido
+    if (pedidoDeLaFactura != null) {
+      //console.log(pedido_id);
+      recargarListaPlatos(pedido_id);
+    }
+  }
+
+  //función para recargar los platos del pedido de dicha factura
+  async function recargarListaPlatos() {
+    const request2 = await post(`/api/listPlatosPedidoFacturasJS`, {
+      pedidoDeLaFactura,
+    });
+
+    switch (request2.status) {
+      case 200:
+        arrayDiccionarioPlatoPedido = request2.array;
+        break;
+    }
+  }
+
+  function quitarid() {
+    facturaid = null;
+    arrayDiccionarioPlatoPedido = [];
+  }
 </script>
 
 <head>
@@ -99,7 +140,7 @@
                        lg:px-4
                        "
                           >
-                            Precio
+                            Total
                           </th>
                           <th
                             class="
@@ -157,8 +198,12 @@
                        bg-white
                        border-b border-[#E8E8E8]
                        "
-                            >
-                              Pedido de la factura
+                              ><button
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                on:click={PedidoFactura(factura.pedido_id)}
+                              >
+                                Pedido de la factura
+                              </button>
                             </td>
                           </tr>
                         {/each}
@@ -177,7 +222,141 @@
           </div>
         </div>
       </div>
+      <!--/Graph Card-->
+
+      {#if facturaid != null}
+        <div class="w-full md:w-1/2 p-3">
+          <!--Graph Card-->
+          <div class="bg-white border rounded shadow">
+            <div class=" border-b p-3">
+              <h5 class="font-bold  uppercase text-gray-600">
+                Pedido de la factura
+              </h5>
+            </div>
+
+            <div class="pb-40 bg-white ">
+              {#if arrayDiccionarioPlatoPedido.length !== 0}
+                <!--PLATOS ASOCIADOS A ESE PEDIDO-->
+                <h5 class="font-bold uppercase text-gray-600 text-center mt-6">
+                  Platos del pedido
+                </h5>
+
+                <!--tabla con los platos-->
+                <div class="w-full overflow-x-auto">
+                  <table class="table-auto w-full" id="exportable_table">
+                    <thead>
+                      <tr class="bg-sky-200 text-center">
+                        <th
+                          class="
+                           w-10
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-2
+                           lg:py-7
+                           px-1
+                           lg:px-4
+                           border-l border-transparent
+                           "
+                        >
+                          Nombre
+                        </th>
+                        <th
+                          class="
+                           w-1
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-2
+                           lg:py-7
+                           px-1
+                           lg:px-4
+                           "
+                        >
+                          Cantidad
+                        </th>
+                        <th
+                          class="
+                           w-1
+                           text-lg
+                           font-semibold
+                           text-black
+                           py-2
+                           lg:py-7
+                           px-1
+                           lg:px-4
+                           "
+                        >
+                          Precio
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {#each arrayDiccionarioPlatoPedido as plato}
+                        <tr>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-2
+                           px-1
+                           bg-[#F3F6FF]
+                           border-b border-l border-[#E8E8E8]
+                           "
+                          >
+                            {plato.nombre}
+                          </td>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-2
+                           px-1
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                          >
+                            X{plato.cantida}
+                          </td>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-2
+                           px-1
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                          >
+                            {plato.precio}€
+                          </td>
+                          <td
+                            class="
+                           text-center text-dark
+                           font-medium
+                           text-base
+                           py-2
+                           px-1
+                           bg-white
+                           border-b border-[#E8E8E8]
+                           "
+                          >
+                            {plato.estado}
+                          </td>
+                        </tr>
+                      {/each}
+                    </tbody>
+                  </table>
+                </div>
+              {/if}
+            </div>
+          </div>
+          <!--/Graph Card-->
+        </div>
+      {/if}
     </div>
-    <!--/Graph Card-->
   {/if}
 </body>
