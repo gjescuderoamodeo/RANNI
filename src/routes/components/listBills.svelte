@@ -5,6 +5,7 @@
 
   let facturas = [];
   let facturaid = null;
+  let userName = "";
   let pedidoDeLaFactura;
 
   let verificar = false;
@@ -50,13 +51,28 @@
     switch (request.status) {
       case 200:
         pedidoDeLaFactura = request.pedido;
+        UsuarioPedido(pedidoDeLaFactura.usuario_id);
         break;
     }
 
     //saco tbm los platos del pedido
     if (pedidoDeLaFactura != null) {
       //console.log(pedido_id);
-      recargarListaPlatos(pedido_id);
+      recargarListaPlatos();
+    }
+  }
+
+  async function UsuarioPedido(userId) {
+    userName = "";
+
+    const request = await post(`/api/userPedidoJS`, {
+      userId,
+    });
+
+    switch (request.status) {
+      case 200:
+        userName = request.usuario;
+        break;
     }
   }
 
@@ -237,8 +253,8 @@
             <div class="pb-40 bg-white ">
               {#if arrayDiccionarioPlatoPedido.length !== 0}
                 <!--PLATOS ASOCIADOS A ESE PEDIDO-->
-                <h5 class="font-bold uppercase text-gray-600 text-center mt-6">
-                  Platos del pedido
+                <h5 class="font-bold uppercase text-gray-600 text-center mt-4">
+                  Información del pedido realizado por: {userName}
                 </h5>
 
                 <!--tabla con los platos-->
@@ -259,7 +275,7 @@
                            border-l border-transparent
                            "
                         >
-                          Nombre
+                          Nombre plato
                         </th>
                         <th
                           class="
@@ -332,19 +348,6 @@
                            "
                           >
                             {plato.precio}€
-                          </td>
-                          <td
-                            class="
-                           text-center text-dark
-                           font-medium
-                           text-base
-                           py-2
-                           px-1
-                           bg-white
-                           border-b border-[#E8E8E8]
-                           "
-                          >
-                            {plato.estado}
                           </td>
                         </tr>
                       {/each}
