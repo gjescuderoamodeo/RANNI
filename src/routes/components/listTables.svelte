@@ -235,6 +235,24 @@
     }
   }
 
+  //función para cancelar un pedido sin platos
+  async function cancelarPedido() {
+    verifyUser();
+    let request = await post(`/api/cancelPedidoJS`, {
+      mesaid,
+    });
+
+    switch (request.status) {
+      case 200:
+        alert("Pedido cancelado");
+        quitarid();
+        break;
+      case 403:
+        //alert("Pedido NO finalizado");
+        break;
+    }
+  }
+
   const buscarmesa = (id) => mesasCopia.find((mesa) => mesa.id == id);
 </script>
 
@@ -334,6 +352,17 @@
             <div class=" border-b p-3">
               <h5 class="font-bold  uppercase text-gray-600">
                 Pedido de la mesa {mesaid}
+                {#if arrayDiccionarioPlatoPedido.length == 0 && pedidoDeLaMesa != null}
+                  <img
+                    src="/cancel.png"
+                    class="fill-current float-right h-7 ml-2 bg-red-200"
+                    alt="cancel pedido"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Cancelar pedido"
+                    on:click={cancelarPedido}
+                  />
+                {/if}
               </h5>
             </div>
 
