@@ -15,9 +15,8 @@ export async function post({ request }) {
 
         if (!result) {
             body = {
-                status: 400,
+                status: 401,
             };
-            // return validation errors
             return {
                 body,
             };
@@ -32,6 +31,13 @@ export async function post({ request }) {
         }
     } catch (errors) {
         console.log(errors);
+        body = {
+            status: 400,
+        };
+        // return validation errors
+        return {
+            body,
+        };
     }
 
 

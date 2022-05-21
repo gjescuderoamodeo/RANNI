@@ -129,7 +129,7 @@
   async function mesaPedido(id) {
     verifyUser();
     mesaid = id;
-    pedidoDeLaMesa = null;
+    pedidoDeLaMesa = undefined;
     arrayDiccionarioPlatoPedido = [];
 
     const request = await post(`/api/listPedidosJS`, {
@@ -139,6 +139,10 @@
     switch (request.status) {
       case 200:
         pedidoDeLaMesa = request.pedido;
+        break;
+      case 401:
+        pedidoDeLaMesa = request.pedido;
+        pedidoDeLaMesa = undefined;
         break;
     }
 
