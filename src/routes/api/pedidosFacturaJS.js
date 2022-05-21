@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function post({ request }) {
     const json = await request.json();
-    try {
+    try {       
 
         const result = await prisma.pedido.findFirst({
             where: { finalizado: true, id:json.pedido_id }

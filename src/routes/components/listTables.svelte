@@ -705,7 +705,11 @@
                             ease-in-out"
                       on:click={exportar}
                     >
-                      Descargar factura
+                      Descargar factura<img
+                        src="/DownloadExcel.png"
+                        class="fill-current float-right h-5 ml-2"
+                        alt="download excel"
+                      />
                     </button>
 
                     <button

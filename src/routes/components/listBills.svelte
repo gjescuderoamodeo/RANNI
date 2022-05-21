@@ -7,6 +7,10 @@
   let facturaid = null;
   let userName = "";
   let pedidoDeLaFactura;
+  let precioTotal = 0;
+
+  //variable para ver o no la tabla del pedido de la factua
+  let seeTable = false;
 
   let verificar = false;
 
@@ -39,8 +43,10 @@
   }
 
   //función para sacar el pedido de la factura asociado
-  async function PedidoFactura(pedido_id) {
+  async function PedidoFactura(pedido_id, precio) {
     verifyUser();
+    precioTotal = precio;
+    seeTable = true;
     facturaid = pedido_id;
     pedidoDeLaFactura = null;
 
@@ -52,13 +58,8 @@
       case 200:
         pedidoDeLaFactura = request.pedido;
         UsuarioPedido(pedidoDeLaFactura.usuario_id);
+        recargarListaPlatos();
         break;
-    }
-
-    //saco tbm los platos del pedido
-    if (pedidoDeLaFactura != null) {
-      //console.log(pedido_id);
-      recargarListaPlatos();
     }
   }
 
@@ -84,6 +85,7 @@
 
     switch (request2.status) {
       case 200:
+        console.log(request2.array);
         arrayDiccionarioPlatoPedido = request2.array;
         break;
     }
@@ -91,7 +93,21 @@
 
   function quitarid() {
     facturaid = null;
+    seeTable = false;
     arrayDiccionarioPlatoPedido = [];
+  }
+
+  //función para exportar una tabla a Excel
+  async function exportExcel(type, fn, dl) {
+    var elt = document.getElementById("exportable_table2");
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "Sheet JS" });
+    return dl
+      ? XLSX.write(wb, { bookType: type, bookSST: true, type: "base64" })
+      : XLSX.writeFile(wb, fn || "Factura." + (type || "xlsx"));
+  }
+
+  async function exportar() {
+    await exportExcel("xlsx");
   }
 </script>
 
@@ -215,8 +231,11 @@
                        border-b border-[#E8E8E8]
                        "
                               ><button
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                                on:click={PedidoFactura(factura.pedido_id)}
+                                class="bg-blue-500 hover:bg-blue-900 text-white font-bold py-2 px-4 rounded"
+                                on:click={PedidoFactura(
+                                  factura.pedido_id,
+                                  factura.precio
+                                )}
                               >
                                 Pedido de la factura
                               </button>
@@ -240,7 +259,8 @@
       </div>
       <!--/Graph Card-->
 
-      {#if facturaid != null}
+      <!--Tabla pediddo de la factura-->
+      {#if seeTable}
         <div class="w-full md:w-1/2 p-3">
           <!--Graph Card-->
           <div class="bg-white border rounded shadow">
@@ -251,7 +271,7 @@
             </div>
 
             <div class="pb-40 bg-white ">
-              {#if arrayDiccionarioPlatoPedido.length !== 0}
+              {#if arrayDiccionarioPlatoPedido.length != 0}
                 <!--PLATOS ASOCIADOS A ESE PEDIDO-->
                 <h5 class="font-bold uppercase text-gray-600 text-center mt-4">
                   Información del pedido realizado por: {userName}
@@ -353,12 +373,67 @@
                       {/each}
                     </tbody>
                   </table>
+
+                  <button
+                    class="
+              mt-4
+              ml-1
+              px-6
+              py-2
+              bg-blue-600
+              text-white 
+              font-bold
+              rounded
+              hover:bg-orange-700 hover:shadow-lg
+              focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
+              active:bg-orange-800 "
+                    on:click={exportar}
+                  >
+                    Descargar pedido de la factura
+                    <img
+                      src="/DownloadExcel.png"
+                      class="fill-current float-right h-5 ml-2"
+                      alt="download excel"
+                    />
+                  </button>
                 </div>
               {/if}
             </div>
           </div>
           <!--/Graph Card-->
         </div>
+
+        <!--Tabla invisible de la factura-->
+        <table class="hidden" id="exportable_table2">
+          <tr>
+            <th> Nombre </th>
+            <th> Cantidad </th>
+            <th> Precio </th>
+          </tr>
+          {#each arrayDiccionarioPlatoPedido as plato}
+            <tr>
+              <td>
+                {plato.nombre}
+              </td>
+              <td>
+                X{plato.cantida}
+              </td>
+              <td>
+                {plato.precio}€
+              </td>
+            </tr>
+          {/each}
+          <tr>
+            <td />
+            <td />
+            <td />
+          </tr>
+          <tr>
+            <td />
+            <td />
+            <td>Total {precioTotal}€</td>
+          </tr>
+        </table>
       {/if}
     </div>
   {/if}

@@ -83,7 +83,7 @@ export async function post({ request }) {
         }
         
     } catch (errors) {
-        console.log(errors);
+        //console.log(errors);
         body = {
             message: "plate alredy in the pedido",
             status: 400,

@@ -7,10 +7,10 @@ export async function post({ request }) {
     const json = await request.json();
     try {
         const resultPlatoPedido = await prisma.plato_Pedido.findMany({
-            where: { pedido_id: json.pedidoDeLaFactura.id }
+            where: {
+                pedido_id: json.pedidoDeLaFactura.id,
+            }
         })
-
-        //console.log(resultPlatoPedido);
 
         //Ahora recorro el array de resultPlatoPedido y voy sacando uno a uno sus nombres, sus cantidades y las voy guardadndo en un diccionario 
         //y luego en un array
@@ -36,6 +36,8 @@ export async function post({ request }) {
             arrayDiccionarioPlatoPedido.push(diccionario);
 
         }
+
+        //console.log(arrayDiccionarioPlatoPedido);
 
         let body;
 
