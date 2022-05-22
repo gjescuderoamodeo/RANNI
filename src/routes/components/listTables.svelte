@@ -425,6 +425,7 @@
                         id="exampleInputPassword2"
                         bind:value={cantidad}
                         placeholder="Cantidad"
+                        min="1"
                         required
                       />
                     </div>
