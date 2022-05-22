@@ -98,7 +98,51 @@ export async function put({ request }) {
         return {
             status: 400
         }
-    }
+    }    
     
+}
+
+
+export async function post() {
+
+    try{
+    const alertIngridients = await prisma.ingrediente.findMany({
+        select:{
+            nombre: true
+        },
+        where: {
+            cantidad: {
+                lte: 20
+            },
+        },
+    });
+
+    if(alertIngridients.length>0){
+        body = {
+            alert: alertIngridients,
+            status: 200,
+        };
+    
+        return {
+            body,
+            status: 200
+        };
+    }else{
+        body = {
+            alert: alertIngridients,
+            status: 203,
+        };    
+        return {
+            body,
+            status: 203
+        };
+    }
+    }catch(error){
+        //console.log(error);
+        return {           
+            status: 400
+        }
+    }  
+
     
 }

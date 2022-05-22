@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function post({ request }) {
     const json = await request.json();
-    console.log(json);
+    //console.log(json);
 
     try {
 

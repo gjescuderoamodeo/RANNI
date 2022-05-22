@@ -61,7 +61,7 @@ async function enoughIngredientsForThatPlate() {
                 }                
                 //               
                 if(platoIngrediente[y].cantidad>ingredientePlato.cantidad){
-                    console.log(platos[i].id)
+                    //console.log(platos[i].id)
                     let cambiarEstado = await prisma.plato.update({
                         data:{
                             disponible: false
@@ -102,7 +102,7 @@ async function enoughIngredientsForThatPlate() {
 
 
     }catch(error){
-        console.log(error);
+        //console.log(error);
     }
 }
 
@@ -181,7 +181,7 @@ export async function put({ request }) {
         }
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return {
             status: 400
         }

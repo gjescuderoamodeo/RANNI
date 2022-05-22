@@ -17,7 +17,6 @@
         name,
         quantity,
       });
-      console.log(request.message);
 
       switch (request.status) {
         case 200:
@@ -36,7 +35,6 @@
 
   async function verifyUser() {
     const request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
-    console.log(request.status);
     if (request.status !== 200) {
       return goto("/");
     } else {
