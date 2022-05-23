@@ -1,12 +1,14 @@
 <script>
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import { post } from "$lib/utils.js";
   import ModifyPlates from "./modifyPlates.svelte";
 
   let platos = [];
   let platosCopia = [];
   let ingredientesPlato = [];
   let ingredientes = [];
+  var platesNotFree = [];
   let verificar = false;
 
   onMount(async () => {
@@ -15,6 +17,7 @@
     setInterval(reload, 6000);
   });
   async function reload() {
+    comprobarPlatoLibre();
     const request = await fetch(`/api/platos`);
     const request2 = await fetch(`/api/ingredientes`);
     const request3 = await fetch(`/api/ingredientesPlato`);
@@ -58,6 +61,26 @@
       case 200:
         reload();
         break;
+    }
+  }
+
+  //función para comprobar que el plato no está asociado a ningún pedido
+  async function comprobarPlatoLibre() {
+    verifyUser();
+    let request = await post(`/api/checkPlateFreeJS`);
+
+    switch (request.status) {
+      case 200:
+        let platesNF = request.platesNotFree;
+
+        platesNotFree = [];
+        for (let i = 0; i < platesNF.length; i++) {
+          platesNotFree.push(platesNF[i].plato_id);
+        }
+
+        break;
+      case 403:
+        return false;
     }
   }
 
@@ -278,13 +301,24 @@
                            border-b border-[#E8E8E8]
                            "
                           >
-                            <p
-                              class="text-black-400 hover:text-red-800 ml-2"
-                              on:click={() => del(plato.id)}
-                            >
-                              Eliminar
-                              <i class="fa fa-trash fa-fw mr-3" />
-                            </p>
+                            {#if !platesNotFree.includes(plato.id)}
+                              <p
+                                class="text-black-400 hover:text-red-800 ml-2"
+                                on:click={() => del(plato.id)}
+                              >
+                                Eliminar
+                                <i class="fa fa-trash fa-fw mr-3" />
+                              </p>
+                            {:else}
+                              <p
+                                class="text-grey-400 ml-2"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                title="Este plato no se puede eliminar porque pertenece a un pedido"
+                              >
+                                -
+                              </p>
+                            {/if}
                           </td>
                         </tr>
                       {/each}

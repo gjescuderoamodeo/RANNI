@@ -53,6 +53,7 @@
       case 200:
         let ingridientsNF = request.ingredientsNotFree;
 
+        ingredientesNotFree = [];
         for (let i = 0; i < ingridientsNF.length; i++) {
           ingredientesNotFree.push(ingridientsNF[i].ingrediente_id);
         }

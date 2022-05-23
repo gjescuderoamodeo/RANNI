@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 export async function post() {
     try {       
 
-        const result = await prisma.plato_Ingrediente.findMany({
+        const result = await prisma.plato_Pedido.findMany({
             select: {
-                ingrediente_id: true
+                plato_id: true
              }
         })
 
@@ -16,7 +16,7 @@ export async function post() {
 
         if (result) {
             body = {                
-                ingredientsNotFree: result,
+                platesNotFree: result,
                 status: 200,
             };
             return {
