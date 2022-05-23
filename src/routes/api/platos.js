@@ -110,11 +110,14 @@ async function enoughIngredientsForThatPlate() {
 export async function del({ request }) {
     let body = await request.json();
 
-    const deleteIngredient = await prisma.plato.delete({
+    await deleteIngredientPlate(body.id);
+
+    const deletePlate = await prisma.plato.delete({
         where: {
             id: body.id,
         },
     });
+    
 
     body = {
         message: "plato borrado exitosamente",
@@ -124,6 +127,16 @@ export async function del({ request }) {
     return {
         body,
     };
+}
+
+async function deleteIngredientPlate( id_plato ) {
+    //borrar tambien los ingredientes_plato de ese plato
+    let toLosplato_Ingrediente = await prisma.plato_Ingrediente.deleteMany({
+        where: {
+            plato_id: id_plato,
+        },
+        });    
+   
 }
 
 //actualizar platos
