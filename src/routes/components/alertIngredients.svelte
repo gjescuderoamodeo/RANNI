@@ -28,8 +28,6 @@
       method: "post",
     }).then((r) => r.json());
 
-    console.log(request);
-
     switch (request.status) {
       case 200:
         listaAlerta = request.alert;
@@ -37,7 +35,7 @@
       case 203:
         listaAlerta = [];
         break;
-    case 400:
+      case 400:
         listaAlerta = [];
         break;
     }
@@ -46,7 +44,7 @@
 
 {#if verificar}
   {#if listaAlerta.length != 0}
-  <!--Divider-->
+    <!--Divider-->
     <hr class="border-b-2 border-gray-400 my-8 mx-4" />
     <div class="w-full md:w-1/2 p-3">
       <!--Graph Card-->
