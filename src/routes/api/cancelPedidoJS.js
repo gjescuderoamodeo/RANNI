@@ -1,29 +1,24 @@
-import prismaImport from '@prisma/client'
+import prismaImport from '@prisma/client';
 const { PrismaClient } = prismaImport;
 
 const prisma = new PrismaClient();
 
 export async function post({ request }) {
     const json = await request.json();
-    //console.log(json);
 
-    try {
-
-        //primero creo el plato
-        const result = await prisma.plato.create({
-            data: {
-                nombre: json.name,
-                precio: json.prize
-            }
-        })
-
-
-
+    try {        
         let body;
 
-        if (!result) {
+        let cancelPedido = await prisma.pedido.deleteMany({
+            where: {
+                mesa_id: json.mesaid,
+                finalizado: false
+            },            
+        }) 
+
+        if (!cancelPedido) {
             body = {
-                message: "Error creating plato",
+                message: "Error cancel pedido",
                 status: 500,
             };
             // return validation errors
@@ -32,7 +27,7 @@ export async function post({ request }) {
             };
         } else {
             body = {
-                message: "plato created good",
+                message: "pedido cancel good",
                 status: 200,
             };
             return {
@@ -40,15 +35,13 @@ export async function post({ request }) {
             };
         }
     } catch (errors) {
+        //console.log(errors);
         body = {
-            message: "plato alredy in the database",
+            message: "Error cancel pedido",
             status: 400,
         };
         return {
             body,
         };
     }
-
-
-
 }

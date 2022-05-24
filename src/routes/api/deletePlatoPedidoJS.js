@@ -10,10 +10,11 @@ export async function post({ request }) {
 
         let result2 = await prisma.plato_Pedido.findFirst({
             where: {
-                plato_id: json.id
+                plato_id: json.id,
+                estado:"En_Proceso"
             }
         })
-
+        
         if(result2.estado=="En_Proceso"){
             const result = await prisma.plato_Pedido.deleteMany({
                 where: {
@@ -54,7 +55,7 @@ export async function post({ request }) {
 
 
     } catch (errors) {
-        console.log(errors);
+        //console.log(errors);
         body = {
             status: 400,
         };

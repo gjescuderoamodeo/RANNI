@@ -3,20 +3,17 @@ const { PrismaClient } = prismaImport;
 
 const prisma = new PrismaClient();
 
-export async function get() {
+export async function post({ request }) {
+    const json = await request.json();
     try {
-
-        const result = await prisma.pedido.findMany(
-            {
-                where:{
-                    finalizado:false
-                }
-            }
-        );
+        const user = await prisma.usuario.findFirst({
+            select: { nombre: true } 
+            ,where: { id: json.userId }
+        })
 
         let body;
 
-        if (!result) {
+        if (!user) {
             body = {
                 status: 400,
             };
@@ -26,7 +23,7 @@ export async function get() {
             };
         } else {
             body = {
-                pedido: result,
+                usuario: user.nombre,
                 status: 200,
             };
             return {
@@ -34,9 +31,7 @@ export async function get() {
             };
         }
     } catch (errors) {
-        //console.log(errors);
+        console.log(errors);
     }
-
-
 
 }

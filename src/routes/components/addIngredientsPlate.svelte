@@ -52,7 +52,6 @@
         selected2,
         quantity,
       });
-      console.log(request.message);
 
       switch (request.status) {
         case 200:

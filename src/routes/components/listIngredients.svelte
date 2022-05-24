@@ -1,10 +1,12 @@
 <script>
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import { post } from "$lib/utils.js";
   import ModifyIngredients from "./modifyIngredients.svelte";
 
   let ingredientes = [];
   let ingredientesCopia = [];
+  var ingredientesNotFree = [];
   let verificar = false;
 
   onMount(async () => {
@@ -13,6 +15,7 @@
     setInterval(reload, 6000);
   });
   async function reload() {
+    comprobarIngredienteLibre();
     const request = await fetch(`/api/ingredientes`);
     ingredientes = await request.json();
     ingredientesCopia = JSON.parse(JSON.stringify(ingredientes));
@@ -38,6 +41,26 @@
       case 200:
         reload();
         break;
+    }
+  }
+
+  //función para comprobar que el ingrediente no está asociado a ningún plato o pedido
+  async function comprobarIngredienteLibre() {
+    verifyUser();
+    let request = await post(`/api/checkIngredienteFreePlateJS`);
+
+    switch (request.status) {
+      case 200:
+        let ingridientsNF = request.ingredientsNotFree;
+
+        ingredientesNotFree = [];
+        for (let i = 0; i < ingridientsNF.length; i++) {
+          ingredientesNotFree.push(ingridientsNF[i].ingrediente_id);
+        }
+
+        break;
+      case 403:
+        return false;
     }
   }
 
@@ -179,13 +202,24 @@
                            border-b border-[#E8E8E8]
                            "
                           >
-                            <p
-                              class="text-black-400 hover:text-red-800 ml-2"
-                              on:click={() => del(ingrediente.id)}
-                            >
-                              Eliminar
-                              <i class="fa fa-trash fa-fw mr-3" />
-                            </p>
+                            {#if !ingredientesNotFree.includes(ingrediente.id)}
+                              <p
+                                class="text-black-400 hover:text-red-800 ml-2"
+                                on:click={() => del(ingrediente.id)}
+                              >
+                                Eliminar
+                                <i class="fa fa-trash fa-fw mr-3" />
+                              </p>
+                            {:else}
+                              <p
+                                class="text-grey-400 ml-2"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                title="Este ingrediente no se puede eliminar porque pertenece a un plato"
+                              >
+                                -
+                              </p>
+                            {/if}
                           </td>
                         </tr>
                       {/each}

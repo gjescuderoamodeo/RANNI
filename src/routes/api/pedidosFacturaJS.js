@@ -3,16 +3,13 @@ const { PrismaClient } = prismaImport;
 
 const prisma = new PrismaClient();
 
-export async function get() {
-    try {
+export async function post({ request }) {
+    const json = await request.json();
+    try {       
 
-        const result = await prisma.pedido.findMany(
-            {
-                where:{
-                    finalizado:false
-                }
-            }
-        );
+        const result = await prisma.pedido.findFirst({
+            where: { finalizado: true, id:json.pedido_id }
+        })
 
         let body;
 
@@ -34,7 +31,7 @@ export async function get() {
             };
         }
     } catch (errors) {
-        //console.log(errors);
+        console.log(errors);
     }
 
 

@@ -6,18 +6,10 @@ const prisma = new PrismaClient();
 export async function post({ request }) {
     const json = await request.json();
     try {
-
-        //saco el id del pedido
-        let idPedido = json.pedidoDeLaMesa.id;
-
-        //saco el primer pedido que encuentre que no esté finalizado y que tenga ese id
-        const result = await prisma.pedido.findFirst({
-            where: { finalizado: false, id: idPedido }
-        })
-
-        //tras obtener el pedido saco la tabla plato-pedido todo lo relacionado con dicho pedido
         const resultPlatoPedido = await prisma.plato_Pedido.findMany({
-            where: { pedido_id: result.id }
+            where: {
+                pedido_id: json.pedidoDeLaFactura.id,
+            }
         })
 
         //Ahora recorro el array de resultPlatoPedido y voy sacando uno a uno sus nombres, sus cantidades y las voy guardadndo en un diccionario 
@@ -45,9 +37,11 @@ export async function post({ request }) {
 
         }
 
+        //console.log(arrayDiccionarioPlatoPedido);
+
         let body;
 
-        if (!result) {
+        if (!resultPlatoPedido) {
             body = {
                 status: 400,
             };
@@ -65,7 +59,7 @@ export async function post({ request }) {
             };
         }
     } catch (errors) {
-        //console.log(errors);
+        console.log(errors);
     }
 
 }
@@ -95,7 +89,7 @@ export async function get() {
             };
         }
     } catch (errors) {
-        console.log(errors);
+        //console.log(errors);
     }
 
 }
