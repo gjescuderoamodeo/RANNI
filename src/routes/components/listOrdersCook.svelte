@@ -88,6 +88,21 @@
       alert("error al modificar el estado del plato en el pedido");
     }
   }
+
+  //función para cancelar un plato del pedido
+  async function cancelarPlato(id_plato, id_pedido) {
+    let del = await fetch(`/api/changeStatusPlatoPedido`, {
+      body: JSON.stringify({ id_plato, id_pedido }),
+      method: "delete",
+    });
+    if (del.status == 200) {
+      recargarListaPlatoPedidos();
+      recargarListaPlatos();
+      alert("plato eliminado del pedido");
+    } else {
+      alert("error al borrar el plato del pedido");
+    }
+  }
 </script>
 
 {#if verificar}
@@ -205,6 +220,17 @@
                               >
                                 {platopedido.estado}
                               </button>
+
+                              <br />
+                              {#if platopedido.estado == "En_Proceso"}
+                                <button
+                                  class="bg-red-600 hover:bg-red-700 text-white font-bold mt-2 py-1 px-1 rounded"
+                                  on:click={cancelarPlato(plato.id, pedido.id)}
+                                >
+                                  Cancelar plato
+                                  <i class="fa fa-trash fa-fw mr-3" />
+                                </button>
+                              {/if}
                             {:else}
                               <button
                                 class="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-1 px-2 rounded"

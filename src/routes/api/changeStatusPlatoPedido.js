@@ -112,6 +112,49 @@ async function removeIngredientsFromAlmacen(plato_id, pedido_id) {
 
 }
 
+//borrar plato del pedido
+export async function del({ request }) {
+
+    let body = await request.json();
+
+    try {
+        //compruebo que existe el plato
+        const getPlateDel = await prisma.plato.findFirst({
+            where: {
+                id: body.id_plato
+            }
+        })
+
+        if (getPlateDel) {   
+
+            const delPlate = await prisma.plato_Pedido.deleteMany({
+                where: {
+                    plato_id: body.id_plato,
+                    pedido_id: body.id_pedido,
+                },
+            });
+
+            if (delPlate) {
+                return {
+                    status: 200
+                }
+            }
+
+        } else {
+            return {
+                status: 400
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 400
+        }
+    }
+
+}
+
 //actualizar estado pedido a finalizado
 export async function post({ request }) {
 
