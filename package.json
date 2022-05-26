@@ -20,11 +20,11 @@
     "prisma": "^3.12.0",
     "svelte": "^3.44.0",
     "svelte-preprocess": "^4.10.5",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.0.23",
+    "@prisma/client": "^3.12.0"
   },
   "type": "module",
-  "dependencies": {
-    "@prisma/client": "^3.12.0",
+  "dependencies": {    
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^8.5.1"
   }
