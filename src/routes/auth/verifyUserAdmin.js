@@ -10,7 +10,7 @@ export async function get({ request }) {
             .split("=")[1];
 
         //si existe token
-        if (jwt.verify(token, "shhhhhhh").job == "Administrador") {
+        if (jwt.verify(token, "shhhhhhh").job != "Administrador") {
             body = {
                 name: jwt.verify(token, "shhhhhhh").username,
                 status: 200,
