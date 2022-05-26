@@ -35,6 +35,7 @@ CREATE TABLE `Usuario` (
     `contrasena` VARCHAR(191) NOT NULL,
     `puesto_laboral` ENUM('Cocinero', 'Camarero', 'Administrador') NOT NULL DEFAULT 'Camarero',
 
+    UNIQUE INDEX `Usuario_nombre_key`(`nombre`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -53,6 +54,7 @@ CREATE TABLE `Plato_Pedido` (
     `plato_id` VARCHAR(191) NOT NULL,
     `pedido_id` VARCHAR(191) NOT NULL,
     `cantidad` INTEGER NOT NULL,
+    `estado` ENUM('En_Proceso', 'Confirmado', 'Acabado', 'Rechazado') NOT NULL DEFAULT 'En_Proceso',
 
     PRIMARY KEY (`plato_id`, `pedido_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -73,24 +75,3 @@ CREATE TABLE `Factura` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `Plato_Ingrediente` ADD CONSTRAINT `Plato_Ingrediente_ingrediente_id_fkey` FOREIGN KEY (`ingrediente_id`) REFERENCES `Ingrediente`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Plato_Ingrediente` ADD CONSTRAINT `Plato_Ingrediente_plato_id_fkey` FOREIGN KEY (`plato_id`) REFERENCES `Plato`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Pedido` ADD CONSTRAINT `Pedido_usuario_id_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `Usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Pedido` ADD CONSTRAINT `Pedido_mesa_id_fkey` FOREIGN KEY (`mesa_id`) REFERENCES `Mesa`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Plato_Pedido` ADD CONSTRAINT `Plato_Pedido_plato_id_fkey` FOREIGN KEY (`plato_id`) REFERENCES `Plato`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Plato_Pedido` ADD CONSTRAINT `Plato_Pedido_pedido_id_fkey` FOREIGN KEY (`pedido_id`) REFERENCES `Pedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Factura` ADD CONSTRAINT `Factura_pedido_id_fkey` FOREIGN KEY (`pedido_id`) REFERENCES `Pedido`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
