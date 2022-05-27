@@ -1,9 +1,10 @@
-import prismaImport from '@prisma/client';
+import Prisma, * as PrismaScope from "@prisma/client";
+const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
+const prisma = new PrismaClient();
+export default prisma;
+
 import jwt from "jsonwebtoken";
 import passwords from "$lib/password";
-const { PrismaClient } = prismaImport;
-
-const prisma = new PrismaClient();
 
 export async function post({ request }) {
 
