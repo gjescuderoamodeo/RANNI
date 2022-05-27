@@ -1,8 +1,7 @@
-import prismaImport from '@prisma/client'
-
-const { PrismaClient } = prismaImport;
-
+import Prisma, * as PrismaScope from "@prisma/client";
+const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
 const prisma = new PrismaClient();
+export default prisma;
 
 //actualizar estado pedido
 export async function put({ request }) {
@@ -13,7 +12,8 @@ export async function put({ request }) {
         //compruebo que existe el plato
         const getPlatePut = await prisma.plato.findFirst({
             where: {
-                id: body.id_plato
+                id: body.id_plato,
+                pedido_id: body.id_pedido
             }
         })
 
