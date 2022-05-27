@@ -1,7 +1,8 @@
-import prismaImport from '@prisma/client'
-const { PrismaClient } = prismaImport;
-
+import Prisma, * as PrismaScope from "@prisma/client";
+const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
 const prisma = new PrismaClient();
+export default prisma;
+
 
 export async function get() {
     try {
