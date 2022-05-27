@@ -1,10 +1,15 @@
 <script>
   import { goto } from "$app/navigation";
   import { post } from "$lib/utils.js";
+  import { onMount } from "svelte";
 
   let name = "";
   let password = "";
   let errors = false;
+  
+  onMount(async () => {
+    checkNoUsers();
+  });
 
   async function submit(event) {
     closeSession();
@@ -19,6 +24,15 @@
         return goto("/almacen");
       case 401:
         errors = true;
+    }
+  }
+  
+  async function checkNoUsers() {
+    let request2 = await post(`/api/checkNoUsersJS`);
+
+    switch (request2.status) {
+      case 200:
+        return goto("/components/createFirstUser");
     }
   }
 
