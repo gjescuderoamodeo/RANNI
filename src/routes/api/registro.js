@@ -1,9 +1,11 @@
-import prismaImport from '@prisma/client'
+import Prisma, * as PrismaScope from "@prisma/client";
+const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
+const prisma = new PrismaClient();
+export default prisma;
+
+
 import { onMount } from 'svelte';
 import encriptador from "$lib/encriptador";
-const { PrismaClient } = prismaImport;
-
-const prisma = new PrismaClient();
 
 
 onMount(() => {
