@@ -1,8 +1,10 @@
-import prismaImport from '@prisma/client';
-import jwt from "jsonwebtoken";
-const { PrismaClient } = prismaImport;
-
+import Prisma, * as PrismaScope from "@prisma/client";
+const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
 const prisma = new PrismaClient();
+export default prisma;
+
+
+import jwt from "jsonwebtoken";
 
 export async function post({ request }) {
     const json = await request.json();
