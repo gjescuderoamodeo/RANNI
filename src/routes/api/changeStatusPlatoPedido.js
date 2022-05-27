@@ -53,7 +53,7 @@ export async function put({ request }) {
 }
 
 //función para quitar al almacen la cantidad de los ingredientes
-async function removeIngredientsFromAlmacen(plato_id, pedido_id) {
+async function removeIngredientsFromAlmacen(platoide, pedidoide) {
     try{
         //lista con todos los ingredientes del plato (solo quiero sus id)
         platoIngredientes = await prisma.plato_Ingrediente.findMany({
@@ -63,7 +63,7 @@ async function removeIngredientsFromAlmacen(plato_id, pedido_id) {
                 plato_id: true
             },
             where: {
-                plato_id: plato_id
+                plato_id: platoide
             }
         })  
 
@@ -85,7 +85,7 @@ async function removeIngredientsFromAlmacen(plato_id, pedido_id) {
                     cantidad: true,
                 },
                 where:{
-                    pedido_id: pedido_id,
+                    pedido_id: pedidoide,
                     plato_id: platoIngredientes[i].plato_id
                 }
             })
