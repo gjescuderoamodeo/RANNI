@@ -1,8 +1,12 @@
-import prismaImport from '@prisma/client'
-import password from "$lib/password";
-const { PrismaClient } = prismaImport;
-
+import Prisma, * as PrismaScope from "@prisma/client";
+const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
 const prisma = new PrismaClient();
+export default prisma;
+
+
+import password from "$lib/password";
+
+
 
 export async function post({ request }) {
     const json = await request.json();
