@@ -1,7 +1,8 @@
-import prismaImport from '@prisma/client'
-const { PrismaClient } = prismaImport;
-
+import Prisma, * as PrismaScope from "@prisma/client";
+const PrismaClient = Prisma?.PrismaClient || PrismaScope?.PrismaClient;
 const prisma = new PrismaClient();
+export default prisma;
+
 
 //función que da en número de usuarios totales
 export async function get({ request }) {
