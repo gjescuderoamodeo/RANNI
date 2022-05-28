@@ -99,8 +99,8 @@ export async function post({ request }) {
             };
         }
     } catch (error) {
-        console.log("ERROR AL CREAR EL TOKEN");
-        console.log(error);
+        //console.log("ERROR AL CREAR EL TOKEN");
+        //console.log(error);
     }
 
 }
@@ -112,5 +112,5 @@ export async function get({ request }) {
         .find((cookie) => cookie.indexOf("jwt") !== -1)
         .split("=")[1];
 
-    console.log(jwt.verify(token, "shhhhhhh"));
+    //console.log(jwt.verify(token, "shhhhhhh"));
 }

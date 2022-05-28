@@ -1,10 +1,12 @@
 <script>
   import { onMount } from "svelte";
   import { goto } from "$app/navigation";
+  import { post } from "$lib/utils.js";
   import ModifyUsers from "./modifyUsers.svelte";
 
   let usuarios = [];
   let usuariosCopia = [];
+  var usersNotFree = [];
   let verificar = false;
 
   onMount(async () => {
@@ -17,6 +19,8 @@
     const request = await fetch(`/api/usuarios`);
     usuarios = await request.json();
     usuariosCopia = JSON.parse(JSON.stringify(usuarios));
+
+    comprobarUsuarioLibre();
   }
 
   async function verifyUser() {
@@ -42,6 +46,26 @@
       case 200:
         reload();
         break;
+    }
+  }
+
+  //función para comprobar que el ingrediente no está asociado a ningún plato o pedido
+  async function comprobarUsuarioLibre() {
+    verifyUser();
+    let request = await post(`/api/checkUserFreeJS`);
+
+    switch (request.status) {
+      case 200:
+        let usersNF = request.usersNotFree;
+
+        usersNotFree = [];
+        for (let i = 0; i < usersNF.length; i++) {
+          usersNotFree.push(usersNF[i].usuario_id);
+        }
+
+        break;
+      case 403:
+        return false;
     }
   }
 
@@ -184,13 +208,24 @@
                            border-b border-[#E8E8E8]
                            "
                         >
-                          <p
-                            class="text-black-400 hover:text-red-800 ml-2"
-                            on:click={() => del(usuario.id)}
-                          >
-                            Eliminar
-                            <i class="fa fa-trash fa-fw mr-3" />
-                          </p>
+                          {#if !usersNotFree.includes(usuario.id)}
+                            <p
+                              class="text-black-400 hover:text-red-800 ml-2"
+                              on:click={() => del(usuario.id)}
+                            >
+                              Eliminar
+                              <i class="fa fa-trash fa-fw mr-3" />
+                            </p>
+                          {:else}
+                            <p
+                              class="text-grey-400 ml-2"
+                              data-bs-toggle="tooltip"
+                              data-bs-placement="bottom"
+                              title="Este usuario no se puede eliminar porque pertenece a un pedido"
+                            >
+                              -
+                            </p>
+                          {/if}
                         </td>
                       </tr>
                     {/each}

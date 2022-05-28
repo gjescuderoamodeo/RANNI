@@ -25,7 +25,7 @@ export async function get({ request }) {
         }
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
 
         body = {
             status: 403,
