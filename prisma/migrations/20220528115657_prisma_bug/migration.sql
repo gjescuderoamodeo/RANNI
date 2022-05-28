@@ -35,6 +35,7 @@ CREATE TABLE `Usuario` (
     `contrasena` VARCHAR(191) NOT NULL,
     `puesto_laboral` ENUM('Cocinero', 'Camarero', 'Administrador') NOT NULL DEFAULT 'Camarero',
 
+    UNIQUE INDEX `Usuario_nombre_key`(`nombre`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -53,6 +54,7 @@ CREATE TABLE `Plato_Pedido` (
     `plato_id` VARCHAR(191) NOT NULL,
     `pedido_id` VARCHAR(191) NOT NULL,
     `cantidad` INTEGER NOT NULL,
+    `estado` ENUM('En_Proceso', 'Confirmado', 'Acabado', 'Rechazado') NOT NULL DEFAULT 'En_Proceso',
 
     PRIMARY KEY (`plato_id`, `pedido_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
