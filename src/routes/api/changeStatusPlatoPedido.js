@@ -12,8 +12,7 @@ export async function put({ request }) {
         //compruebo que existe el plato
         const getPlatePut = await prisma.plato.findFirst({
             where: {
-                id: body.id_plato,
-                pedido_id: body.id_pedido
+                id: body.id_plato
             }
         })
 
@@ -28,6 +27,7 @@ export async function put({ request }) {
                 },
                 where: {
                     plato_id: body.id_plato,
+                    pedido_id: body.id_pedido
                 },
             });
 
@@ -63,7 +63,7 @@ async function removeIngredientsFromAlmacen(platoide, pedidoide) {
                 plato_id: true
             },
             where: {
-                plato_id: platoide
+                plato_id: platoide,
             }
         })  
 
@@ -90,9 +90,13 @@ async function removeIngredientsFromAlmacen(platoide, pedidoide) {
                 }
             })
 
-            let actualizarCantidadIngrediente = await prisma.ingrediente.updateMany({
+            let newCantidad = (cantidadI.cantidad-(platoIngredientes[i].cantidad*cantidadP.cantidad))
+
+            console.log(platoIngredientes[i].ingrediente_id)
+
+            let actualizarCantidadIngrediente = await prisma.ingrediente.update({
                 data: {
-                    cantidad: (cantidadI.cantidad-(platoIngredientes[i].cantidad*cantidadP.cantidad)),
+                    cantidad: newCantidad,
                 },
                 where: {
                     id: platoIngredientes[i].ingrediente_id,
