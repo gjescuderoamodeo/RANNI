@@ -58,6 +58,9 @@
           arrayDiccionarioPlatoPedido = request2.array;
           comprobarPlatosAcabados();
           break;
+        case 503:
+          arrayDiccionarioPlatoPedido = [];
+          break;
       }
 
       //saco el total a pagar. loop del array y sumo uno a uno la cantidad
