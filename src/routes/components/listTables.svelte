@@ -504,7 +504,7 @@
                   </form>
                 </div>
 
-                {#if arrayDiccionarioPlatoPedido.length !== 0}
+                {#if arrayDiccionarioPlatoPedido.length != 0}
                   <!--PLATOS ASOCIADOS A ESE PEDIDO-->
                   <h5
                     class="font-bold uppercase text-gray-600 text-center mt-6"
