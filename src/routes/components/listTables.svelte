@@ -31,6 +31,7 @@
     if (mesaid != null) {
       const request2 = await fetch(`/api/platos`);
       platos = await request2.json();
+      recargarListaPlatos();
     }
     const request = await fetch(`/api/mesas`);
     mesas = await request.json();
