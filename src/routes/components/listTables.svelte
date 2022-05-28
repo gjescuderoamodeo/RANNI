@@ -61,6 +61,9 @@
         case 503:
           arrayDiccionarioPlatoPedido = [];
           break;
+        case 500:
+          arrayDiccionarioPlatoPedido = [];
+          break;
       }
 
       //saco el total a pagar. loop del array y sumo uno a uno la cantidad
@@ -194,7 +197,7 @@
       case 200:
         alert("Pedido finalizado exitosamente");
         quitarid();
-        recargarListaPlatos();
+        arrayDiccionarioPlatoPedido = [];
         break;
       case 400:
         alert("Pedido NO finalizado exitosamente");
