@@ -28,8 +28,10 @@
   });
 
   async function reload() {
-    const request2 = await fetch(`/api/platos`);
-    platos = await request2.json();
+    if (mesaid != null) {
+      const request2 = await fetch(`/api/platos`);
+      platos = await request2.json();
+    }
     const request = await fetch(`/api/mesas`);
     mesas = await request.json();
   }
