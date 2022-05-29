@@ -5,6 +5,7 @@
   import CrudUsuarios from "./crudUsers.svelte";
   import CrudFood from "./crudFood.svelte";
   import CrudBills from "./crudBills.svelte";
+  import CrudTables from "./crudTables.svelte";
 
   onMount(async () => {
     await verifyUser();
@@ -37,6 +38,10 @@
 
   function showBill() {
     adminControl = 3;
+  }
+
+  function showTable() {
+    adminControl = 4;
   }
 
   function showFood() {
@@ -151,7 +156,8 @@
         </div>
 
         <div
-          class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20"
+          class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block md:flex md:items-center md:w-auto hidden md:block md:mt-0 mt-2 lg:mt-0 bg-white z-20
+          sm:flex sm:items-center sm:w-auto hidden sm:block sm:mt-0"
           id="nav-content"
         >
           <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
@@ -183,6 +189,18 @@
                 >
               </p>
             </li>
+            <li class="mr-6 my-2 md:my-0" on:click={showTable}>
+              <p
+                class="block py-1 md:py-3 xs:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-green-700"
+              >
+                <img
+                  src="/mesa.png"
+                  class="w-5 h-5 mt-1 float-left"
+                  alt="Mesa"
+                />
+                <span class="pb-1 md:pb-0 text-sm">Administrar Mesas</span>
+              </p>
+            </li>
           </ul>
         </div>
       </div>
@@ -195,8 +213,8 @@
       >
         <!--Console Content-->
 
-        <div class="flex flex-wrap">
-          <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+        <div class="flex flex-wrap  sm:hidden">
+          <div class="w-full md:w-1/2 xl:w-1/3 p-3 sm:hidden md:hidden">
             <!--Metric Card-->
             <div class="bg-white border rounded shadow p-2">
               <div class="flex flex-row items-center">
@@ -280,6 +298,9 @@
         <!--MÓDULO DE LAS FACTURAS-->
         {#if adminControl == 3}
           <CrudBills />
+        {/if}
+        {#if adminControl == 4}
+          <CrudTables />
         {/if}
         <!--/ Console Content-->
       </div>
