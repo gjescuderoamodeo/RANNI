@@ -162,44 +162,88 @@
         >
           <ul class="list-reset lg:flex flex-1 items-center px-4 md:px-0">
             <li class="mr-6 my-2 md:my-0" on:click={showUser}>
-              <p
-                class="block py-1 md:py-3 pl-1 align-middle text-pink-600 no-underline hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-600"
-              >
-                <i class="fas fa-user fa-fw mr-3 text-pink-600" /><span
-                  class="pb-1 md:pb-0 text-sm">Administrar usuarios</span
+              {#if adminControl == 1}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-pink-600 no-underline hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-600"
                 >
-              </p>
+                  <i class="fas fa-user fa-fw mr-3 text-pink-600" /><span
+                    class="pb-1 md:pb-0 text-sm">Administrar usuarios</span
+                  >
+                </p>
+              {:else}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-gray-900 border-b-2 border-white hover:border-pink-500"
+                >
+                  <i class="fas fa-user fa-fw mr-3 text-pink-600" /><span
+                    class="pb-1 md:pb-0 text-sm">Administrar usuarios</span
+                  >
+                </p>
+              {/if}
             </li>
             <li class="mr-6 my-2 md:my-0" on:click={showFood}>
-              <p
-                class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-yellow-500"
-              >
-                <i class="fas fa-utensils fa-fw mr-3 text-yellow-500" /><span
-                  class="pb-1 md:pb-0 text-sm"
-                  >Administrar platos y ingredientes</span
+              {#if adminControl == 2}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-yellow-600 no-underline hover:text-gray-900 border-b-2 border-orange-600 hover:border-orange-600"
                 >
-              </p>
+                  <i class="fas fa-utensils fa-fw mr-3 text-yellow-500" /><span
+                    class="pb-1 md:pb-0 text-sm"
+                    >Administrar platos y ingredientes</span
+                  >
+                </p>
+              {:else}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-gray-900 border-b-2 border-white hover:border-yellow-500"
+                >
+                  <i class="fas fa-utensils fa-fw mr-3 text-yellow-500" /><span
+                    class="pb-1 md:pb-0 text-sm"
+                    >Administrar platos y ingredientes</span
+                  >
+                </p>
+              {/if}
             </li>
             <li class="mr-6 my-2 md:my-0" on:click={showBill}>
-              <p
-                class="block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500"
-              >
-                <i class="fa fa-file fa-fw mr-3 text-purple-500" /><span
-                  class="pb-1 md:pb-0 text-sm">Facturas</span
+              {#if adminControl == 3}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-purple-600 no-underline hover:text-gray-900 border-b-2 border-purple-600 hover:border-purple-600"
                 >
-              </p>
+                  <i class="fa fa-file fa-fw mr-3 text-purple-500" /><span
+                    class="pb-1 md:pb-0 text-sm">Facturas</span
+                  >
+                </p>
+              {:else}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-gray-900 border-b-2 border-white hover:border-purple-500"
+                >
+                  <i class="fa fa-file fa-fw mr-3 text-purple-500" /><span
+                    class="pb-1 md:pb-0 text-sm">Facturas</span
+                  >
+                </p>
+              {/if}
             </li>
             <li class="mr-6 my-2 md:my-0" on:click={showTable}>
-              <p
-                class="block py-1 md:py-3 xs:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-green-700"
-              >
-                <img
-                  src="/mesa.png"
-                  class="w-5 h-5 mt-1 float-left"
-                  alt="Mesa"
-                />
-                <span class="pb-1 md:pb-0 text-sm">Administrar Mesas</span>
-              </p>
+              {#if adminControl == 4}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-green-600 no-underline hover:text-gray-900 border-b-2 border-green-600 hover:border-green-600"
+                >
+                  <img
+                    src="/mesa.png"
+                    class="w-5 h-5 mt-1 float-left"
+                    alt="Mesa"
+                  />
+                  <span class="pb-1 md:pb-0 text-sm">Administrar Mesas</span>
+                </p>
+              {:else}
+                <p
+                  class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-gray-900 border-b-2 border-white hover:border-green-700"
+                >
+                  <img
+                    src="/mesa.png"
+                    class="w-5 h-5 mt-1 float-left"
+                    alt="Mesa"
+                  />
+                  <span class="pb-1 md:pb-0 text-sm">Administrar Mesas</span>
+                </p>
+              {/if}
             </li>
           </ul>
         </div>
