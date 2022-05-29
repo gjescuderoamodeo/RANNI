@@ -10,6 +10,10 @@
   onMount(async () => {
     checkNoUsers();
     //closeSession();
+    //recargo la página solo una vez
+    if (window.location.href.substr(-2) !== "?r") {
+      window.location = window.location.href + "?r";
+    }
   });
 
   async function submit(event) {
