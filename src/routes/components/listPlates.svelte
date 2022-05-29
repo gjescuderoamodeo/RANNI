@@ -23,9 +23,11 @@
 
     console.log(request);
 
-    platos = request.json();
-    ingredientes = request2.json();
-    ingredientesPlato = request3.json();
+    if (request.status == 200) {
+      platos = request.json();
+      ingredientes = request2.json();
+      ingredientesPlato = request3.json();
+    }
   }
 
   async function verifyUser() {
@@ -82,6 +84,8 @@
         break;
       case 403:
         return false;
+
+      default:
     }
   }
 
