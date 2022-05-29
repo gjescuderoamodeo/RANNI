@@ -5,7 +5,6 @@
   import ModifyPlates from "./modifyPlates.svelte";
 
   let platos = [];
-  let platosCopia = [];
   let ingredientesPlato = [];
   let ingredientes = [];
   var platesNotFree = [];
@@ -21,10 +20,12 @@
     let request = await fetch(`/api/platos`);
     let request2 = await fetch(`/api/ingredientes`);
     let request3 = await fetch(`/api/ingredientesPlato`);
-    platos = await request.json();
-    ingredientes = await request2.json();
-    ingredientesPlato = await request3.json();
-    platosCopia = JSON.parse(JSON.stringify(platos));
+
+    console.log(request);
+
+    platos = request.json();
+    ingredientes = request2.json();
+    ingredientesPlato = request3.json();
   }
 
   async function verifyUser() {
