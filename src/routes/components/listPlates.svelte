@@ -17,21 +17,16 @@
   });
   async function reload() {
     comprobarPlatoLibre();
-    let request = await fetch(`/api/platos`);
-    let request2 = await fetch(`/api/ingredientes`);
-    let request3 = await fetch(`/api/ingredientesPlato`);
-
-    console.log(request);
-
-    if (request.status == 200) {
-      platos = request.json();
-      ingredientes = request2.json();
-      ingredientesPlato = request3.json();
-    }
+    const request = await fetch(`/api/platos`);
+    const request2 = await fetch(`/api/ingredientes`);
+    const request3 = await fetch(`/api/ingredientesPlato`);
+    platos = await request.json();
+    ingredientes = await request2.json();
+    ingredientesPlato = await request3.json();
   }
 
   async function verifyUser() {
-    let request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
+    const request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
     if (request.status !== 200) {
       return goto("/");
     } else {
@@ -41,7 +36,7 @@
 
   async function del(id) {
     verifyUser();
-    let request = await fetch("/api/platos", {
+    const request = await fetch("/api/platos", {
       body: JSON.stringify({ id }),
       method: "delete",
     }).then((r) => r.json());
@@ -55,7 +50,7 @@
 
   async function delIngredientPlate(id, plato_id) {
     verifyUser();
-    let request = await fetch("/api/deleteIngredientPlateJS", {
+    const request = await fetch("/api/deleteIngredientPlateJS", {
       body: JSON.stringify({ id, plato_id }),
       method: "delete",
     }).then((r) => r.json());
@@ -84,12 +79,10 @@
         break;
       case 403:
         return false;
-
-      default:
     }
   }
 
-  let buscarplato = (id) => usuariosCopia.find((platos) => platos.id == id);
+  const buscarplato = (id) => usuariosCopia.find((platos) => platos.id == id);
 </script>
 
 <head>
