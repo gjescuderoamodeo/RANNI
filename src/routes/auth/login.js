@@ -22,9 +22,11 @@ export async function post({ request }) {
         let puesto = "";
 
         if (!result) {
+            body = {
+                status: 401,
+            };
             return {
-                status: 204,
-                location: `/`
+                body,
             };
         } else {
             puesto = result.puesto_laboral;
@@ -99,6 +101,9 @@ export async function post({ request }) {
             };
         }
     } catch (error) {
+        return {
+            status: 401
+        };
         //console.log("ERROR AL CREAR EL TOKEN");
         //console.log(error);
     }

@@ -22,7 +22,7 @@
   let adminControl = 1;
 
   async function closeSession() {
-    console.log("Sesión cerrada!");
+    //console.log("Sesión cerrada!");
 
     await fetch("/auth/closeSession", {
       method: "post",
@@ -47,7 +47,7 @@
   async function verifyUser() {
     const request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
     if (request.status !== 200) {
-      console.log("Usuario no válido");
+      //console.log("Usuario no válido");
       return goto("/");
     } else {
       name = request.name;

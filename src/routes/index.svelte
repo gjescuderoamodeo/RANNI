@@ -6,13 +6,13 @@
   let name = "";
   let password = "";
   let errors = false;
-  
+
   onMount(async () => {
     checkNoUsers();
+    //closeSession();
   });
 
   async function submit(event) {
-    closeSession();
     const request = await post(`auth/login`, { name, password });
 
     switch (request.status) {
@@ -24,9 +24,21 @@
         return goto("/almacen");
       case 401:
         errors = true;
+        //alert("Usuario y/o Contraseña incorrecto");
+        setTimeout(function () {
+          errors = false;
+        }, 7000);
+        break;
+      case 400:
+        errors = true;
+        setTimeout(function () {
+          errors = false;
+        }, 7000);
+        //alert("Usuario y/o Contraseña incorrecto");
+        break;
     }
   }
-  
+
   async function checkNoUsers() {
     let request2 = await post(`/api/checkNoUsersJS`);
 
@@ -38,7 +50,7 @@
 
   //cierro la sesión por si hay otro jwt
   async function closeSession() {
-    console.log("Sesión cerrada!");
+    //console.log("Sesión cerrada!");
 
     await fetch("/auth/closeSession", {
       method: "post",
@@ -53,10 +65,6 @@
 </head>
 
 <body class="bg-stone-100">
-  {#if errors}
-    <p>Contraseña o Usuario erroneos</p>
-  {/if}
-
   <img
     src="/RanniLogo.png"
     class="max-w-full h-auto mx-auto mt-10"
@@ -67,6 +75,10 @@
   <div
     class="block p-6 rounded-lg shadow-lg bg-white max-w-sm mx-auto mt-32 bg-sky-200 mb-20 mt-1"
   >
+    {#if errors}
+      <p class="text-red-900 font-extrabold">Contraseña y/o Usuario erroneos</p>
+    {/if}
+
     <form on:submit|preventDefault={submit}>
       <div class="form-group mb-6 ">
         <label
