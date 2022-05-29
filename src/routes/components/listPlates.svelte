@@ -18,9 +18,9 @@
   });
   async function reload() {
     comprobarPlatoLibre();
-    const request = await fetch(`/api/platos`);
-    const request2 = await fetch(`/api/ingredientes`);
-    const request3 = await fetch(`/api/ingredientesPlato`);
+    let request = await fetch(`/api/platos`);
+    let request2 = await fetch(`/api/ingredientes`);
+    let request3 = await fetch(`/api/ingredientesPlato`);
     platos = await request.json();
     ingredientes = await request2.json();
     ingredientesPlato = await request3.json();
@@ -28,7 +28,7 @@
   }
 
   async function verifyUser() {
-    const request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
+    let request = await fetch("/auth/verifyUserAdmin").then((r) => r.json());
     if (request.status !== 200) {
       return goto("/");
     } else {
@@ -38,7 +38,7 @@
 
   async function del(id) {
     verifyUser();
-    const request = await fetch("/api/platos", {
+    let request = await fetch("/api/platos", {
       body: JSON.stringify({ id }),
       method: "delete",
     }).then((r) => r.json());
@@ -52,7 +52,7 @@
 
   async function delIngredientPlate(id, plato_id) {
     verifyUser();
-    const request = await fetch("/api/deleteIngredientPlateJS", {
+    let request = await fetch("/api/deleteIngredientPlateJS", {
       body: JSON.stringify({ id, plato_id }),
       method: "delete",
     }).then((r) => r.json());
@@ -84,7 +84,7 @@
     }
   }
 
-  const buscarplato = (id) => usuariosCopia.find((platos) => platos.id == id);
+  let buscarplato = (id) => usuariosCopia.find((platos) => platos.id == id);
 </script>
 
 <head>
