@@ -85,7 +85,7 @@
 
     switch (request2.status) {
       case 200:
-        console.log(request2.array);
+        //console.log(request2.array);
         arrayDiccionarioPlatoPedido = request2.array;
         break;
     }
