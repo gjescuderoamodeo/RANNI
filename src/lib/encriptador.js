@@ -1,8 +1,7 @@
-import prismaImport from '@prisma/client'
-import password from "./password";
-const { PrismaClient } = prismaImport;
+import {instanciaSingleton} from "../../lib/prisma.js";
 
-const prisma = new PrismaClient();
+const prisma = instanciaSingleton;
+import password from "./password";
 
 export default {
     signUp: async () => {
