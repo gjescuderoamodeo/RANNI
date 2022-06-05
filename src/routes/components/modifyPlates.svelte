@@ -11,6 +11,7 @@
   let precio = 1;
   let disponibilidad = "Disponible";
   let newName = "";
+  let errors = false;
 
   onMount(async () => {
     await verifyUser();
@@ -39,19 +40,26 @@
       disponibilidad = false;
     }
 
-    let put = await fetch(`/api/platos`, {
-      body: JSON.stringify({ newName, name, precio, disponibilidad }),
-      method: "put",
-    });
-    if (put.status == 200) {
-      alert("plato modificado");
-      name = "";
-      precio = 1;
-      newName = "";
-      disponibilidad = "Disponible";
-      reload();
+    if (name != "" && newName != "" && password != "") {
+      let put = await fetch(`/api/platos`, {
+        body: JSON.stringify({ newName, name, precio, disponibilidad }),
+        method: "put",
+      });
+      if (put.status == 200) {
+        alert("plato modificado");
+        name = "";
+        precio = 1;
+        newName = "";
+        disponibilidad = "Disponible";
+        reload();
+      } else {
+        alert("error al modificar el plato");
+      }
     } else {
-      alert("error al modificar el plato");
+      errors = true;
+      setTimeout(function () {
+        errors = false;
+      }, 7000);
     }
   }
 </script>
@@ -64,6 +72,11 @@
       class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mb-20"
     >
       <form>
+        {#if errors}
+          <p class="text-red-900 font-extrabold">
+            No se han introducido bien los datos
+          </p>
+        {/if}
         <div class="form-group mb-6">
           <label for="nombre" class="form-label inline-block mb-2 text-gray-700"
             >Plato a modificar</label

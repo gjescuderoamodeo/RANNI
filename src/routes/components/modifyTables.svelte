@@ -9,6 +9,7 @@
   let verificar = false;
   let id = "";
   let newid = "";
+  let errors = false;
 
   onMount(async () => {
     await verifyUser();
@@ -31,19 +32,26 @@
   }
 
   async function update(mesa) {
-    let put = await fetch(`/api/mesas`, {
-      body: JSON.stringify({ newid, id }),
-      method: "put",
-    });
-    if (put.status == 200) {
-      alert("mesa modificado");
-      id = "";
-      password = "";
-      job = "Camarero";
-      newid = "";
-      reload();
+    if (newid != "" && id != "") {
+      let put = await fetch(`/api/mesas`, {
+        body: JSON.stringify({ newid, id }),
+        method: "put",
+      });
+      if (put.status == 200) {
+        alert("mesa modificado");
+        id = "";
+        password = "";
+        job = "Camarero";
+        newid = "";
+        reload();
+      } else {
+        alert("error al modificar el mesa");
+      }
     } else {
-      alert("error al modificar el mesa");
+      errors = true;
+      setTimeout(function () {
+        errors = false;
+      }, 7000);
     }
   }
 </script>
@@ -56,6 +64,11 @@
       class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mb-20"
     >
       <form>
+        {#if errors}
+          <p class="text-red-900 font-extrabold">
+            No se han introducido bien los datos
+          </p>
+        {/if}
         <div class="form-group mb-6">
           <label for="nombre" class="form-label inline-block mb-2 text-gray-700"
             >mesa a modificar</label
@@ -95,7 +108,7 @@
           <label
             for="exampleInputPassword2"
             class="form-label inline-block mb-2 text-gray-700"
-            >Nuevo nombre mesa</label
+            >Nuevo id mesa</label
           >
           <!--input nuevo mesa-->
           <input

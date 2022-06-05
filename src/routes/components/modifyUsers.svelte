@@ -11,6 +11,7 @@
   let password = "";
   let job = "Camarero";
   let newName = "";
+  let errors = false;
 
   onMount(async () => {
     await verifyUser();
@@ -32,20 +33,27 @@
     }
   }
 
-  async function update(usuario) {
-    let put = await fetch(`/api/usuarios`, {
-      body: JSON.stringify({ newName, name, password, job }),
-      method: "put",
-    });
-    if (put.status == 200) {
-      alert("usuario modificado");
-      name = "";
-      password = "";
-      job = "Camarero";
-      newName = "";
-      reload();
+  async function update() {
+    if (name != "" && newName != "" && password != "") {
+      let put = await fetch(`/api/usuarios`, {
+        body: JSON.stringify({ newName, name, password, job }),
+        method: "put",
+      });
+      if (put.status == 200) {
+        alert("usuario modificado");
+        name = "";
+        password = "";
+        job = "Camarero";
+        newName = "";
+        reload();
+      } else {
+        alert("error al modificar el usuario");
+      }
     } else {
-      alert("error al modificar el usuario");
+      errors = true;
+      setTimeout(function () {
+        errors = false;
+      }, 7000);
     }
   }
 </script>
@@ -58,6 +66,11 @@
       class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mb-20"
     >
       <form>
+        {#if errors}
+          <p class="text-red-900 font-extrabold">
+            No se han introducido bien los datos
+          </p>
+        {/if}
         <div class="form-group mb-6">
           <label for="nombre" class="form-label inline-block mb-2 text-gray-700"
             >Usuario a modificar</label
@@ -85,6 +98,7 @@
                                                                       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 aria-label="Default select example"
                 bind:value={name}
+                required
               >
                 {#each usuarios as usuario}
                   <option>{usuario.nombre}</option>

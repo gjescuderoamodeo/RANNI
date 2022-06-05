@@ -10,6 +10,7 @@
   let name = "";
   let cantidad = 1;
   let newName = "";
+  let errors = false;
 
   onMount(async () => {
     await verifyUser();
@@ -32,18 +33,25 @@
   }
 
   async function update() {
-    let put = await fetch(`/api/ingredientes`, {
-      body: JSON.stringify({ newName, name, cantidad }),
-      method: "put",
-    });
-    if (put.status == 200) {
-      alert("ingrediente modificado");
-      name = "";
-      cantidad = 1;
-      newName = "";
-      reload();
+    if (name != "" && newName != "" && cantidad >= 0) {
+      let put = await fetch(`/api/ingredientes`, {
+        body: JSON.stringify({ newName, name, cantidad }),
+        method: "put",
+      });
+      if (put.status == 200) {
+        alert("ingrediente modificado");
+        name = "";
+        cantidad = 1;
+        newName = "";
+        reload();
+      } else {
+        alert("error al modificar el ingrediente");
+      }
     } else {
-      alert("error al modificar el ingrediente");
+      errors = true;
+      setTimeout(function () {
+        errors = false;
+      }, 7000);
     }
   }
 </script>
@@ -56,6 +64,11 @@
       class="block p-6 rounded-lg shadow-lg bg-sky-200 max-w-sm mx-auto mb-20"
     >
       <form>
+        {#if errors}
+          <p class="text-red-900 font-extrabold">
+            No se han introducido bien los datos
+          </p>
+        {/if}
         <div class="form-group mb-6">
           <label for="nombre" class="form-label inline-block mb-2 text-gray-700"
             >Ingrediente a modificar</label
