@@ -119,8 +119,7 @@
                 id="userButton"
                 class="flex items-center focus:outline-none mr-3"
               >
-                <span
-                  class="hidden md:inline-block text-xl font-semibold text-inherit"
+                <span class="md:inline-block text-xl font-semibold text-inherit"
                   >Usuario: <button
                     class="text-xl bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded "
                   >

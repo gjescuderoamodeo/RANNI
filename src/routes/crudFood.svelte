@@ -8,7 +8,7 @@
   import AlertIngredients from "./components/alertIngredients.svelte";
 </script>
 
-<div class="flex flex-row flex-wrap flex-grow mt-2">
+<div class="flex flex-row flex-wrap flex-grow mt-2 lg:py-[5px] sm:py-[120px]">
   <div class="w-full md:w-1/2 p-3">
     <!--Graph Card-->
     <div class="bg-white border rounded shadow">
