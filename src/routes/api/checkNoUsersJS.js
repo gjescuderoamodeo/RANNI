@@ -11,7 +11,7 @@ export async function post() {
 
         if (result == 0) {
             body = {
-                status: 200,
+                status: 202,
             };
             return {
                 body,
