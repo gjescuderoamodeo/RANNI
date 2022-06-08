@@ -46,8 +46,6 @@
   async function checkNoUsers() {
     let request2 = await post(`/api/checkNoUsersJS`);
 
-    console.log(request2.status);
-
     switch (request2.status) {
       case 202:
         return goto("/components/createFirstUser");

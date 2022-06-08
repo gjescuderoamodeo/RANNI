@@ -184,6 +184,7 @@
     verifyUser();
     let request = await post(`/api/deletePlatoPedidoJS`, {
       id,
+      mesaid,
     });
     switch (request.status) {
       case 200:
