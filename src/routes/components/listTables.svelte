@@ -8,6 +8,7 @@
   let mesaid = null;
   let verificar = false;
   let todoClear = true;
+  let excel = false;
 
   //listado con los platos
   let platos = [];
@@ -20,6 +21,9 @@
 
   //variable del total del pedido
   let totalPagar = 0;
+
+  //variable usuario del pedido
+  let username = "";
 
   onMount(async () => {
     await verifyUser();
@@ -45,6 +49,7 @@
       return goto("/");
     } else {
       verificar = true;
+      username = request.name;
     }
   }
 
@@ -221,7 +226,15 @@
   }
 
   function exportar() {
-    exportExcel("xlsx");
+    setTimeout(function () {
+      excel = true;
+    }, 1000);
+    setTimeout(function () {
+      exportExcel("xlsx");
+    }, 2000);
+    setTimeout(function () {
+      excel = false;
+    }, 2100);
   }
 
   //función que comprueba que todos los platos del pedido está terminados
@@ -525,6 +538,28 @@
                   <div class="w-full overflow-x-auto">
                     <table class="table-auto w-full" id="exportable_table">
                       <thead>
+                        {#if excel}
+                          <tr>
+                            <th>Ha sido atendido por {username}</th>
+                            <th />
+                            <th />
+                          </tr>
+                          <tr>
+                            <th />
+                            <th />
+                            <th />
+                          </tr>
+                          <tr>
+                            <th />
+                            <th>Platos del pedido</th>
+                            <th />
+                          </tr>
+                          <tr>
+                            <th />
+                            <th />
+                            <th />
+                          </tr>
+                        {/if}
                         <tr class="bg-sky-200 text-center">
                           <th
                             class="

@@ -55,15 +55,15 @@
   }
 
   //cierro la sesión por si hay otro jwt
-  async function closeSession() {
-    //console.log("Sesión cerrada!");
+  // async function closeSession() {
+  //   //console.log("Sesión cerrada!");
 
-    await fetch("/auth/closeSession", {
-      method: "post",
-    });
+  //   await fetch("/auth/closeSession", {
+  //     method: "post",
+  //   });
 
-    goto("/");
-  }
+  //   goto("/");
+  // }
 </script>
 
 <head>

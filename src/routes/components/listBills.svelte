@@ -5,6 +5,7 @@
 
   let facturas = [];
   let facturaid = null;
+  let excel = false;
   let userName = "";
   let pedidoDeLaFactura;
   let precioTotal = 0;
@@ -107,7 +108,7 @@
   }
 
   async function exportar() {
-    await exportExcel("xlsx");
+    exportExcel("xlsx");
   }
 </script>
 
@@ -408,6 +409,26 @@
 
         <!--Tabla invisible de la factura-->
         <table class="hidden" id="exportable_table2">
+          <tr>
+            <th>Pedido atendido por {userName}</th>
+            <th />
+            <th />
+          </tr>
+          <tr>
+            <th />
+            <th />
+            <th />
+          </tr>
+          <tr>
+            <th />
+            <th>Platos del pedido</th>
+            <th />
+          </tr>
+          <tr>
+            <th />
+            <th />
+            <th />
+          </tr>
           <tr>
             <th> Nombre </th>
             <th> Cantidad </th>
