@@ -55,7 +55,6 @@
 
   //función para recargar los platos del pedido
   async function recargarListaPlatos() {
-    totalPagar = 0;
     if (pedidoDeLaMesa != null) {
       const request2 = await post(`/api/listPlatosPedidosJS`, {
         pedidoDeLaMesa,
@@ -74,11 +73,17 @@
           break;
       }
 
+      let total = 0;
+
       //saco el total a pagar. loop del array y sumo uno a uno la cantidad
       for (let i = 0; i < arrayDiccionarioPlatoPedido.length; i++) {
-        totalPagar +=
+        total +=
           arrayDiccionarioPlatoPedido[i].precio *
           arrayDiccionarioPlatoPedido[i].cantida;
+      }
+
+      if (totalPagar != total) {
+        totalPagar = total;
       }
     }
   }
