@@ -1,4 +1,4 @@
-import {instanciaSingleton} from "../../lib/prisma.js";
+import {instanciaSingleton} from "prisma.js";
 
 const prisma = instanciaSingleton;
 import password from "./password";
