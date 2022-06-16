@@ -188,11 +188,11 @@
     });
     switch (request.status) {
       case 200:
-        console.log("plato del pedido eliminado");
+        //console.log("plato del pedido eliminado");
         recargarListaPlatos();
         break;
       case 403:
-        console.log(
+        alert(
           "No puedes eliminar este plato porque ya ha sido confirmado por el cocinero"
         );
         recargarListaPlatos();

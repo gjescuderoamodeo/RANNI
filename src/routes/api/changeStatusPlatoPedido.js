@@ -43,7 +43,7 @@ export async function put({ request }) {
         }
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return {
             status: 400
         }
@@ -91,7 +91,7 @@ async function removeIngredientsFromAlmacen(platoide, pedidoide) {
 
             let newCantidad = (cantidadI.cantidad-(platoIngredientes[i].cantidad*cantidadP.cantidad))
 
-            console.log(platoIngredientes[i].ingrediente_id)
+            //console.log(platoIngredientes[i].ingrediente_id)
 
             let actualizarCantidadIngrediente = await prisma.ingrediente.update({
                 data: {
@@ -106,8 +106,8 @@ async function removeIngredientsFromAlmacen(platoide, pedidoide) {
         
 
     }catch (error) {
-        console.log(error);
-        console.log("Error al remover los ingredientes");
+        //console.log(error);
+        //console.log("Error al remover los ingredientes");
         return {
             status: 400
         }
@@ -150,7 +150,7 @@ export async function del({ request }) {
         }
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return {
             status: 400
         }
@@ -196,7 +196,7 @@ export async function post({ request }) {
         }
 
     } catch (error) {
-        console.log(error);
+        //console.log(error);
         return {
             status: 400
         }

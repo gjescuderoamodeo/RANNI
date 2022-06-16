@@ -96,7 +96,7 @@ export async function get() {
         }
     } catch (errors) {
         
-        console.log(errors);
+        //console.log(errors);
         body = {
             status: 503,
         };

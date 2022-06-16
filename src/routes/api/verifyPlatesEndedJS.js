@@ -45,7 +45,7 @@ export async function post({ request }) {
         
         
     } catch (errors) {
-        console.log(errors);
+        //console.log(errors);
         body = {
             message: "Error with verify platos ended",
             status: 400,

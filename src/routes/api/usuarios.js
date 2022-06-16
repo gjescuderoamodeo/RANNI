@@ -28,7 +28,7 @@ export async function del({ request }) {
     let tokenID = await getToken({ request });
 
     if (body.id === tokenID.id) {
-        console.log("!QUIETO PARAO");
+        //console.log("!QUIETO PARAO");
         body = {
             message: "No puedes borrar tu usuario",
             status: 403,

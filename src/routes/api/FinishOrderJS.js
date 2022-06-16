@@ -23,7 +23,7 @@ export async function post({ request }) {
             },            
         }) 
 
-        console.log(platoSinFinalizarC);
+        //console.log(platoSinFinalizarC);
 
         if(platoSinFinalizarC==[] || platoSinFinalizarP==[]){
             body = {

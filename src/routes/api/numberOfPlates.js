@@ -13,7 +13,7 @@ export async function get({ request }) {
             status: 200
         };
     } catch (error) {
-        console.log(error);
+        //console.log(error);
 
         return {
             body: null,

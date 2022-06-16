@@ -20,7 +20,7 @@ export async function get() {
             status: 200
         };
     } catch (error) {
-        console.log(error);
+        //console.log(error);
 
         return {
             body: 0,

@@ -30,7 +30,7 @@ export async function post({ request }) {
             };
         }
     } catch (errors) {
-        console.log(errors);
+        //console.log(errors);
         body = {
             status: 400,
         };
