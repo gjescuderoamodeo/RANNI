@@ -69,7 +69,7 @@
           focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="id"
             bind:value={id}
-            placeholder="Enter id"
+            placeholder="Introduca ID mesa"
             required
           />
         </div>
