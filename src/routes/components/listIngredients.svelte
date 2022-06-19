@@ -188,6 +188,9 @@
                            bg-white
                            border-b border-[#E8E8E8]
                            "
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Número de ingredientes en el almacen"
                           >
                             {ingrediente.cantidad}
                           </td>
